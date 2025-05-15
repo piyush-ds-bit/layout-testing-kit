@@ -13,7 +13,7 @@ const Hero: React.FC = () => {
           </h1>
           
           <h2 className="mt-6 text-xl md:text-2xl text-portfolio-gray-light max-w-2xl mx-auto animate-slide-in">
-            App Developer · Web Developer · Python Developer
+            Data Scientist · Machine Learning Enthusiast · Python & Streamlit Developer
           </h2>
           
           <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-in" style={{ animationDelay: "0.3s" }}>
