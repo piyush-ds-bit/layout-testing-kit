@@ -4,28 +4,37 @@ import SkillCategory from './SkillCategory';
 
 const languages = [
   { name: 'Python', icon: '🐍' },
-  { name: 'Dart', icon: '🎯' },
-  { name: 'Java', icon: '☕' },
-  { name: 'C++', icon: '🧮' },
+  { name: 'SQL', icon: '🗄️' },
 ];
 
 const frameworks = [
-  { name: 'Flutter', icon: '🦋' },
-  { name: 'React', icon: '⚛️' },
-  { name: 'Pygame', icon: '🎮' },
+  { name: 'TensorFlow', icon: '🔶' },
+  { name: 'PyTorch', icon: '🔥' },
+  { name: 'Scikit-learn', icon: '📚' },
+  { name: 'Pandas', icon: '🐼' },
+  { name: 'Streamlit', icon: '📈' },
+  { name: 'Flask', icon: '🍶' },
+  { name: 'Seaborn', icon: '📊' },
+  { name: 'Matplotlib', icon: '📉' },
+  { name: 'NumPy', icon: '🔢' },
 ];
 
 const databases = [
-  { name: 'MongoDB', icon: '🍃' },
+  { name: 'PostgreSQL', icon: '🐘' },
+  { name: 'MySQL', icon: '🐬' },
+  { name: 'SQLite', icon: '📦' },
   { name: 'Supabase', icon: '⚡' },
 ];
 
 const tools = [
+  { name: 'Jupyter Notebook', icon: '📓' },
   { name: 'VS Code', icon: '🔷' },
-  { name: 'Docker', icon: '🐳' },
-  { name: 'IntelliJ IDEA', icon: '🧠' },
   { name: 'PyCharm', icon: '🐍' },
+  { name: 'IntelliJ IDEA', icon: '🧠' },
+  { name: 'Git & GitHub', icon: '🐙' },
+  { name: 'MLflow', icon: '📊' },
 ];
+
 
 const SkillsSection: React.FC = () => {
   return (
