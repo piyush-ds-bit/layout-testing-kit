@@ -5,7 +5,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const GITHUB_GRAPHQL_API = 'https://api.github.com/graphql';
-const GITHUB_USERNAME = 'piyush-ds-bit';  // <-- change this to your GitHub username
+const GITHUB_USERNAME = 'piyush-ds-bit';  // Your GitHub username
 
 // Define types for GitHub contribution data
 type ContributionDay = {
@@ -42,10 +42,10 @@ const GitHubSection: React.FC = () => {
   useEffect(() => {
     const fetchContributions = async () => {
       try {
-        // Note: In production, you should use an environment variable for the token
-        // and consider using a server-side approach to avoid exposing tokens
+        // Note: For production, you should use an environment variable or a backend service
+        // to handle this API call rather than exposing the token in client-side code
         const headers = {
-          Authorization: `Bearer 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`,  // replace with your token
+          Authorization: `Bearer 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`,
         };
         
         const data = await request(GITHUB_GRAPHQL_API, query, { login: GITHUB_USERNAME }, headers);

@@ -12,7 +12,6 @@ const navItems = [
   { label: "LeetCode", path: "/leetcode" },
   { label: "GitHub", path: "/github" },
   { label: "Projects", path: "/projects" },
-  { label: "Blog", path: "/blog" },
   { label: "Connect", path: "/connect" }
 ];
 
