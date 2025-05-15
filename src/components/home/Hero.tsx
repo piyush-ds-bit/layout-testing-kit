@@ -9,7 +9,7 @@ const Hero: React.FC = () => {
       <div className="portfolio-container">
         <div className="flex flex-col items-center text-center">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent animate-fade-in">
-            Hello, I'm <span className="text-portfolio-accent">Your Name</span>
+            Hello, I'm <span className="text-portfolio-accent">Piyush Kr. Singh</span>
           </h1>
           
           <h2 className="mt-6 text-xl md:text-2xl text-portfolio-gray-light max-w-2xl mx-auto animate-slide-in">
