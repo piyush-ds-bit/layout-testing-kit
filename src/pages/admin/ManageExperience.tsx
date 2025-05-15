@@ -2,16 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
-
-interface Experience {
-  id?: string;
-  company: string;
-  position: string;
-  start_date: string;
-  end_date?: string;
-  current: boolean;
-  description: string;
-}
+import { Experience } from '@/types/database';
 
 const ManageExperience: React.FC = () => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
@@ -38,7 +29,7 @@ const ManageExperience: React.FC = () => {
         if (error) throw error;
         
         if (data) {
-          setExperiences(data);
+          setExperiences(data as Experience[]);
         }
       } catch (error) {
         console.error('Error fetching experiences:', error);
@@ -152,7 +143,7 @@ const ManageExperience: React.FC = () => {
         
         if (data) {
           setExperiences(experiences.map((exp) => 
-            exp.id === editingExperience.id ? data[0] : exp
+            exp.id === editingExperience.id ? data[0] as Experience : exp
           ));
           
           toast({
@@ -170,7 +161,7 @@ const ManageExperience: React.FC = () => {
         if (error) throw error;
         
         if (data) {
-          setExperiences([...experiences, data[0]]);
+          setExperiences([...experiences, data[0] as Experience]);
           
           toast({
             title: 'Success',

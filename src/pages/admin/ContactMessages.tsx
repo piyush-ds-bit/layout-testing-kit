@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-
-interface ContactMessage {
-  id: string;
-  name: string;
-  email: string;
-  message: string;
-  created_at: string;
-  read: boolean;
-}
+import { ContactMessage } from '@/types/database';
 
 const ContactMessages: React.FC = () => {
   const [messages, setMessages] = useState<ContactMessage[]>([]);
@@ -26,7 +18,7 @@ const ContactMessages: React.FC = () => {
         if (error) throw error;
         
         if (data) {
-          setMessages(data);
+          setMessages(data as ContactMessage[]);
         }
       } catch (error) {
         console.error('Error fetching messages:', error);

@@ -2,17 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
-
-interface Project {
-  id?: string;
-  title: string;
-  description: string;
-  category: string;
-  image_url?: string;
-  github_url?: string;
-  live_url?: string;
-  technologies: string[];
-}
+import { Project } from '@/types/database';
 
 const ManageProjects: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -41,7 +31,7 @@ const ManageProjects: React.FC = () => {
         if (error) throw error;
         
         if (data) {
-          setProjects(data);
+          setProjects(data as Project[]);
         }
       } catch (error) {
         console.error('Error fetching projects:', error);
@@ -186,7 +176,7 @@ const ManageProjects: React.FC = () => {
         
         if (data) {
           setProjects(projects.map((proj) => 
-            proj.id === editingProject.id ? data[0] : proj
+            proj.id === editingProject.id ? data[0] as Project : proj
           ));
           
           toast({
@@ -204,7 +194,7 @@ const ManageProjects: React.FC = () => {
         if (error) throw error;
         
         if (data) {
-          setProjects([...projects, data[0]]);
+          setProjects([...projects, data[0] as Project]);
           
           toast({
             title: 'Success',

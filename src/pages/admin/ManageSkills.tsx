@@ -1,13 +1,15 @@
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
+import { Skill, SkillCategory } from '@/types/database';
 
 const ManageSkills: React.FC = () => {
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<SkillCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [skills, setSkills] = useState<any[]>([]);
+  const [skills, setSkills] = useState<Skill[]>([]);
   const [newSkill, setNewSkill] = useState({ name: '', icon: '' });
   
   // Fetch skill categories
@@ -22,7 +24,7 @@ const ManageSkills: React.FC = () => {
         if (error) throw error;
         
         if (data) {
-          setCategories(data);
+          setCategories(data as SkillCategory[]);
           if (data.length > 0) {
             setSelectedCategory(data[0].id);
           }
@@ -57,7 +59,7 @@ const ManageSkills: React.FC = () => {
         if (error) throw error;
         
         if (data) {
-          setSkills(data);
+          setSkills(data as Skill[]);
         }
       } catch (error) {
         console.error('Error fetching skills:', error);
@@ -94,7 +96,7 @@ const ManageSkills: React.FC = () => {
       if (error) throw error;
       
       if (data) {
-        setSkills([...skills, data[0]]);
+        setSkills([...skills, data[0] as Skill]);
         setNewSkill({ name: '', icon: '' });
         
         toast({

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -29,14 +28,12 @@ const ContactForm: React.FC = () => {
       // Save the message to Supabase
       const { error } = await supabase
         .from('contact_messages')
-        .insert([
-          {
-            name: formData.name,
-            email: formData.email,
-            message: formData.message,
-            user_id: user?.id,
-          }
-        ]);
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          user_id: user?.id,
+        });
       
       if (error) throw error;
       
