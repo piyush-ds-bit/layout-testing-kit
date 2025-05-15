@@ -19,7 +19,7 @@ const navItems = [
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -51,11 +51,25 @@ const Navbar: React.FC = () => {
             ))}
             
             {user ? (
-              <Link to="/admin" className="ml-4">
-                <Button variant="outline" className="border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
-                  Dashboard
+              <div className="flex items-center ml-4 space-x-3">
+                <span className="text-portfolio-gray-light">
+                  Hi, {user.user_metadata.name || user.email?.split('@')[0] || 'User'}
+                </span>
+                <Button 
+                  variant="outline" 
+                  className="border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white"
+                  onClick={() => signOut()}
+                >
+                  Logout
                 </Button>
-              </Link>
+                {user && (
+                  <Link to="/admin">
+                    <Button variant="outline" className="border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
+                      Dashboard
+                    </Button>
+                  </Link>
+                )}
+              </div>
             ) : (
               <Link to="/login" className="ml-4">
                 <Button variant="outline" className="border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
@@ -97,11 +111,23 @@ const Navbar: React.FC = () => {
           ))}
           
           {user ? (
-            <Link to="/admin" onClick={() => setIsOpen(false)}>
-              <Button variant="outline" className="w-full border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
-                Dashboard
+            <div className="flex flex-col space-y-2 pt-2">
+              <span className="text-portfolio-gray-light">
+                Hi, {user.user_metadata.name || user.email?.split('@')[0] || 'User'}
+              </span>
+              <Button 
+                variant="outline" 
+                className="w-full border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white"
+                onClick={() => signOut()}
+              >
+                Logout
               </Button>
-            </Link>
+              <Link to="/admin" onClick={() => setIsOpen(false)}>
+                <Button variant="outline" className="w-full border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
+                  Dashboard
+                </Button>
+              </Link>
+            </div>
           ) : (
             <Link to="/login" onClick={() => setIsOpen(false)}>
               <Button variant="outline" className="w-full border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">

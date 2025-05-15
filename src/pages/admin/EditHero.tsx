@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import ContentForm from '@/components/admin/ContentForm';
 import { toast } from '@/components/ui/use-toast';
 
@@ -14,7 +14,7 @@ const EditHero: React.FC = () => {
         const { data, error } = await supabase
           .from('sections')
           .select('*')
-          .eq('section', 'hero')
+          .eq('name', 'hero')
           .single();
         
         if (error && error.code !== 'PGRST116') { // PGRST116 is no rows returned
