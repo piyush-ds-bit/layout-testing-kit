@@ -1,10 +1,11 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 220 20% 97%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -13,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 172.5 66% 50.4%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -22,7 +23,7 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
+    --accent: 172.5 66% 50.4%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -30,39 +31,23 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 172.5 66% 50.4%;
 
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --radius: 0.75rem;
   }
 
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 217.2 32.6% 17.5%;
     --card-foreground: 210 40% 98%;
 
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 172.5 66% 50.4%;
+    --primary-foreground: 210 40% 98%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -70,7 +55,7 @@
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 172.5 66% 50.4%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -78,15 +63,7 @@
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --ring: 172.5 66% 50.4%;
   }
 }
 
@@ -94,8 +71,63 @@
   * {
     @apply border-border;
   }
-
+  
+  html {
+    @apply scroll-smooth;
+  }
+  
   body {
-    @apply bg-background text-foreground;
+    @apply bg-portfolio-darkest text-foreground dark transition-all duration-300;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+  }
+}
+
+@layer components {
+  .portfolio-container {
+    @apply container max-w-6xl mx-auto px-4 sm:px-6;
+  }
+  
+  .portfolio-section {
+    @apply py-16 md:py-24;
+  }
+  
+  .portfolio-heading {
+    @apply text-3xl md:text-4xl font-bold text-white mb-8 text-center;
+  }
+  
+  .portfolio-card {
+    @apply bg-portfolio-card-bg border border-portfolio-dark rounded-xl p-6 transition-all duration-300;
+  }
+  
+  .portfolio-card:hover {
+    @apply border-portfolio-accent/50 shadow-lg shadow-portfolio-accent/10;
+  }
+  
+  .portfolio-button {
+    @apply bg-portfolio-accent text-white font-medium px-5 py-2.5 rounded-lg 
+    hover:bg-portfolio-accent-dark transition-all duration-300 inline-flex items-center justify-center;
+  }
+  
+  .portfolio-button-outline {
+    @apply bg-transparent text-portfolio-accent border border-portfolio-accent font-medium px-5 py-2.5 rounded-lg 
+    hover:bg-portfolio-accent hover:text-white transition-all duration-300 inline-flex items-center justify-center;
+  }
+  
+  .portfolio-input {
+    @apply bg-portfolio-dark border border-portfolio-gray/30 text-white rounded-lg px-4 py-3 w-full
+    focus:outline-none focus:ring-2 focus:ring-portfolio-accent focus:border-transparent;
+  }
+  
+  .portfolio-navbar-item {
+    @apply px-3 py-2 text-sm font-medium rounded-lg transition-colors
+    hover:text-portfolio-accent;
+  }
+  
+  .portfolio-navbar-item.active {
+    @apply text-portfolio-accent bg-portfolio-card-bg;
   }
 }

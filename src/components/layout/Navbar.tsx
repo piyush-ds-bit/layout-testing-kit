@@ -1,0 +1,118 @@
+
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
+import { Button } from "@/components/ui/button";
+import { Home, Menu, X } from "lucide-react";
+
+const navItems = [
+  { label: "Home", path: "/" },
+  { label: "Skills", path: "/skills" },
+  { label: "Experience", path: "/experience" },
+  { label: "LeetCode", path: "/leetcode" },
+  { label: "GitHub", path: "/github" },
+  { label: "Projects", path: "/projects" },
+  { label: "Blog", path: "/blog" },
+  { label: "Connect", path: "/connect" }
+];
+
+const Navbar: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const { user } = useAuth();
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <header className="sticky top-0 z-50 w-full bg-portfolio-darkest/80 backdrop-blur-md border-b border-portfolio-dark">
+      <div className="portfolio-container py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <Link to="/" className="flex items-center space-x-2 text-white hover:text-portfolio-accent transition-colors">
+              <Home className="w-5 h-5" />
+              <span className="text-xl font-semibold">Portfolio</span>
+            </Link>
+          </div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-2">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`portfolio-navbar-item ${
+                  location.pathname === item.path ? "active" : ""
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+            
+            {user ? (
+              <Link to="/admin" className="ml-4">
+                <Button variant="outline" className="border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
+                  Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <Link to="/login" className="ml-4">
+                <Button variant="outline" className="border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
+                  Login
+                </Button>
+              </Link>
+            )}
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={toggleMenu}
+            className="md:hidden p-2 text-white hover:text-portfolio-accent transition-colors"
+            aria-label="Toggle Menu"
+          >
+            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Navigation */}
+      <div
+        className={`md:hidden fixed top-[62px] left-0 right-0 bg-portfolio-darkest border-b border-portfolio-dark transform ${
+          isOpen ? "translate-y-0" : "-translate-y-full"
+        } transition-transform duration-300 ease-in-out`}
+      >
+        <div className="portfolio-container py-4 flex flex-col space-y-2">
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`portfolio-navbar-item ${
+                location.pathname === item.path ? "active" : ""
+              }`}
+              onClick={() => setIsOpen(false)}
+            >
+              {item.label}
+            </Link>
+          ))}
+          
+          {user ? (
+            <Link to="/admin" onClick={() => setIsOpen(false)}>
+              <Button variant="outline" className="w-full border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
+                Dashboard
+              </Button>
+            </Link>
+          ) : (
+            <Link to="/login" onClick={() => setIsOpen(false)}>
+              <Button variant="outline" className="w-full border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
+                Login
+              </Button>
+            </Link>
+          )}
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Navbar;
