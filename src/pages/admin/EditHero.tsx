@@ -41,27 +41,57 @@ const EditHero: React.FC = () => {
   
   const handleSaveHero = async (data: Record<string, any>) => {
     try {
+      // Ensure data has the required 'name' field for the sections table
+      const sectionData = {
+        ...data,
+        name: 'hero', // Required field for the sections table
+      };
+      
       if (heroData) {
         // Update existing record
         const { error } = await supabase
           .from('sections')
-          .update(data)
+          .update(sectionData)
           .eq('id', heroData.id);
         
         if (error) throw error;
+        
+        // Update local state with the new data
+        setHeroData({
+          ...heroData,
+          ...sectionData
+        });
       } else {
         // Insert new record
         const { error } = await supabase
           .from('sections')
-          .insert([data]);
+          .insert([sectionData]); // Pass an array with the single object
         
         if (error) throw error;
+        
+        // Fetch the newly created record to get its ID
+        const { data: newHero, error: fetchError } = await supabase
+          .from('sections')
+          .select('*')
+          .eq('name', 'hero')
+          .single();
+          
+        if (fetchError) throw fetchError;
+        
+        setHeroData(newHero);
       }
       
-      // Update local state
-      setHeroData(data);
+      toast({
+        title: 'Success',
+        description: 'Hero section has been saved.',
+      });
     } catch (error) {
       console.error('Error saving hero data:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to save hero section.',
+        variant: 'destructive',
+      });
       throw error;
     }
   };
