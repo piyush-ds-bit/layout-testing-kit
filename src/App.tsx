@@ -16,6 +16,7 @@ import ProjectsPage from "./pages/ProjectsPage";
 import ConnectPage from "./pages/ConnectPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import ResumePage from "./pages/ResumePage";
 
 // Admin Pages
 import AdminLayout from "./pages/AdminLayout";
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/connect" element={<ConnectPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/resume" element={<ResumePage />} />
             
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminLayout />}>

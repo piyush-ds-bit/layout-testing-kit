@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { ChevronDown } from 'lucide-react';
+import React, { useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface ExperienceCardProps {
   company: string;
@@ -17,6 +17,8 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   description,
   index,
 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
     <div className="flex justify-center">
       <div className="bg-[#1e293b] rounded-xl border border-[#2d3748] p-6 w-full max-w-xl">
@@ -26,9 +28,18 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           <div className="text-sm">{duration}</div>
         </div>
         
+        {isExpanded && (
+          <div className="text-gray-300 my-4">
+            {description}
+          </div>
+        )}
+        
         <div className="flex justify-end">
-          <button className="p-2 text-gray-400 hover:text-white">
-            <ChevronDown size={24} />
+          <button 
+            className="p-2 text-gray-400 hover:text-white"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
           </button>
         </div>
       </div>
