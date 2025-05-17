@@ -6,9 +6,7 @@ import SkillsSection from '@/components/skills/SkillsSection';
 const SkillsPage: React.FC = () => {
   return (
     <Layout>
-      <div className="pt-10">
-        <SkillsSection />
-      </div>
+      <SkillsSection />
     </Layout>
   );
 };
