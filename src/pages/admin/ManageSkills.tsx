@@ -223,7 +223,7 @@ const ManageSkills: React.FC = () => {
                     
                     <Button
                       variant="ghost"
-                      onClick={() => handleDeleteSkill(skill.id)}
+                      onClick={() => handleDeleteSkill(skill.id!)}
                       className="text-red-500 hover:text-red-400 hover:bg-red-500/10"
                     >
                       Delete

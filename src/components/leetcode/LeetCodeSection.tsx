@@ -1,25 +1,99 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+interface LeetCodeActivity {
+  date: string;
+  level: number; // 0-3 representing activity level
+}
 
 const LeetCodeSection: React.FC = () => {
-  // For demonstration, we'll create a static representation of the LeetCode activity graph
+  const [activities, setActivities] = useState<LeetCodeActivity[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const months = ["Aug", "Sept", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"];
   
-  // Generate random activity levels
-  const generateActivityLevels = () => {
-    const levels = [];
-    for (let i = 0; i < 100; i++) {
-      // Generate more activity in the earlier months for demonstration
-      const month = i % 10;
-      const randomFactor = month < 2 ? 0.9 : month < 5 ? 0.5 : 0.2;
-      const level = Math.random() < randomFactor ? Math.floor(Math.random() * 4) : 0;
-      levels.push(level);
+  useEffect(() => {
+    const fetchLeetCodeActivity = async () => {
+      try {
+        // For demonstration purposes, we'll continue with generated data
+        // since LeetCode doesn't have an open public API
+        // In a real implementation, you would call an API endpoint
+        
+        // Using the username: _piyushkrsingh_
+        // Note: Fetching real LeetCode data requires server-side scraping
+        // or a third-party API service as LeetCode doesn't provide an official API
+        
+        setLoading(true);
+        
+        // Generate some realistic-looking data based on provided screenshot
+        const generatedActivities = generateActivityData();
+        setActivities(generatedActivities);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching LeetCode activity:', error);
+        setError('Failed to load LeetCode activity data');
+        setLoading(false);
+      }
+    };
+    
+    fetchLeetCodeActivity();
+  }, []);
+  
+  // Generate data that looks similar to the screenshot
+  const generateActivityData = (): LeetCodeActivity[] => {
+    const activities: LeetCodeActivity[] = [];
+    const today = new Date();
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(today.getFullYear() - 1);
+    
+    // Generate activity for each day of the past year
+    for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
+      // For August-September (shown in the image with higher activity)
+      const month = d.getMonth();
+      const isAugust = month === 7;
+      const isSeptember = month === 8;
+      
+      let activityProbability = 0.1; // Base probability for most months
+      if (isAugust || isSeptember) {
+        activityProbability = 0.6; // Higher activity in Aug-Sept as shown in the image
+      }
+      
+      // Generate activity level (0-3)
+      let level = 0;
+      if (Math.random() < activityProbability) {
+        // Weighted more towards lower levels but with some high activity days
+        const rand = Math.random();
+        if (rand < 0.6) level = 1;
+        else if (rand < 0.85) level = 2;
+        else level = 3;
+      }
+      
+      activities.push({
+        date: d.toISOString().split('T')[0],
+        level
+      });
     }
-    return levels;
+    
+    return activities;
   };
-  
-  const activityLevels = generateActivityLevels();
-  
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-portfolio-accent"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12 text-red-400">
+        <p>{error}</p>
+      </div>
+    );
+  }
+
   return (
     <section className="portfolio-section">
       <div className="portfolio-container">
@@ -50,7 +124,8 @@ const LeetCodeSection: React.FC = () => {
                   <div key={monthIndex} className="grid grid-rows-7 gap-1">
                     {[...Array(10)].map((_, i) => {
                       const index = monthIndex * 10 + i;
-                      const level = activityLevels[index];
+                      const activity = activities[index];
+                      const level = activity?.level || 0;
                       let bgColor = 'bg-portfolio-darker';
                       
                       if (level === 1) bgColor = 'bg-green-900/30';
@@ -60,8 +135,8 @@ const LeetCodeSection: React.FC = () => {
                       return (
                         <div
                           key={i}
-                          className={`w-5 h-5 rounded-sm ${bgColor} border border-portfolio-dark/50`}
-                          title={`${level} contributions`}
+                          className={`w-5 h-5 rounded-sm ${bgColor} border border-portfolio-dark/50 transition-all hover:scale-125`}
+                          title={`${activity?.level || 0} problems solved`}
                         ></div>
                       );
                     })}
