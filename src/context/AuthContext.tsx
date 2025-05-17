@@ -25,9 +25,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Set initial session and user
     const setInitialUser = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        setSession(session);
-        setUser(session?.user || null);
+        const { data } = await supabase.auth.getSession();
+        setSession(data.session);
+        setUser(data.session?.user || null);
       } catch (error) {
         console.error('Error setting initial user:', error);
       } finally {
@@ -38,10 +38,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setInitialUser();
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setSession(session);
-      setUser(session?.user || null);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
+      setSession(newSession);
+      setUser(newSession?.user || null);
       setLoading(false);
+      
+      if (event === 'SIGNED_IN' && newSession) {
+        toast({
+          title: "Signed in successfully",
+          description: `Welcome ${newSession.user.email}!`,
+        });
+      }
+      
+      if (event === 'SIGNED_OUT') {
+        toast({
+          title: "Signed out successfully",
+        });
+      }
     });
 
     return () => {
@@ -88,11 +101,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
         throw error;
       }
-      
-      toast({
-        title: "Login successful",
-        description: "Welcome back!",
-      });
     } catch (error) {
       console.error('Error signing in:', error);
       throw error;
@@ -107,7 +115,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: window.location.origin + '/admin',
+          redirectTo: `${window.location.origin}/admin`,
         }
       });
       
@@ -131,9 +139,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true);
       await supabase.auth.signOut();
-      toast({
-        title: "Logged out successfully",
-      });
     } catch (error) {
       console.error('Error signing out:', error);
       toast({

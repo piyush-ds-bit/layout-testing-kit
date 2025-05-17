@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -25,17 +26,33 @@ const ContactForm: React.FC = () => {
     setLoading(true);
     
     try {
+      // Validate inputs
+      if (!formData.name.trim()) {
+        throw new Error("Please enter your name");
+      }
+      
+      if (!formData.email.trim()) {
+        throw new Error("Please enter your email");
+      }
+      
+      if (!formData.message.trim()) {
+        throw new Error("Please enter a message");
+      }
+      
       // Save the message to Supabase
       const { error } = await supabase
         .from('contact_messages')
         .insert({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          message: formData.message.trim(),
           user_id: user?.id,
         });
       
-      if (error) throw error;
+      if (error) {
+        console.error("Database error:", error);
+        throw new Error("Failed to send message. Please try again later.");
+      }
       
       toast({
         title: "Message sent successfully",
@@ -48,11 +65,11 @@ const ContactForm: React.FC = () => {
         email: user?.email || '',
         message: '',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error sending message:', error);
       toast({
         title: "Failed to send message",
-        description: "There was an error sending your message. Please try again later.",
+        description: error.message || "There was an error sending your message. Please try again later.",
         variant: "destructive",
       });
     } finally {

@@ -1,37 +1,46 @@
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { ContactMessage } from '@/types/database';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const ContactMessages: React.FC = () => {
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  const fetchMessages = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const { data, error } = await supabase
+        .from('contact_messages')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      
+      if (data) {
+        setMessages(data as ContactMessage[]);
+      }
+    } catch (error: any) {
+      console.error('Error fetching messages:', error);
+      setError(error.message || 'Failed to fetch contact messages.');
+      toast({
+        title: 'Error',
+        description: 'Failed to fetch contact messages.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
   
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('contact_messages')
-          .select('*')
-          .order('created_at', { ascending: false });
-        
-        if (error) throw error;
-        
-        if (data) {
-          setMessages(data as ContactMessage[]);
-        }
-      } catch (error) {
-        console.error('Error fetching messages:', error);
-        toast({
-          title: 'Error',
-          description: 'Failed to fetch contact messages.',
-          variant: 'destructive',
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-    
     fetchMessages();
   }, []);
   
@@ -52,7 +61,7 @@ const ContactMessages: React.FC = () => {
         title: 'Success',
         description: 'Message marked as read.',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error marking message as read:', error);
       toast({
         title: 'Error',
@@ -77,7 +86,7 @@ const ContactMessages: React.FC = () => {
         title: 'Success',
         description: 'Message deleted successfully.',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting message:', error);
       toast({
         title: 'Error',
@@ -88,14 +97,27 @@ const ContactMessages: React.FC = () => {
   };
   
   if (loading) {
-    return <div className="text-white">Loading...</div>;
+    return <div className="text-white">Loading messages...</div>;
   }
   
   return (
     <div>
       <h1 className="text-2xl font-semibold text-white mb-6">Contact Messages</h1>
       
-      {messages.length > 0 ? (
+      {error && (
+        <Alert variant="destructive" className="mb-6">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+          <div className="mt-4">
+            <Button onClick={fetchMessages} variant="outline">
+              Retry
+            </Button>
+          </div>
+        </Alert>
+      )}
+      
+      {!error && messages.length > 0 ? (
         <div className="space-y-6">
           {messages.map((message) => {
             const date = new Date(message.created_at).toLocaleString();
@@ -148,7 +170,9 @@ const ContactMessages: React.FC = () => {
           })}
         </div>
       ) : (
-        <p className="text-portfolio-gray-light">No contact messages yet.</p>
+        <p className="text-portfolio-gray-light">
+          {error ? '' : 'No contact messages yet.'}
+        </p>
       )}
     </div>
   );
