@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { ChevronDown } from 'lucide-react';
 
 interface ExperienceCardProps {
   company: string;
@@ -16,23 +17,20 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   description,
   index,
 }) => {
-  // Alternate between left and right side of the timeline
-  const isEven = index % 2 === 0;
-  
   return (
-    <div className={`flex ${isEven ? 'justify-end' : 'justify-start'} md:justify-center`}>
-      <div 
-        className={`portfolio-card max-w-md ${isEven ? 'md:mr-8 md:ml-0' : 'md:ml-8 md:mr-0'}`}
-        style={{
-          animationDelay: `${index * 0.2}s`,
-        }}
-      >
-        <h3 className="text-xl text-white font-semibold">{company}</h3>
-        <div className="flex flex-col mb-3">
-          <span className="text-portfolio-gray-light">{position}</span>
-          <span className="text-portfolio-gray text-sm">{duration}</span>
+    <div className="flex justify-center">
+      <div className="bg-[#1e293b] rounded-xl border border-[#2d3748] p-6 w-full max-w-xl">
+        <h3 className="text-2xl font-bold text-white mb-1">{company}</h3>
+        <div className="mb-4 text-gray-400">
+          <div className="text-lg">{position}</div>
+          <div className="text-sm">{duration}</div>
         </div>
-        <p className="text-portfolio-gray-light">{description}</p>
+        
+        <div className="flex justify-end">
+          <button className="p-2 text-gray-400 hover:text-white">
+            <ChevronDown size={24} />
+          </button>
+        </div>
       </div>
     </div>
   );

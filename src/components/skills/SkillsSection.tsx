@@ -3,38 +3,27 @@ import React from 'react';
 import SkillCategory from './SkillCategory';
 
 const languages = [
-  { name: 'Python', icon: '🐍' },
-  { name: 'SQL', icon: '🗄️' },
+  { name: 'C++', icon: '/icons/cpp.svg' },
+  { name: 'Python', icon: '/icons/python.svg' },
+  { name: 'Java', icon: '/icons/java.svg' }
 ];
 
 const frameworks = [
-  { name: 'TensorFlow', icon: '🔶' },
-  { name: 'PyTorch', icon: '🔥' },
-  { name: 'Scikit-learn', icon: '📚' },
-  { name: 'Pandas', icon: '🐼' },
-  { name: 'Streamlit', icon: '📈' },
-  { name: 'Flask', icon: '🍶' },
-  { name: 'Seaborn', icon: '📊' },
-  { name: 'Matplotlib', icon: '📉' },
-  { name: 'NumPy', icon: '🔢' },
+  { name: 'Flutter', icon: '/icons/flutter.svg' },
+  { name: 'React', icon: '/icons/react.svg' },
+  { name: 'Spring Boot', icon: '/icons/spring.svg' }
 ];
 
 const databases = [
-  { name: 'PostgreSQL', icon: '🐘' },
-  { name: 'MySQL', icon: '🐬' },
-  { name: 'SQLite', icon: '📦' },
-  { name: 'Supabase', icon: '⚡' },
+  { name: 'MongoDB', icon: '/icons/mongodb.svg' },
+  { name: 'Supabase', icon: '/icons/supabase.svg' }
 ];
 
 const tools = [
-  { name: 'Jupyter Notebook', icon: '📓' },
-  { name: 'VS Code', icon: '🔷' },
-  { name: 'PyCharm', icon: '🐍' },
-  { name: 'IntelliJ IDEA', icon: '🧠' },
-  { name: 'Git & GitHub', icon: '🐙' },
-  { name: 'MLflow', icon: '📊' },
+  { name: 'Git', icon: '/icons/git.svg' },
+  { name: 'Docker', icon: '/icons/docker.svg' },
+  { name: 'VS Code', icon: '/icons/vscode.svg' }
 ];
-
 
 const SkillsSection: React.FC = () => {
   return (
@@ -42,7 +31,7 @@ const SkillsSection: React.FC = () => {
       <div className="portfolio-container">
         <h2 className="portfolio-heading">Skills</h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="space-y-12">
           <SkillCategory title="Languages" icon="</ >" skills={languages} />
           <SkillCategory title="Framework" icon="🧩" skills={frameworks} />
           <SkillCategory title="Databases" icon="💾" skills={databases} />

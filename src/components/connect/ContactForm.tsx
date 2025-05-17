@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { Mail } from 'lucide-react';
 
 const ContactForm: React.FC = () => {
   const { user } = useAuth();
@@ -78,9 +79,9 @@ const ContactForm: React.FC = () => {
   };
   
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-portfolio-gray-light mb-1">Name</label>
+        <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">Name</label>
         <input
           type="text"
           id="name"
@@ -88,13 +89,13 @@ const ContactForm: React.FC = () => {
           value={formData.name}
           onChange={handleInputChange}
           required
-          className="portfolio-input"
+          className="w-full px-4 py-3 rounded-lg bg-portfolio-card-bg text-white border border-portfolio-dark focus:outline-none focus:ring-1 focus:ring-portfolio-accent"
           placeholder="Your name"
         />
       </div>
       
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-portfolio-gray-light mb-1">Email</label>
+        <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">Email</label>
         <input
           type="email"
           id="email"
@@ -102,14 +103,14 @@ const ContactForm: React.FC = () => {
           value={formData.email}
           onChange={handleInputChange}
           required
-          className="portfolio-input"
+          className="w-full px-4 py-3 rounded-lg bg-portfolio-card-bg text-white border border-portfolio-dark focus:outline-none focus:ring-1 focus:ring-portfolio-accent"
           placeholder="Your email"
           readOnly={!!user?.email}
         />
       </div>
       
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-portfolio-gray-light mb-1">Message</label>
+        <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">Message</label>
         <textarea
           id="message"
           name="message"
@@ -117,7 +118,7 @@ const ContactForm: React.FC = () => {
           onChange={handleInputChange}
           required
           rows={5}
-          className="portfolio-input resize-none"
+          className="w-full px-4 py-3 rounded-lg bg-portfolio-card-bg text-white border border-portfolio-dark focus:outline-none focus:ring-1 focus:ring-portfolio-accent resize-none"
           placeholder="Your message"
         />
       </div>
@@ -125,10 +126,11 @@ const ContactForm: React.FC = () => {
       <div>
         <Button 
           type="submit" 
-          className="portfolio-button w-full"
+          className="w-full py-3 bg-[#4fd1c5] hover:bg-[#38b2ac] text-white font-medium rounded-lg flex items-center justify-center space-x-2"
           disabled={loading}
         >
-          {loading ? 'Sending...' : 'Send Message'}
+          <Mail className="w-5 h-5" />
+          <span>{loading ? 'Sending...' : 'Send Message'}</span>
         </Button>
       </div>
     </form>

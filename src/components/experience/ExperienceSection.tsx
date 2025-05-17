@@ -25,14 +25,13 @@ const ExperienceSection: React.FC = () => {
         
         <div className="relative">
           {/* Timeline line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-portfolio-accent/20"></div>
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-portfolio-accent/30"></div>
           
-          {/* Timeline content */}
-          <div className="space-y-16">
+          <div className="space-y-20">
             {experiences.map((experience, index) => (
               <div key={index} className="relative">
                 {/* Timeline dot */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 -top-3 w-6 h-6 bg-portfolio-darkest border-4 border-portfolio-accent rounded-full"></div>
+                <div className="absolute left-1/2 transform -translate-x-1/2 -top-3 w-6 h-6 rounded-full bg-[#0f1624] border-4 border-portfolio-accent"></div>
                 
                 <ExperienceCard 
                   company={experience.company}
