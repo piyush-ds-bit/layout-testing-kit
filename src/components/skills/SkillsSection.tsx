@@ -1,7 +1,6 @@
 
 import React from 'react';
 import SkillCategory from './SkillCategory';
-import { FaCode } from 'react-icons/fa';
 
 const languages = [
   { name: 'Dart', icon: 'dart' },
@@ -35,10 +34,10 @@ const SkillsSection: React.FC = () => {
         <h2 className="text-3xl font-bold text-white mb-10 text-center">Skills</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-          <SkillCategory title="Languages" icon="</>" skills={languages} />
-          <SkillCategory title="Framework" icon="☰" skills={frameworks} />
-          <SkillCategory title="Databases" icon="🔄" skills={databases} />
-          <SkillCategory title="Tools" icon="🛠️" skills={tools} />
+          <SkillCategory title="Languages" icon="💬" skills={languages} />
+          <SkillCategory title="Framework" icon="🧰" skills={frameworks} />
+          <SkillCategory title="Databases" icon="💾" skills={databases} />
+          <SkillCategory title="Tools" icon="🔧" skills={tools} />
         </div>
       </div>
     </section>
