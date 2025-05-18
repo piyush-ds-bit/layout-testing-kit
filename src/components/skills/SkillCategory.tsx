@@ -13,7 +13,7 @@ import {
   SiPython,
   SiMongodb,
   SiSupabase,
-  SiVscode as VSCodeIcon,
+  SiVisualstudiocode as VSCodeIcon,
   SiIntellijidea,
   SiPycharm
 } from 'react-icons/si';
