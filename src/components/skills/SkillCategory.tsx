@@ -1,20 +1,22 @@
 
 import React from 'react';
 import { 
-  Dart, 
-  Python, 
-  CPlus, 
-  Flutter,
-  Pygame,
-  React as ReactIcon,
-  Mongodb,
-  Supabase,
-  VisualStudioCode,
-  Docker,
-  IntellijIdea,
-  Pycharm
-} from 'lucide-react';
-import { FaJava } from 'react-icons/fa';
+  FaDart, 
+  FaPython, 
+  FaJava, 
+  FaReact, 
+  FaDocker 
+} from 'react-icons/fa';
+import { 
+  SiCplusplus,
+  SiFlutter,
+  SiPypi,
+  SiMongodb,
+  SiSupabase,
+  SiVisualstudiocode,
+  SiIntellijidea,
+  SiPycharm
+} from 'react-icons/si';
 
 interface Skill {
   name: string;
@@ -31,31 +33,31 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({ title, icon, skills }) =>
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case 'dart':
-        return <Dart className="w-5 h-5 text-blue-400" />;
+        return <FaDart className="w-5 h-5 text-blue-400" />;
       case 'python':
-        return <Python className="w-5 h-5 text-yellow-400" />;
+        return <FaPython className="w-5 h-5 text-yellow-400" />;
       case 'java':
         return <FaJava className="w-5 h-5 text-orange-500" />;
       case 'c-plus-plus':
-        return <CPlus className="w-5 h-5 text-blue-500" />;
+        return <SiCplusplus className="w-5 h-5 text-blue-500" />;
       case 'flutter':
-        return <Flutter className="w-5 h-5 text-cyan-400" />;
+        return <SiFlutter className="w-5 h-5 text-cyan-400" />;
       case 'pygame':
-        return <Pygame className="w-5 h-5 text-yellow-300" />;
+        return <SiPypi className="w-5 h-5 text-yellow-300" />;
       case 'react':
-        return <ReactIcon className="w-5 h-5 text-blue-400" />;
+        return <FaReact className="w-5 h-5 text-blue-400" />;
       case 'mongodb':
-        return <Mongodb className="w-5 h-5 text-green-500" />;
+        return <SiMongodb className="w-5 h-5 text-green-500" />;
       case 'supabase':
-        return <Supabase className="w-5 h-5 text-green-400" />;
+        return <SiSupabase className="w-5 h-5 text-green-400" />;
       case 'visual-studio-code':
-        return <VisualStudioCode className="w-5 h-5 text-blue-500" />;
+        return <SiVisualstudiocode className="w-5 h-5 text-blue-500" />;
       case 'docker':
-        return <Docker className="w-5 h-5 text-blue-500" />;
+        return <FaDocker className="w-5 h-5 text-blue-500" />;
       case 'intellij-idea':
-        return <IntellijIdea className="w-5 h-5 text-pink-500" />;
+        return <SiIntellijidea className="w-5 h-5 text-pink-500" />;
       case 'pycharm':
-        return <Pycharm className="w-5 h-5 text-green-500" />;
+        return <SiPycharm className="w-5 h-5 text-green-500" />;
       default:
         return <span className="text-xl">{icon}</span>;
     }

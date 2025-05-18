@@ -1,19 +1,7 @@
 
 import React from 'react';
 import SkillCategory from './SkillCategory';
-import { 
-  Dart, 
-  Python, 
-  CPlus as CPlusPlus,
-  Flutter,
-  Pygame,
-  React as ReactIcon, 
-  Supabase,
-  VisualStudioCode,
-  Docker,
-  IntellijIdea,
-  Pycharm
-} from 'lucide-react';
+import { FaCode } from 'react-icons/fa';
 
 const languages = [
   { name: 'Dart', icon: 'dart' },
