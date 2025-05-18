@@ -28,17 +28,15 @@ export const useVisitorTracking = () => {
         }
         
         // Record visit in Supabase
-        const { error } = await supabase.from('visitor_logs').insert([
-          {
-            device: `${deviceType} (${navigator.platform})`,
-            browser: getBrowserInfo(userAgent),
-            city: locationInfo.city,
-            country: locationInfo.country,
-            user_agent: userAgent.substring(0, 500), // Truncate if too long
-            page_url: window.location.pathname,
-            referrer: document.referrer || 'Direct'
-          }
-        ]);
+        const { error } = await supabase.from('visitor_logs').insert([{
+          device: `${deviceType} (${navigator.platform})`,
+          browser: getBrowserInfo(userAgent),
+          city: locationInfo.city,
+          country: locationInfo.country,
+          user_agent: userAgent.substring(0, 500), // Truncate if too long
+          page_url: window.location.pathname,
+          referrer: document.referrer || 'Direct'
+        }]);
         
         if (error) {
           console.error('Failed to log visitor:', error);

@@ -47,3 +47,15 @@ export interface SkillCategory {
   name: string;
   created_at?: string;
 }
+
+export interface VisitorLog {
+  id?: string;
+  device: string;
+  browser: string;
+  city: string;
+  country: string;
+  user_agent: string;
+  page_url: string;
+  referrer: string;
+  created_at?: string;
+}
