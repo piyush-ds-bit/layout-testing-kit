@@ -13,7 +13,7 @@ import {
   SiPython,
   SiMongodb,
   SiSupabase,
-  SiVisualStudioCode,
+  SiVisualstudiocode,
   SiIntellijidea,
   SiPycharm
 } from 'react-icons/si';
@@ -52,7 +52,7 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({ title, icon, skills }) =>
       case 'supabase':
         return <SiSupabase className="w-5 h-5 text-green-400" />;
       case 'visual-studio-code':
-        return <SiVisualStudioCode className="w-5 h-5 text-blue-500" />;
+        return <SiVisualstudiocode className="w-5 h-5 text-blue-500" />;
       case 'docker':
         return <FaDocker className="w-5 h-5 text-blue-500" />;
       case 'intellij-idea':
