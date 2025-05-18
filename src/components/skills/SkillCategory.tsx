@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { 
-  FaDart, 
+  FaCode,
   FaPython, 
   FaJava, 
   FaReact, 
@@ -10,13 +10,14 @@ import {
 import { 
   SiCplusplus,
   SiFlutter,
-  SiPypi,
+  SiPython,
   SiMongodb,
   SiSupabase,
-  SiVisualstudiocode,
+  SiVisualstudiocode as VSCodeIcon,
   SiIntellijidea,
   SiPycharm
 } from 'react-icons/si';
+import { DiDart } from 'react-icons/di';
 
 interface Skill {
   name: string;
@@ -33,7 +34,7 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({ title, icon, skills }) =>
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case 'dart':
-        return <FaDart className="w-5 h-5 text-blue-400" />;
+        return <DiDart className="w-5 h-5 text-blue-400" />;
       case 'python':
         return <FaPython className="w-5 h-5 text-yellow-400" />;
       case 'java':
@@ -43,7 +44,7 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({ title, icon, skills }) =>
       case 'flutter':
         return <SiFlutter className="w-5 h-5 text-cyan-400" />;
       case 'pygame':
-        return <SiPypi className="w-5 h-5 text-yellow-300" />;
+        return <SiPython className="w-5 h-5 text-yellow-300" />;
       case 'react':
         return <FaReact className="w-5 h-5 text-blue-400" />;
       case 'mongodb':
@@ -51,7 +52,7 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({ title, icon, skills }) =>
       case 'supabase':
         return <SiSupabase className="w-5 h-5 text-green-400" />;
       case 'visual-studio-code':
-        return <SiVisualstudiocode className="w-5 h-5 text-blue-500" />;
+        return <VSCodeIcon className="w-5 h-5 text-blue-500" />;
       case 'docker':
         return <FaDocker className="w-5 h-5 text-blue-500" />;
       case 'intellij-idea':
