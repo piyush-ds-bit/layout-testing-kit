@@ -4,16 +4,16 @@ import ExperienceCard from './ExperienceCard';
 
 const experiences = [
   {
-    company: "Taar",
+    company: "Company B",
     position: "Intern",
     duration: "Jan 2025 - Present",
-    description: "Working on mobile application development using Flutter and Dart."
+    description: "Eager to elaborate...."
   },
   {
-    company: "NutriScan App",
+    company: "Company A",
     position: "Intern",
     duration: "Jul 2024 - Jan 2025",
-    description: "Developed a nutrition tracking application that uses computer vision to identify food items."
+    description: "Eager to elaborate...."
   }
 ];
 
