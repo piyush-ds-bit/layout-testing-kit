@@ -5,25 +5,25 @@ const links = [
   {
     name: 'Twitter',
     icon: '/social/twitter.svg',
-    url: 'https://twitter.com/',
+    url: 'https://twitter.com/_piyushkrsingh_',
     label: 'X',
   },
   {
     name: 'Instagram',
     icon: '/social/instagram.svg',
-    url: 'https://instagram.com/',
+    url: 'https://instagram.com/_piyushkrsingh_',
     label: 'Instagram',
   },
   {
     name: 'LinkedIn',
     icon: '/social/linkedin.svg',
-    url: 'https://linkedin.com/',
+    url: 'https://linkedin.com/piyush-singh-55b273305',
     label: 'LinkedIn',
   },
   {
     name: 'YouTube',
     icon: '/social/youtube.svg',
-    url: 'https://youtube.com/',
+    url: 'https://youtube.com/piyushsingh3984',
     label: 'YouTube',
   },
 ];
