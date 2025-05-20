@@ -3,29 +3,40 @@ import React from 'react';
 import SkillCategory from './SkillCategory';
 
 const languages = [
-  { name: 'Dart', icon: 'dart' },
   { name: 'Python', icon: 'python' },
-  { name: 'Java', icon: 'java' },
-  { name: 'C++', icon: 'c-plus-plus' }
+  { name: 'SQL', icon: 'sql' },
+  { name: 'C++', icon: 'c-plus-plus' },
+  { name: 'Dart', icon: 'dart' }
 ];
+
 
 const frameworks = [
+  { name: 'FastAPI', icon: 'fastapi' },
+  { name: 'Pandas & NumPy', icon: 'pandas' },
+  { name: 'Seaborn', icon: 'seaborn' },
+  { name: 'Matplotlib', icon: 'matplotlib' },
+  { name: 'Scikit-learn', icon: 'scikit-learn' },
+  { name: 'Pydantic', icon: 'pydantic' },
   { name: 'Flutter', icon: 'flutter' },
-  { name: 'Pygame', icon: 'pygame' },
-  { name: 'React', icon: 'react' }
+  { name: 'Streamlit', icon: 'streamlit' },
+  { name: 'TensorFlow', icon: 'tensorflow' }
 ];
+
 
 const databases = [
-  { name: 'MongoDB', icon: 'mongodb' },
-  { name: 'Supabase', icon: 'supabase' }
+  { name: 'Supabase', icon: 'supabase' },
+  { name: 'Firebase', icon: 'firebase' }
 ];
 
+
 const tools = [
-  { name: 'Visual Studio Code', icon: 'visual-studio-code' },
-  { name: 'Docker', icon: 'docker' },
   { name: 'IntelliJ IDEA', icon: 'intellij-idea' },
+  { name: 'Jupyter Notebook', icon: 'jupyter' },
+  { name: 'Google Colab', icon: 'google-colab' },
+  { name: 'Kaggle', icon: 'kaggle' },
   { name: 'PyCharm', icon: 'pycharm' }
 ];
+
 
 const SkillsSection: React.FC = () => {
   return (
