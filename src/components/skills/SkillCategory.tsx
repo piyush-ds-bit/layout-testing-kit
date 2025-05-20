@@ -15,35 +15,62 @@ interface SkillCategoryProps {
 const SkillCategory: React.FC<SkillCategoryProps> = ({ title, icon, skills }) => {
   const getIcon = (iconName: string) => {
     switch (iconName) {
-      case 'dart':
-        return '🎯';
-      case 'python':
-        return '🐍';
-      case 'java':
-        return '☕';
-      case 'c-plus-plus':
-        return '⚙️';
-      case 'flutter':
-        return '📱';
-      case 'pygame':
-        return '🎮';
-      case 'react':
-        return '⚛️';
-      case 'mongodb':
-        return '🍃';
-      case 'supabase':
-        return '🔋';
-      case 'visual-studio-code':
-        return '💻';
-      case 'docker':
-        return '🐳';
-      case 'intellij-idea':
-        return '🧠';
-      case 'pycharm':
-        return '🐍';
-      default:
-        return iconName || '🔧';
-    }
+        
+        // Languages
+        case 'python':
+          return '🐍';
+        case 'sql':
+          return '🗃️';
+        case 'c-plus-plus':
+          return '⚙️';
+        case 'dart':
+          return '🎯';
+      
+        // Frameworks & Libraries
+        case 'fastapi':
+          return '🚀';
+        case 'pandas':
+          return '🐼';
+        case 'seaborn':
+          return '🌊';
+        case 'matplotlib':
+          return '📊';
+        case 'scikit-learn':
+          return '🧠';
+        case 'pydantic':
+          return '🛡️';
+        case 'flutter':
+          return '📱';
+        case 'streamlit':
+          return '📈';
+        case 'tensorflow':
+          return '🔶';
+      
+        // Databases
+        case 'supabase':
+          return '🔋';
+        case 'firebase':
+          return '🔥';
+        case 'mongodb':
+          return '🍃';
+      
+        // Tools
+        case 'intellij-idea':
+          return '🧠';
+        case 'jupyter':
+          return '📓';
+        case 'google-colab':
+          return '🤖';
+        case 'kaggle':
+          return '🏅';
+        case 'pycharm':
+          return '🧪';
+      
+        // Default / fallback
+        default:
+          return iconName || '🔧';
+      }
+
   };
 
   return (
