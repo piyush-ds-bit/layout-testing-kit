@@ -17,13 +17,13 @@ const links = [
   {
     name: 'LinkedIn',
     icon: '/social/linkedin.svg',
-    url: 'https://linkedin.com/piyush-singh-55b273305',
+    url: 'https://linkedin.com/in/piyush-singh-55b273305',
     label: 'LinkedIn',
   },
   {
     name: 'YouTube',
     icon: '/social/youtube.svg',
-    url: 'https://youtube.com/piyushsingh3984',
+    url: 'https://youtube.com/@piyushsingh3984',
     label: 'YouTube',
   },
 ];
