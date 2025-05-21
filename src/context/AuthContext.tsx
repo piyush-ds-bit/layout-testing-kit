@@ -22,22 +22,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Set initial session and user
-    const setInitialUser = async () => {
-      try {
-        const { data } = await supabase.auth.getSession();
-        setSession(data.session);
-        setUser(data.session?.user || null);
-      } catch (error) {
-        console.error('Error setting initial user:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    setInitialUser();
-
-    // Listen for auth changes
+    // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
       setSession(newSession);
       setUser(newSession?.user || null);
@@ -55,7 +40,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           title: "Signed out successfully",
         });
       }
+
+      if (event === 'USER_UPDATED') {
+        toast({
+          title: "User profile updated",
+        });
+      }
     });
+
+    // THEN check for existing session
+    const setInitialUser = async () => {
+      try {
+        const { data } = await supabase.auth.getSession();
+        setSession(data.session);
+        setUser(data.session?.user || null);
+      } catch (error) {
+        console.error('Error setting initial user:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    setInitialUser();
 
     return () => {
       subscription.unsubscribe();
@@ -91,7 +97,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error, data } = await supabase.auth.signInWithPassword({ email, password });
       
       if (error) {
         toast({
@@ -100,6 +106,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           variant: "destructive",
         });
         throw error;
+      }
+
+      if (!data.user) {
+        toast({
+          title: "Login failed",
+          description: "No user found with these credentials",
+          variant: "destructive",
+        });
+        throw new Error("No user found");
       }
     } catch (error) {
       console.error('Error signing in:', error);

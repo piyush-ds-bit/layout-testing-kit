@@ -1,14 +1,28 @@
 
-import React, { useState } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import AdminHeader from '@/components/admin/AdminHeader';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import MobileSidebar from '@/components/admin/MobileSidebar';
+import { toast } from '@/components/ui/use-toast';
 
 const AdminLayout: React.FC = () => {
   const { user, loading } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    // If user is not loading and not authenticated, redirect to login
+    if (!loading && !user) {
+      toast({
+        title: "Authentication required",
+        description: "You must be logged in to access the admin area.",
+        variant: "destructive",
+      });
+      navigate('/login');
+    }
+  }, [user, loading, navigate]);
   
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
