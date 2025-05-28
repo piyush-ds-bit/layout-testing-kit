@@ -40,7 +40,7 @@ const Tools = [
 ];
 
 const otherSkills = [
-  { name: 'Problem Solving (LeetCode)', icon: 'leetcode' },
+  { name: 'Problem Solving', icon: 'leetcode' },
   { name: 'Git',                         icon: 'git' }
 ];
 
