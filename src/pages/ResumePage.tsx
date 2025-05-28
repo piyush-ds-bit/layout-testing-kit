@@ -26,9 +26,9 @@ const ResumePage: React.FC = () => {
                   <h1 className="text-3xl font-bold text-portfolio-accent mb-2">Piyush Kr. Singh</h1>
                   <p className="text-gray-400">Data Scientist · AI & ML Enthusiast · Python & Streamlit Developer</p>
                   <div className="flex justify-center items-center gap-6 mt-4 text-sm text-gray-400">
-                    <span>piyush@example.com</span>
-                    <span>+91 98765 43210</span>
-                    <span>New Delhi, India</span>
+                    <span>piyushjuly04@gmail.com</span>
+                    <span>+91 9832301304</span>
+                    <span>Kolkata, Bharat</span>
                   </div>
                 </div>
                 
@@ -38,10 +38,10 @@ const ResumePage: React.FC = () => {
                   <div className="space-y-4">
                     <div>
                       <div className="flex justify-between">
-                        <h4 className="text-lg font-semibold">Computer Science and Engineering</h4>
-                        <span className="text-portfolio-accent">2021 - 2025</span>
+                        <h4 className="text-lg font-semibold">Applied Electronics and Instrumentation Engineering</h4>
+                        <span className="text-portfolio-accent">2023 - 2027</span>
                       </div>
-                      <p className="text-gray-400">Indian Institute of Technology, Delhi</p>
+                      <p className="text-gray-400">Haldia Institute of Technology, Haldia</p>
                       <p className="text-gray-500 text-sm mt-1">CGPA: 8.9/10</p>
                     </div>
                   </div>
@@ -56,7 +56,7 @@ const ResumePage: React.FC = () => {
                         <h4 className="text-lg font-semibold">Intern</h4>
                         <span className="text-portfolio-accent">Jan 2025 - Present</span>
                       </div>
-                      <p className="text-gray-400">Taar</p>
+                      <p className="text-gray-400">Company B</p>
                       <ul className="list-disc list-inside text-gray-500 mt-2">
                         <li>Working on mobile application development using Flutter and Dart</li>
                         <li>Implemented UI components and integrated with backend services</li>
@@ -68,7 +68,7 @@ const ResumePage: React.FC = () => {
                         <h4 className="text-lg font-semibold">Intern</h4>
                         <span className="text-portfolio-accent">Jul 2024 - Jan 2025</span>
                       </div>
-                      <p className="text-gray-400">NutriScan App</p>
+                      <p className="text-gray-400">Company A</p>
                       <ul className="list-disc list-inside text-gray-500 mt-2">
                         <li>Developed a nutrition tracking application using computer vision</li>
                         <li>Built ML model to identify food items from images</li>
@@ -82,24 +82,40 @@ const ResumePage: React.FC = () => {
                 <div>
                   <h3 className="text-xl font-bold text-white border-b border-portfolio-accent pb-2 mb-4">Skills</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
                     <div>
-                      <h4 className="font-semibold text-gray-300 mb-2">Languages</h4>
-                      <p className="text-gray-400">C++, Python, Java, JavaScript, HTML, CSS</p>
+                      <h4 className="font-semibold text-gray-300 mb-2">Programming</h4>
+                      <p className="text-gray-400">Python, SQL, YAML, Dart, HTML/CSS (Basics)</p>
                     </div>
+                
                     <div>
-                      <h4 className="font-semibold text-gray-300 mb-2">Frameworks</h4>
-                      <p className="text-gray-400">Flutter, React, Spring Boot, TensorFlow, PyTorch</p>
+                      <h4 className="font-semibold text-gray-300 mb-2">Libraries & Frameworks</h4>
+                      <p className="text-gray-400">Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, TensorFlow</p>
                     </div>
+                
+                    <div>
+                      <h4 className="font-semibold text-gray-300 mb-2">Web & Tools</h4>
+                      <p className="text-gray-400">Streamlit, FastAPI, Pydantic, Flutter</p>
+                    </div>
+                
                     <div>
                       <h4 className="font-semibold text-gray-300 mb-2">Databases</h4>
-                      <p className="text-gray-400">MongoDB, Supabase, Firebase, MySQL</p>
+                      <p className="text-gray-400">Supabase, SQLite</p>
                     </div>
+                
                     <div>
                       <h4 className="font-semibold text-gray-300 mb-2">Tools</h4>
-                      <p className="text-gray-400">Git, Docker, VS Code, Figma, Postman</p>
+                      <p className="text-gray-400">IntelliJ, Jupyter Notebook, PyCharm, Google Colab, Kaggle</p>
                     </div>
+                
+                    <div>
+                      <h4 className="font-semibold text-gray-300 mb-2">Other</h4>
+                      <p className="text-gray-400">Problem Solving (LeetCode), Git</p>
+                    </div>
+                    
                   </div>
                 </div>
+
                 
                 {/* Projects */}
                 <div>
