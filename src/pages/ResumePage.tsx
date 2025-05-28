@@ -56,8 +56,7 @@ const ResumePage: React.FC = () => {
                         <h4 className="text-lg font-semibold">Applied Electronics and Instrumentation Engineering</h4>
                         <span className="text-portfolio-accent">2023 - 2027</span>
                       </div>
-                      <p className="text-gray-400">Haldia Institute of Technology, Haldia</p>
-                      <p className="text-gray-500 text-sm mt-1">CGPA: 8.9/10</p>
+                      <p className="text-gray-300">Haldia Institute of Technology, Haldia</p>
                     </div>
                   </div>
                 </div>
@@ -71,8 +70,8 @@ const ResumePage: React.FC = () => {
                         <h4 className="text-lg font-semibold">Intern</h4>
                         <span className="text-portfolio-accent">Jan 2025 - Present</span>
                       </div>
-                      <p className="text-gray-400">Company B</p>
-                      <ul className="list-disc list-inside text-gray-500 mt-2">
+                      <p className="text-gray-300">Company B</p>
+                      <ul className="list-disc list-inside text-gray-400 mt-2">
                         <li>Working on mobile application development using Flutter and Dart</li>
                         <li>Implemented UI components and integrated with backend services</li>
                       </ul>
@@ -83,8 +82,8 @@ const ResumePage: React.FC = () => {
                         <h4 className="text-lg font-semibold">Intern</h4>
                         <span className="text-portfolio-accent">Jul 2024 - Jan 2025</span>
                       </div>
-                      <p className="text-gray-400">Company A</p>
-                      <ul className="list-disc list-inside text-gray-500 mt-2">
+                      <p className="text-gray-300">Company A</p>
+                      <ul className="list-disc list-inside text-gray-400 mt-2">
                         <li>Developed a nutrition tracking application using computer vision</li>
                         <li>Built ML model to identify food items from images</li>
                         <li>Designed and implemented the mobile application interface</li>
@@ -141,7 +140,7 @@ const ResumePage: React.FC = () => {
                         <h4 className="text-lg font-semibold">ML-Powered Nutrition Tracker</h4>
                         <span className="text-portfolio-accent">2024</span>
                       </div>
-                      <p className="text-gray-500 mt-2">
+                      <p className="text-gray-300 mt-2">
                         Developed a mobile application that uses computer vision to identify food items and calculate nutritional information.
                       </p>
                     </div>
@@ -151,7 +150,7 @@ const ResumePage: React.FC = () => {
                         <h4 className="text-lg font-semibold">Personal Portfolio Website</h4>
                         <span className="text-portfolio-accent">2023</span>
                       </div>
-                      <p className="text-gray-500 mt-2">
+                      <p className="text-gray-300 mt-2">
                         Designed and developed a personal portfolio website using React, Tailwind CSS, and Supabase.
                       </p>
                     </div>
