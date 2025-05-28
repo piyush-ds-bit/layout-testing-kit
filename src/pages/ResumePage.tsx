@@ -12,12 +12,15 @@ const ResumePage: React.FC = () => {
           <h2 className="portfolio-heading">My Resume</h2>
           
           <div className="flex flex-col items-center mb-8">
-            <Button 
-              className="bg-portfolio-accent text-white hover:bg-portfolio-accent/80 flex items-center gap-2 mb-8"
+            <a
+              href="/resume.pdf" // Path to your PDF in the public directory
+              download="Piyush_Resume.pdf" // Optional: specify the downloaded file name
+              className="bg-portfolio-accent text-white hover:bg-portfolio-accent/80 flex items-center gap-2 mb-8 px-4 py-2 rounded"
             >
               <FileDown size={20} />
               <span>Download Resume</span>
-            </Button>
+            </a>
+          </div>
             
             <div className="portfolio-card w-full max-w-4xl">
               <div className="space-y-6">
