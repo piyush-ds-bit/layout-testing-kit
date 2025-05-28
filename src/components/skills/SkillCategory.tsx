@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface Skill {
@@ -14,63 +13,46 @@ interface SkillCategoryProps {
 
 const SkillCategory: React.FC<SkillCategoryProps> = ({ title, icon, skills }) => {
   const getIcon = (iconName: string) => {
-    switch (iconName) {
-        
-        // Languages
-        case 'python':
-          return '🐍';
-        case 'sql':
-          return '🗃️';
-        case 'c-plus-plus':
-          return '⚙️';
-        case 'dart':
-          return '🎯';
-      
-        // Frameworks & Libraries
-        case 'fastapi':
-          return '🚀';
-        case 'pandas':
-          return '🐼';
-        case 'seaborn':
-          return '🌊';
-        case 'matplotlib':
-          return '📊';
-        case 'scikit-learn':
-          return '🧠';
-        case 'pydantic':
-          return '🛡️';
-        case 'flutter':
-          return '📱';
-        case 'streamlit':
-          return '📈';
-        case 'tensorflow':
-          return '🔶';
-      
-        // Databases
-        case 'supabase':
-          return '🔋';
-        case 'firebase':
-          return '🔥';
-        case 'mongodb':
-          return '🍃';
-      
-        // Tools
-        case 'intellij-idea':
-          return '🧠';
-        case 'jupyter':
-          return '📓';
-        case 'google-colab':
-          return '🤖';
-        case 'kaggle':
-          return '🏅';
-        case 'pycharm':
-          return '🧪';
-      
-        // Default / fallback
-        default:
-          return iconName || '🔧';
-      }
+    switch (iconName.toLowerCase()) {
+      // Programming
+      case 'python': return '🐍';
+      case 'sql': return '🗃️';
+      case 'yaml': return '📄';
+      case 'dart': return '🎯';
+      case 'html5': return '🌐';
 
+      // Libraries & Frameworks
+      case 'pandas': return '🐼';
+      case 'numpy': return '➗';
+      case 'matplotlib': return '📊';
+      case 'seaborn': return '🌊';
+      case 'scikit-learn': return '🧠';
+      case 'tensorflow': return '🔶';
+
+      // Web & Tools
+      case 'streamlit': return '📈';
+      case 'fastapi': return '🚀';
+      case 'pydantic': return '🛡️';
+      case 'flutter': return '📱';
+
+      // Databases
+      case 'supabase': return '🔋';
+      case 'sqlite': return '💾';
+
+      // Tools
+      case 'intellij': return '🧠';
+      case 'jupyter': return '📓';
+      case 'pycharm': return '🧪';
+      case 'google-colab': return '🤖';
+      case 'kaggle': return '🏅';
+
+      // Other
+      case 'git': return '🔧';
+      case 'leetcode': return '🧩';
+
+      // Fallback
+      default: return '🔹';
+    }
   };
 
   return (
@@ -79,11 +61,11 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({ title, icon, skills }) =>
         <span className="text-3xl mr-3 text-blue-400">{icon}</span>
         <h3 className="text-2xl font-semibold text-white">{title}</h3>
       </div>
-      
+
       <div className="grid grid-cols-2 gap-4">
         {skills.map((skill, index) => (
-          <div 
-            key={index} 
+          <div
+            key={index}
             className="flex items-center gap-2 bg-[#1e2738] rounded-full py-2 px-4 border border-[#2d3748]"
           >
             <span className="text-xl">{getIcon(skill.icon)}</span>
