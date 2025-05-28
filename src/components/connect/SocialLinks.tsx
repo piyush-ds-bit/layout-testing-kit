@@ -17,7 +17,7 @@ const links = [
   {
     name: 'LinkedIn',
     icon: '/social/linkedin.svg',
-    url: 'https://linkedin.com/in/piyush-singh-55b273305',
+    url: 'https://www.linkedin.com/in/piyushkrsingh-/',
     label: 'LinkedIn',
   },
   {
