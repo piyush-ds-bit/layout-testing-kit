@@ -57,7 +57,7 @@ const SkillsSection: React.FC = () => (
         <SkillCategory title="Libraries & Frameworks" icon="📚" skills={librariesFrameworks} />
         <SkillCategory title="Web & Tools"            icon="🌐" skills={webTools} />
         <SkillCategory title="Databases"              icon="💾" skills={databases} />
-        <SkillCategory title="Tools"                  icon="🛠️" skills={devTools} />
+        <SkillCategory title="Tools"                  icon="🛠️" skills={Tools} />
         <SkillCategory title="Other"                  icon="✨" skills={otherSkills} />
       </div>
     </div>
