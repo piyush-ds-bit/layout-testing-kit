@@ -31,6 +31,21 @@ const ResumePage: React.FC = () => {
                     <span>Kolkata, Bharat</span>
                   </div>
                 </div>
+
+                {/* Profile */}
+                <div>
+                  <h3 className="text-xl font-bold text-white border-b border-portfolio-accent pb-2 mb-4">Profile</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <div className="flex justify-between">
+                        <h4 className="text-lg font-semibold">About</h4>
+                      </div>
+                      <p className="text-gray-300">• Aspiring Data Scientist skilled in Python, data analysis, and machine learning.</p>
+                      <p className="text-gray-300">• Experienced in training machine learning models and building interactive GUIs using Streamlit and Flutter to deploy them.</p>
+                      <p className="text-gray-300">• Passionate about solving real-world problems with clean code and meaningful insights.</p>
+                    </div>
+                  </div>
+                </div>
                 
                 {/* Education */}
                 <div>
