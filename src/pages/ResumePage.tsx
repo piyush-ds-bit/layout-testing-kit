@@ -4,6 +4,9 @@ import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { FileDown } from 'lucide-react';
 
+import { Button } from '@/components/ui/button'; // Adjust the import path based on your setup
+import { FileDown } from 'lucide-react';
+
 const ResumePage: React.FC = () => {
   return (
     <Layout>
@@ -12,14 +15,17 @@ const ResumePage: React.FC = () => {
           <h2 className="portfolio-heading">My Resume</h2>
           
           <div className="flex flex-col items-center mb-8">
-            <a href="/Resume.pdf" download="PiyushResume.pdf">
-              <Button className="bg-portfolio-accent text-white hover:bg-portfolio-accent/80 flex items-center gap-2 mb-8">
+            <Button
+              asChild
+              className="bg-portfolio-accent text-white hover:bg-portfolio-accent/80 flex items-center gap-2 mb-8"
+            >
+              <a href="/Resume.pdf" download="Piyush_Resume.pdf">
                 <FileDown size={20} />
                 <span>Download Resume</span>
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
-            
+          
             <div className="portfolio-card w-full max-w-4xl">
               <div className="space-y-6">
                 {/* Resume Header */}
