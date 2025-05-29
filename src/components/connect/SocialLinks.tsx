@@ -4,7 +4,7 @@ import React from 'react';
 const links = [
   {
     name: 'Twitter',
-    icon: '/social/twitter.svg',
+    icon: '/x.svg',
     url: 'https://twitter.com/_piyushkrsingh_',
     label: 'X',
   },
@@ -16,13 +16,13 @@ const links = [
   },
   {
     name: 'LinkedIn',
-    icon: '/social/linkedin.svg',
+    icon: '/linkedin.svg',
     url: 'https://www.linkedin.com/in/piyushkrsingh-/',
     label: 'LinkedIn',
   },
   {
     name: 'YouTube',
-    icon: '/social/youtube.svg',
+    icon: '/youtube.svg',
     url: 'https://youtube.com/@piyushsingh3984',
     label: 'YouTube',
   },
