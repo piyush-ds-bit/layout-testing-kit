@@ -4,9 +4,6 @@ import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { FileDown } from 'lucide-react';
 
-import { Button } from '@/components/ui/button'; // Adjust the import path based on your setup
-import { FileDown } from 'lucide-react';
-
 const ResumePage: React.FC = () => {
   return (
     <Layout>
@@ -144,18 +141,28 @@ const ResumePage: React.FC = () => {
                   <div className="space-y-4">
                     <div>
                       <div className="flex justify-between">
-                        <h4 className="text-lg font-semibold">ML-Powered Nutrition Tracker</h4>
-                        <span className="text-portfolio-accent">2024</span>
+                        <h4 className="text-lg font-semibold">WhatsApp Chat Analyzer</h4>
+                        <span className="text-portfolio-accent">2025</span>
                       </div>
                       <p className="text-gray-300 mt-2">
-                        Developed a mobile application that uses computer vision to identify food items and calculate nutritional information.
+                        Developed a Streamlit-based WhatsApp chat analyzer with sentiment analysis.
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <div className="flex justify-between">
+                        <h4 className="text-lg font-semibold">Movie Recommendor System</h4>
+                        <span className="text-portfolio-accent">2025</span>
+                      </div>
+                      <p className="text-gray-300 mt-2">
+                        Built a content-based movie recommender using Bag-of-Words with a dataset of 5000+ movies.
                       </p>
                     </div>
                     
                     <div>
                       <div className="flex justify-between">
                         <h4 className="text-lg font-semibold">Personal Portfolio Website</h4>
-                        <span className="text-portfolio-accent">2023</span>
+                        <span className="text-portfolio-accent">2025</span>
                       </div>
                       <p className="text-gray-300 mt-2">
                         Designed and developed a personal portfolio website using React, Tailwind CSS, and Supabase.
