@@ -108,7 +108,7 @@ const ResumePage: React.FC = () => {
                     <div>
                       <div className="flex justify-between">
                         <h4 className="text-lg font-semibold">WhatsApp Chat Analyzer</h4>
-                        <span className="text-portfolio-accent">2024</span>
+                        <span className="text-portfolio-accent">2025</span>
                       </div>
                       <p className="text-gray-300 mt-2">
                          Developed a Streamlit-based WhatsApp chat analyzer with sentiment & chat analysis.
@@ -118,7 +118,7 @@ const ResumePage: React.FC = () => {
                       <div>
                       <div className="flex justify-between">
                         <h4 className="text-lg font-semibold">Movie Recommender System</h4>
-                        <span className="text-portfolio-accent">2024</span>
+                        <span className="text-portfolio-accent">2025</span>
                       </div>
                       <p className="text-gray-300 mt-2">
                           Built a content-based movie recommender using Bag-of-Words with a dataset of 5000+ movies.
@@ -128,7 +128,7 @@ const ResumePage: React.FC = () => {
                     <div>
                       <div className="flex justify-between">
                         <h4 className="text-lg font-semibold">Personal Portfolio Website</h4>
-                        <span className="text-portfolio-accent">2023</span>
+                        <span className="text-portfolio-accent">2025</span>
                       </div>
                       <p className="text-gray-300 mt-2">
                         Designed and developed a personal portfolio website using React, Tailwind CSS, and Supabase.
