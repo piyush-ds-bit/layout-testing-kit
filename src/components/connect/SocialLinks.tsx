@@ -10,7 +10,7 @@ const links = [
   },
   {
     name: 'Instagram',
-    icon: '/social/instagram.svg',
+    icon: '/instagram.svg',
     url: 'https://instagram.com/_piyushkrsingh_',
     label: 'Instagram',
   },
