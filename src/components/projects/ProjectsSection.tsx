@@ -18,7 +18,7 @@ const projects = [
     id: 2,
     title: 'Piyush Portfolio',
     description: 'Developed a personal portfolio website using lovable.ai and Firebase with an admin panel forreal-time content updates, showcasing projects, skills, and contact information.',
-    image: '/placeholder.svg',
+    image: '/portfolio.jpg',
     category: 'app',
     technologies: ['lovable.ai', 'Supabase', 'SQLite'],
     githubUrl: '#',
