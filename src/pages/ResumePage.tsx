@@ -60,37 +60,7 @@ const ResumePage: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                
-                {/* Experience */}
-                <div>
-                  <h3 className="text-xl font-bold text-white border-b border-portfolio-accent pb-2 mb-4">Experience</h3>
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex justify-between">
-                        <h4 className="text-lg font-semibold">Intern</h4>
-                        <span className="text-portfolio-accent">Jan 2025 - Present</span>
-                      </div>
-                      <p className="text-gray-300">Company B</p>
-                      <ul className="list-disc list-inside text-gray-400 mt-2">
-                        <li>Working on mobile application development using Flutter and Dart</li>
-                        <li>Implemented UI components and integrated with backend services</li>
-                      </ul>
-                    </div>
-                    
-                    <div>
-                      <div className="flex justify-between">
-                        <h4 className="text-lg font-semibold">Intern</h4>
-                        <span className="text-portfolio-accent">Jul 2024 - Jan 2025</span>
-                      </div>
-                      <p className="text-gray-300">Company A</p>
-                      <ul className="list-disc list-inside text-gray-400 mt-2">
-                        <li>Developed a nutrition tracking application using computer vision</li>
-                        <li>Built ML model to identify food items from images</li>
-                        <li>Designed and implemented the mobile application interface</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+              
                 
                 {/* Skills */}
                 <div>
@@ -137,11 +107,11 @@ const ResumePage: React.FC = () => {
                   <div className="space-y-4">
                     <div>
                       <div className="flex justify-between">
-                        <h4 className="text-lg font-semibold">ML-Powered Nutrition Tracker</h4>
+                        <h4 className="text-lg font-semibold">WhatsApp Chat Analyzer</h4>
                         <span className="text-portfolio-accent">2024</span>
                       </div>
                       <p className="text-gray-300 mt-2">
-                        Developed a mobile application that uses computer vision to identify food items and calculate nutritional information.
+                         Developed a Streamlit-based WhatsApp chat analyzer with sentiment & chat analysis.
                       </p>
                     </div>
                     
