@@ -114,6 +114,16 @@ const ResumePage: React.FC = () => {
                          Developed a Streamlit-based WhatsApp chat analyzer with sentiment & chat analysis.
                       </p>
                     </div>
+
+                      <div>
+                      <div className="flex justify-between">
+                        <h4 className="text-lg font-semibold">Movie Recommender System</h4>
+                        <span className="text-portfolio-accent">2024</span>
+                      </div>
+                      <p className="text-gray-300 mt-2">
+                          Built a content-based movie recommender using Bag-of-Words with a dataset of 5000+ movies.
+                      </p>
+                    </div>
                     
                     <div>
                       <div className="flex justify-between">
