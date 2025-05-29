@@ -12,12 +12,14 @@ const ResumePage: React.FC = () => {
           <h2 className="portfolio-heading">My Resume</h2>
           
           <div className="flex flex-col items-center mb-8">
-            <Button 
-              className="bg-portfolio-accent text-white hover:bg-portfolio-accent/80 flex items-center gap-2 mb-8"
-            >
-              <FileDown size={20} />
-              <span>Download Resume</span>
-            </Button>
+            <a href="/Resume.pdf" target="_blank" rel="noopener noreferrer">
+              <Button 
+                className="bg-portfolio-accent text-white hover:bg-portfolio-accent/80 flex items-center gap-2 mb-8"
+              >
+                <FileDown size={20} />
+                <span>Download Resume</span>
+              </Button>
+            </a>
             
             <div className="portfolio-card w-full max-w-4xl">
               <div className="space-y-6">
