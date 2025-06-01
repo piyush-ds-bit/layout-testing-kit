@@ -1,8 +1,71 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 20% 97%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 172.5 66% 50.4%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 172.5 66% 50.4%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 172.5 66% 50.4%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 217.2 32.6% 17.5%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 172.5 66% 50.4%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 172.5 66% 50.4%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 172.5 66% 50.4%;
+  }
+}
 
 @layer base {
   * {
@@ -10,101 +73,161 @@
   }
   
   html {
-    scroll-behavior: smooth;
-    overflow-x: hidden;
+    @apply scroll-smooth;
   }
   
   body {
-    @apply bg-background text-foreground;
-    font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
-    min-height: 100vh;
+    @apply bg-[#0f1624] text-foreground dark transition-all duration-300;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
-
-  #root {
-    min-height: 100vh;
-    overflow-x: hidden;
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold text-white;
   }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer components {
+  .portfolio-container {
+    @apply container max-w-6xl mx-auto px-4 sm:px-6;
+  }
+  
+  .portfolio-section {
+    @apply py-16 md:py-24;
+  }
+  
+  .portfolio-heading {
+    @apply text-3xl md:text-4xl font-bold text-white mb-8 text-center;
+  }
+  
+  .portfolio-card {
+    @apply bg-[#1e293b] border border-[#2d3748] rounded-xl p-6 transition-all duration-300;
+  }
+  
+  .portfolio-card:hover {
+    @apply border-portfolio-accent/50 shadow-lg shadow-portfolio-accent/10;
+  }
+  
+  .portfolio-button {
+    @apply bg-portfolio-accent text-white font-medium px-5 py-2.5 rounded-lg 
+    hover:bg-portfolio-accent-dark transition-all duration-300 inline-flex items-center justify-center;
+  }
+  
+  .portfolio-button-outline {
+    @apply bg-transparent text-portfolio-accent border border-portfolio-accent font-medium px-5 py-2.5 rounded-lg 
+    hover:bg-portfolio-accent hover:text-white transition-all duration-300 inline-flex items-center justify-center;
+  }
+  
+  .portfolio-input {
+    @apply bg-[#1e293b] border border-[#2d3748] text-white rounded-lg px-4 py-3 w-full
+    focus:outline-none focus:ring-2 focus:ring-portfolio-accent focus:border-transparent;
+  }
+  
+  .portfolio-navbar-item {
+    @apply px-3 py-2 text-sm font-medium rounded-lg transition-colors
+    hover:text-portfolio-accent;
+  }
+  
+  .portfolio-navbar-item.active {
+    @apply text-portfolio-accent bg-[#1e293b];
+  }
+  
+  .portfolio-nav-button {
+    @apply bg-[#1e293b] hover:bg-[#263040] text-white text-lg font-medium py-5 px-4 rounded-xl border border-[#2d3748]
+    transition-all duration-300 flex items-center justify-center hover:border-portfolio-accent/50;
+  }
+  
+  .skill-tag {
+    @apply bg-[#1e293b] border border-[#2d3748] px-4 py-2 rounded-lg flex items-center gap-2 text-gray-300
+    hover:border-portfolio-accent transition-all duration-200;
+  }
+  
+  .social-icon-container {
+    @apply w-16 h-16 rounded-full bg-[#1e293b] border border-[#2d3748] flex items-center justify-center
+    hover:border-portfolio-accent transition-all duration-300;
   }
 }
 
-/* Portfolio specific styles */
-.portfolio-container {
-  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+/* Animation Keyframes */
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
-.portfolio-card {
-  @apply bg-portfolio-dark p-6 rounded-lg border border-portfolio-dark hover:border-portfolio-accent transition-all duration-300;
+@keyframes slideUp {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
 }
 
-.portfolio-button {
-  @apply bg-portfolio-accent text-white px-6 py-3 rounded-lg font-medium hover:bg-portfolio-accent-dark transition-all duration-300 transform hover:scale-105;
+/* Animation Classes */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
 }
 
-.portfolio-input {
-  @apply w-full px-4 py-3 bg-portfolio-dark border border-portfolio-gray rounded-lg text-white placeholder-portfolio-gray focus:border-portfolio-accent focus:outline-none transition-colors;
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out forwards;
 }
 
-.portfolio-navbar-item {
-  @apply px-4 py-2 rounded-lg text-portfolio-gray-light hover:text-white hover:bg-portfolio-dark transition-all duration-300;
-}
-
-.portfolio-navbar-item.active {
-  @apply text-portfolio-accent bg-portfolio-dark;
-}
-
-/* Mobile bottom navigation */
-.mobile-bottom-nav {
-  @apply fixed bottom-0 left-0 right-0 bg-portfolio-darkest border-t border-portfolio-dark z-50 flex justify-around items-center py-2 px-4;
-}
-
-.mobile-bottom-nav-item {
-  @apply flex flex-col items-center justify-center p-2 text-portfolio-gray-light hover:text-portfolio-accent transition-colors min-w-0 flex-1;
-}
-
-.mobile-bottom-nav-item.active {
-  @apply text-portfolio-accent;
-}
-
-.mobile-bottom-nav-item-icon {
-  @apply mb-1;
-}
-
-.mobile-bottom-nav-item-label {
-  @apply text-xs truncate;
-}
-
-/* Ensure scrollable content */
-.scrollable-content {
-  height: calc(100vh - 64px); /* Subtract navbar height */
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-/* Smooth scrolling for anchor links */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #1a1a1a;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #3a3a3a;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #4a4a4a;
+/* Mobile-specific styles (Android-inspired UI) */
+@media (max-width: 768px) {
+  .portfolio-card {
+    @apply rounded-2xl shadow-lg p-5 mb-4;
+  }
+  
+  .skill-tag {
+    @apply bg-[#172032] border-[#2d3748] rounded-xl;
+  }
+  
+  .portfolio-nav-button {
+    @apply rounded-2xl py-4 text-base;
+  }
+  
+  .social-icon-container {
+    @apply w-14 h-14 rounded-2xl;
+  }
+  
+  /* Material-inspired elevation for cards */
+  .portfolio-card {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Android-style buttons */
+  button, .portfolio-button, .portfolio-button-outline {
+    @apply rounded-xl py-3;
+  }
+  
+  /* Floating action button style for primary actions */
+  .mobile-fab {
+    @apply fixed bottom-6 right-6 w-14 h-14 rounded-full bg-portfolio-accent flex items-center justify-center shadow-xl;
+  }
+  
+  /* Mobile spacing optimization */
+  .portfolio-section {
+    @apply py-10;
+  }
+  
+  .portfolio-heading {
+    @apply text-2xl font-bold mb-6;
+  }
+  
+  /* Android-style bottom navigation */
+  .mobile-bottom-nav {
+    @apply fixed bottom-0 left-0 right-0 bg-[#1e293b] border-t border-[#2d3748] py-3 px-2 flex justify-around;
+    z-index: 40;
+  }
+  
+  .mobile-bottom-nav-item {
+    @apply flex flex-col items-center text-gray-400;
+  }
+  
+  .mobile-bottom-nav-item.active {
+    @apply text-portfolio-accent;
+  }
+  
+  .mobile-bottom-nav-item-icon {
+    @apply mb-1 text-lg;
+  }
+  
+  .mobile-bottom-nav-item-label {
+    @apply text-xs;
+  }
 }
