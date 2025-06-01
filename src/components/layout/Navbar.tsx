@@ -19,7 +19,7 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showMobileNav, setShowMobileNav] = useState(false);
   const location = useLocation();
-  const { user, signOut } = useAuth();
+  const { user, isAuthorized, signOut } = useAuth();
 
   useEffect(() => {
     const handleResize = () => {
@@ -76,7 +76,8 @@ const Navbar: React.FC = () => {
                   >
                     Logout
                   </Button>
-                  {user && (
+                  {/* Only show Dashboard link for authorized users */}
+                  {isAuthorized && (
                     <Link to="/admin">
                       <Button variant="outline" className="border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
                         Dashboard
@@ -136,11 +137,14 @@ const Navbar: React.FC = () => {
                 >
                   Logout
                 </Button>
-                <Link to="/admin" onClick={() => setIsOpen(false)}>
-                  <Button variant="outline" className="w-full border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
-                    Dashboard
-                  </Button>
-                </Link>
+                {/* Only show Dashboard link for authorized users */}
+                {isAuthorized && (
+                  <Link to="/admin" onClick={() => setIsOpen(false)}>
+                    <Button variant="outline" className="w-full border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
+                      Dashboard
+                    </Button>
+                  </Link>
+                )}
               </div>
             ) : (
               <Link to="/login" onClick={() => setIsOpen(false)}>

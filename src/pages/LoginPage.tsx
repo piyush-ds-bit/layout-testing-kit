@@ -7,19 +7,27 @@ import LoginForm from '@/components/auth/LoginForm';
 import { toast } from '@/components/ui/use-toast';
 
 const LoginPage: React.FC = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, isAuthorized } = useAuth();
   const navigate = useNavigate();
   
   useEffect(() => {
-    // If user is already logged in, redirect to admin dashboard with a message
+    // If user is already logged in, redirect appropriately
     if (user) {
-      toast({
-        title: "Already logged in",
-        description: "You are already logged in as " + (user.email || 'an authenticated user'),
-      });
-      navigate('/admin');
+      if (isAuthorized) {
+        toast({
+          title: "Already logged in",
+          description: "You are already logged in with admin access.",
+        });
+        navigate('/admin');
+      } else {
+        toast({
+          title: "Already logged in",
+          description: "You are already logged in as " + (user.email || 'an authenticated user'),
+        });
+        navigate('/');
+      }
     }
-  }, [user, navigate]);
+  }, [user, isAuthorized, navigate]);
   
   // Show loading state during authentication
   if (loading) {
@@ -32,9 +40,9 @@ const LoginPage: React.FC = () => {
     );
   }
   
-  // Redirect to admin dashboard if already logged in
+  // Redirect if already logged in
   if (user) {
-    return <Navigate to="/admin" />;
+    return <Navigate to={isAuthorized ? "/admin" : "/"} />;
   }
   
   return (

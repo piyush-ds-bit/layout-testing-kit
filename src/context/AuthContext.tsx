@@ -8,6 +8,7 @@ interface AuthContextType {
   session: Session | null;
   user: User | null;
   loading: boolean;
+  isAuthorized: boolean;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
@@ -16,26 +17,48 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// List of authorized admin emails
+const AUTHORIZED_EMAILS = ['piyushjuly04@gmail.com'];
+
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAuthorized, setIsAuthorized] = useState(false);
+
+  const checkAuthorization = (userEmail: string | undefined) => {
+    if (!userEmail) return false;
+    return AUTHORIZED_EMAILS.includes(userEmail.toLowerCase());
+  };
 
   useEffect(() => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
       setSession(newSession);
       setUser(newSession?.user || null);
+      setIsAuthorized(checkAuthorization(newSession?.user?.email));
       setLoading(false);
       
       if (event === 'SIGNED_IN' && newSession) {
-        toast({
-          title: "Signed in successfully",
-          description: `Welcome ${newSession.user.email}!`,
-        });
+        const userEmail = newSession.user.email;
+        const authorized = checkAuthorization(userEmail);
+        
+        if (authorized) {
+          toast({
+            title: "Admin access granted",
+            description: `Welcome back, ${userEmail}!`,
+          });
+        } else {
+          toast({
+            title: "Access restricted",
+            description: "You don't have admin privileges for this application.",
+            variant: "destructive",
+          });
+        }
       }
       
       if (event === 'SIGNED_OUT') {
+        setIsAuthorized(false);
         toast({
           title: "Signed out successfully",
         });
@@ -54,6 +77,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const { data } = await supabase.auth.getSession();
         setSession(data.session);
         setUser(data.session?.user || null);
+        setIsAuthorized(checkAuthorization(data.session?.user?.email));
       } catch (error) {
         console.error('Error setting initial user:', error);
       } finally {
@@ -71,7 +95,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signUp = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signUp({ email, password });
+      const { error } = await supabase.auth.signUp({ 
+        email, 
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/admin`
+        }
+      });
       
       if (error) {
         toast({
@@ -130,7 +160,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/admin`,
+          redirectTo: `https://piyushkrsingh.lovable.app/admin`,
         }
       });
       
@@ -166,7 +196,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ session, user, loading, signIn, signUp, signInWithGoogle, signOut }}>
+    <AuthContext.Provider value={{ session, user, loading, isAuthorized, signIn, signUp, signInWithGoogle, signOut }}>
       {children}
     </AuthContext.Provider>
   );

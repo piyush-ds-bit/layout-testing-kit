@@ -8,7 +8,7 @@ import MobileSidebar from '@/components/admin/MobileSidebar';
 import { toast } from '@/components/ui/use-toast';
 
 const AdminLayout: React.FC = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, isAuthorized } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   
@@ -22,7 +22,17 @@ const AdminLayout: React.FC = () => {
       });
       navigate('/login');
     }
-  }, [user, loading, navigate]);
+    
+    // If user is authenticated but not authorized for admin access
+    if (!loading && user && !isAuthorized) {
+      toast({
+        title: "Access denied",
+        description: "You don't have permission to access the admin dashboard.",
+        variant: "destructive",
+      });
+      navigate('/');
+    }
+  }, [user, loading, isAuthorized, navigate]);
   
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -40,6 +50,11 @@ const AdminLayout: React.FC = () => {
   // Redirect to login if not authenticated
   if (!user) {
     return <Navigate to="/login" />;
+  }
+  
+  // Redirect to home if authenticated but not authorized
+  if (!isAuthorized) {
+    return <Navigate to="/" />;
   }
   
   return (
