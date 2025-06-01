@@ -33,42 +33,44 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<HomePage />} />
-            <Route path="/skills" element={<SkillsPage />} />
-            <Route path="/experience" element={<ExperiencePage />} />
-            <Route path="/leetcode" element={<LeetCodePage />} />
-            <Route path="/github" element={<GitHubPage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/connect" element={<ConnectPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/resume" element={<ResumePage />} />
-            
-            {/* Admin Routes */}
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<AdminDashboard />} />
-              <Route path="hero" element={<EditHero />} />
-              <Route path="skills" element={<ManageSkills />} />
-              <Route path="experience" element={<ManageExperience />} />
-              <Route path="projects" element={<ManageProjects />} />
-              <Route path="messages" element={<ContactMessages />} />
-            </Route>
-            
-            {/* Catch-all Route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </AuthProvider>
-  </QueryClientProvider>
+  <div className="min-h-screen overflow-x-hidden">
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/skills" element={<SkillsPage />} />
+              <Route path="/experience" element={<ExperiencePage />} />
+              <Route path="/leetcode" element={<LeetCodePage />} />
+              <Route path="/github" element={<GitHubPage />} />
+              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/connect" element={<ConnectPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/resume" element={<ResumePage />} />
+              
+              {/* Admin Routes */}
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<AdminDashboard />} />
+                <Route path="hero" element={<EditHero />} />
+                <Route path="skills" element={<ManageSkills />} />
+                <Route path="experience" element={<ManageExperience />} />
+                <Route path="projects" element={<ManageProjects />} />
+                <Route path="messages" element={<ContactMessages />} />
+              </Route>
+              
+              {/* Catch-all Route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  </div>
 );
 
 export default App;
