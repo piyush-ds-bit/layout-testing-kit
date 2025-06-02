@@ -1,7 +1,6 @@
 
 import { useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
 
 export const useVisitorTracking = () => {
   useEffect(() => {
@@ -11,9 +10,10 @@ export const useVisitorTracking = () => {
         const userAgent = navigator.userAgent;
         const deviceType = /Mobile|Android|iPhone|iPad/.test(userAgent) ? 'Mobile' : 'Desktop';
         
-        // Try to get location information
+        // Default location info that will be used if API fails
         let locationInfo = { city: 'Unknown', country: 'Unknown' };
         
+        // Try to get location information with proper error handling
         try {
           const response = await fetch('https://ipapi.co/json/');
           if (response.ok) {
@@ -22,12 +22,15 @@ export const useVisitorTracking = () => {
               city: data.city || 'Unknown',
               country: data.country_name || 'Unknown'
             };
+          } else {
+            console.log('Location API returned non-OK status, using fallback');
           }
         } catch (error) {
-          console.error('Error fetching location info:', error);
+          // CORS error or network error - use fallback silently
+          console.log('Location tracking unavailable, using fallback location');
         }
         
-        // Record visit in Supabase
+        // Record visit in Supabase (this should work now with fixed RLS)
         const { error } = await supabase.from('visitor_logs').insert([{
           device: `${deviceType} (${navigator.platform})`,
           browser: getBrowserInfo(userAgent),
@@ -40,6 +43,8 @@ export const useVisitorTracking = () => {
         
         if (error) {
           console.error('Failed to log visitor:', error);
+        } else {
+          console.log('Visitor tracking recorded successfully');
         }
       } catch (err) {
         console.error('Error in visitor tracking:', err);
