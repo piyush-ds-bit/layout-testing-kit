@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { request } from 'graphql-request';
 import GitHubHeader from './GitHubHeader';
@@ -8,9 +7,9 @@ import GitHubLoading from './GitHubLoading';
 import GitHubError from './GitHubError';
 
 // GraphQL API endpoint and query
-const GITHUB_GRAPHQL_API = process.env.GITHUB_GRAPHQL_API || 'https://api.github.com/graphql';
-const GITHUB_USERNAME = process.env.GITHUB_USERNAME || 'piyush-ds-bit';
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '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';
+const GITHUB_GRAPHQL_API = import.meta.env.VITE_GITHUB_GRAPHQL_API || 'https://api.github.com/graphql';
+const GITHUB_USERNAME = import.meta.env.VITE_GITHUB_USERNAME || 'piyush-ds-bit';
+const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN || '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';
 
 // Define types for GitHub API response
 interface ContributionDay {
