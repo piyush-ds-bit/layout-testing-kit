@@ -10,7 +10,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import HomePage from "./pages/HomePage";
 import SkillsPage from "./pages/SkillsPage";
 import ExperiencePage from "./pages/ExperiencePage";
-import LeetCodePage from "./pages/LeetCodePage";
+import BlogPage from "./pages/BlogPage";
 import GitHubPage from "./pages/GitHubPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import ConnectPage from "./pages/ConnectPage";
@@ -44,7 +44,7 @@ const App = () => (
             <Route path="/" element={<HomePage />} />
             <Route path="/skills" element={<SkillsPage />} />
             <Route path="/experience" element={<ExperiencePage />} />
-            <Route path="/leetcode" element={<LeetCodePage />} />
+            <Route path="/blog" element={<BlogPage />} />
             <Route path="/github" element={<GitHubPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/connect" element={<ConnectPage />} />

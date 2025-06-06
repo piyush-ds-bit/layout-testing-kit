@@ -59,3 +59,14 @@ export interface VisitorLog {
   referrer: string;
   created_at?: string;
 }
+
+export interface BlogPost {
+  id?: string;
+  title: string;
+  content: string;
+  author_name: string;
+  user_id: string;
+  tag: 'admin' | 'user';
+  created_at?: string;
+  updated_at?: string;
+}

@@ -1,15 +1,14 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from "@/components/ui/button";
-import { Home, Menu, X, User, Code, Briefcase, Github, MessageSquare } from "lucide-react";
+import { Home, Menu, X, User, Code, Briefcase, Github, MessageSquare, BookOpen } from "lucide-react";
 
 const navItems = [
   { label: "Home", path: "/", icon: Home },
   { label: "Skills", path: "/skills", icon: Code },
   { label: "Experience", path: "/experience", icon: Briefcase },
-  { label: "LeetCode", path: "/leetcode", icon: Code },
+  { label: "Blog", path: "/blog", icon: BookOpen },
   { label: "GitHub", path: "/github", icon: Github },
   { label: "Projects", path: "/projects", icon: Code },
   { label: "Connect", path: "/connect", icon: MessageSquare }
