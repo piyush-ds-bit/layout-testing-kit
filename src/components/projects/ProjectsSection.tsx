@@ -9,7 +9,7 @@ const projects = [
     title: 'WhatsApp Buddy',
     description: 'Developed a Streamlit-based WhatsApp chat analyzer with sentiment analysis, word clouds,user stats, and emoji insights using Pandas and Matplotlib/Seaborn.',
     image: '/whatsapp.jpg',
-    category: 'WebApp',
+    category: 'Deployed',
     technologies: ['Python', 'Streamlit', 'Pandas&Seaborn'],
     githubUrl: '#',
     liveUrl: '#',
@@ -19,7 +19,7 @@ const projects = [
     title: 'Piyush Portfolio',
     description: 'Developed a personal portfolio website using lovable.ai and Firebase with an admin panel forreal-time content updates, showcasing projects, skills, and contact information.',
     image: '/portfolio.jpg',
-    category: 'app',
+    category: 'Deployed',
     technologies: ['lovable.ai', 'Supabase', 'SQLite'],
     githubUrl: '#',
     liveUrl: '#',
@@ -29,7 +29,7 @@ const projects = [
     title: 'MovieMate',
     description: 'Built a content-based movie recommender using Bag-of-Words with a dataset of 5000+ movies.',
     image: '/moviemate.jpg',
-    category: 'app',
+    category: 'In Development',
     technologies: ['Python', 'ScikitLearn', 'Streamlit'],
     githubUrl: '#',
   },
@@ -71,9 +71,9 @@ const ProjectsSection: React.FC = () => {
     : projects.filter(project => project.category === activeCategory);
   
   const categories = [
-    { id: 'all', label: 'All Projects' },
-    { id: 'app', label: 'App Development' },
-    { id: 'web', label: 'Web & Python' }
+    { id: 'all', label: 'Overview' },
+    { id: 'Deployed', label: 'Deployed' },
+    { id: 'In Development', label: 'In Development' }
   ];
   
   return (
