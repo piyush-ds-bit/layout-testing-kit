@@ -8,6 +8,7 @@ export interface ContactMessage {
   message: string;
   user_id?: string;
   read: boolean;
+  attachment_url?: string | null;
   created_at: string;
 }
 

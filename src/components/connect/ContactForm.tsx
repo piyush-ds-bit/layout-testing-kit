@@ -4,7 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Mail } from 'lucide-react';
+import { Mail, Paperclip } from 'lucide-react';
 
 const ContactForm: React.FC = () => {
   const { user } = useAuth();
@@ -16,10 +16,59 @@ const ContactForm: React.FC = () => {
   });
   
   const [loading, setLoading] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+  
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    setUploading(true);
+    
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `contact_${Date.now()}.${fileExt}`;
+      const filePath = fileName;
+      
+      console.log('Uploading contact file:', fileName);
+      
+      const { error: uploadError } = await supabase.storage
+        .from('contact-uploads')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+      
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        throw uploadError;
+      }
+      
+      const { data } = supabase.storage
+        .from('contact-uploads')
+        .getPublicUrl(filePath);
+      
+      setUploadedFile(data.publicUrl);
+      
+      toast({
+        title: "File uploaded",
+        description: "Your file has been attached to the message.",
+      });
+    } catch (error: any) {
+      console.error('Error uploading file:', error);
+      toast({
+        title: "Upload failed",
+        description: error.message || "Failed to upload file.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
   };
   
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,6 +89,11 @@ const ContactForm: React.FC = () => {
         throw new Error("Please enter a message");
       }
       
+      console.log('Submitting contact form with data:', {
+        ...formData,
+        attachment_url: uploadedFile
+      });
+      
       // Save the message to Supabase
       const { error } = await supabase
         .from('contact_messages')
@@ -48,6 +102,8 @@ const ContactForm: React.FC = () => {
           email: formData.email.trim(),
           message: formData.message.trim(),
           user_id: user?.id,
+          attachment_url: uploadedFile,
+          read: false
         });
       
       if (error) {
@@ -66,6 +122,7 @@ const ContactForm: React.FC = () => {
         email: user?.email || '',
         message: '',
       });
+      setUploadedFile(null);
     } catch (error: any) {
       console.error('Error sending message:', error);
       toast({
@@ -124,10 +181,37 @@ const ContactForm: React.FC = () => {
       </div>
       
       <div>
+        <label className="block text-sm font-medium text-gray-300 mb-2">Attachment (Optional)</label>
+        <div className="flex items-center gap-4">
+          <input
+            type="file"
+            id="file-upload"
+            onChange={handleFileUpload}
+            className="hidden"
+            accept="image/*,.pdf,.doc,.docx,.txt"
+            disabled={uploading}
+          />
+          <Button
+            type="button"
+            onClick={() => document.getElementById('file-upload')?.click()}
+            variant="outline"
+            className="flex items-center gap-2"
+            disabled={uploading}
+          >
+            <Paperclip className="w-4 h-4" />
+            {uploading ? 'Uploading...' : 'Attach File'}
+          </Button>
+          {uploadedFile && (
+            <span className="text-sm text-green-400">File attached successfully</span>
+          )}
+        </div>
+      </div>
+      
+      <div>
         <Button 
           type="submit" 
           className="w-full py-3 bg-[#4fd1c5] hover:bg-[#38b2ac] text-white font-medium rounded-lg flex items-center justify-center space-x-2"
-          disabled={loading}
+          disabled={loading || uploading}
         >
           <Mail className="w-5 h-5" />
           <span>{loading ? 'Sending...' : 'Send Message'}</span>

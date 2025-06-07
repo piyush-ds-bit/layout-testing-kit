@@ -17,6 +17,8 @@ const EditHero: React.FC = () => {
       setLoading(true);
       setError(null);
       
+      console.log('Fetching hero section data...');
+      
       const { data, error } = await supabase
         .from('sections')
         .select('*')
@@ -24,11 +26,30 @@ const EditHero: React.FC = () => {
         .maybeSingle();
       
       if (error) {
+        console.error('Supabase error:', error);
         throw error;
       }
       
+      console.log('Hero data fetched:', data);
+      
       if (data) {
-        setHeroData(data);
+        // If content is stored as JSON, extract it
+        const extractedData = data.content && typeof data.content === 'object' 
+          ? { ...data, ...data.content }
+          : data;
+        
+        setHeroData(extractedData);
+      } else {
+        // Initialize with empty data structure
+        setHeroData({
+          name: '',
+          title: '',
+          subtitle: '',
+          buttonText: 'Get In Touch',
+          projectsButtonText: 'View Projects',
+          backgroundImage: '',
+          profileImage: ''
+        });
       }
     } catch (error: any) {
       console.error('Error fetching hero data:', error);
@@ -51,36 +72,69 @@ const EditHero: React.FC = () => {
     try {
       setError(null);
       
-      // Ensure data has the required 'name' field for the sections table
+      console.log('Saving hero data:', data);
+      
+      // Prepare the content object
+      const contentData = {
+        name: data.name || '',
+        title: data.title || '',
+        subtitle: data.subtitle || '',
+        buttonText: data.buttonText || 'Get In Touch',
+        projectsButtonText: data.projectsButtonText || 'View Projects',
+        backgroundImage: data.backgroundImage || '',
+        profileImage: data.profileImage || ''
+      };
+      
+      // Prepare the section data for database
       const sectionData = {
-        ...data,
-        name: 'hero', // Required field for the sections table
+        name: 'hero',
+        title: data.title || '',
+        subtitle: data.subtitle || '',
+        content: contentData,
+        is_visible: true,
+        updated_at: new Date().toISOString()
       };
       
       if (heroData?.id) {
+        console.log('Updating existing hero section with ID:', heroData.id);
         // Update existing record
         const { error } = await supabase
           .from('sections')
           .update(sectionData)
           .eq('id', heroData.id);
         
-        if (error) throw error;
+        if (error) {
+          console.error('Update error:', error);
+          throw error;
+        }
         
-        // Update local state with the new data
+        // Update local state
         setHeroData({
           ...heroData,
-          ...sectionData
+          ...sectionData,
+          ...contentData
         });
       } else {
+        console.log('Creating new hero section');
         // Insert new record
-        const { error } = await supabase
+        const { data: insertedData, error } = await supabase
           .from('sections')
-          .insert([sectionData]); // Pass an array with the single object
+          .insert([sectionData])
+          .select()
+          .single();
         
-        if (error) throw error;
+        if (error) {
+          console.error('Insert error:', error);
+          throw error;
+        }
         
-        // Fetch the newly created record to get its ID
-        await fetchHeroData();
+        console.log('New hero section created:', insertedData);
+        
+        // Update local state with the new record
+        setHeroData({
+          ...insertedData,
+          ...contentData
+        });
       }
       
       toast({

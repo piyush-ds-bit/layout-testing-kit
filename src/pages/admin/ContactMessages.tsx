@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { ContactMessage } from '@/types/database';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const ContactMessages: React.FC = () => {
@@ -17,12 +17,19 @@ const ContactMessages: React.FC = () => {
     setError(null);
     
     try {
+      console.log('Fetching contact messages...');
+      
       const { data, error } = await supabase
         .from('contact_messages')
         .select('*')
         .order('created_at', { ascending: false });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+      
+      console.log('Contact messages fetched:', data);
       
       if (data) {
         setMessages(data as ContactMessage[]);
@@ -46,12 +53,17 @@ const ContactMessages: React.FC = () => {
   
   const markAsRead = async (id: string) => {
     try {
+      console.log('Marking message as read:', id);
+      
       const { error } = await supabase
         .from('contact_messages')
         .update({ read: true })
         .eq('id', id);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Update error:', error);
+        throw error;
+      }
       
       setMessages(messages.map(msg => 
         msg.id === id ? { ...msg, read: true } : msg
@@ -73,12 +85,17 @@ const ContactMessages: React.FC = () => {
   
   const deleteMessage = async (id: string) => {
     try {
+      console.log('Deleting message:', id);
+      
       const { error } = await supabase
         .from('contact_messages')
         .delete()
         .eq('id', id);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Delete error:', error);
+        throw error;
+      }
       
       setMessages(messages.filter(msg => msg.id !== id));
       
@@ -94,6 +111,16 @@ const ContactMessages: React.FC = () => {
         variant: 'destructive',
       });
     }
+  };
+  
+  const downloadAttachment = (url: string, filename: string) => {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
   
   if (loading) {
@@ -147,6 +174,19 @@ const ContactMessages: React.FC = () => {
                 <div className="bg-portfolio-darker p-4 rounded-md mb-4">
                   <p className="text-portfolio-gray-light whitespace-pre-wrap">{message.message}</p>
                 </div>
+                
+                {message.attachment_url && (
+                  <div className="mb-4">
+                    <Button
+                      onClick={() => downloadAttachment(message.attachment_url!, `attachment_${message.id}`)}
+                      variant="outline"
+                      className="flex items-center gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      Download Attachment
+                    </Button>
+                  </div>
+                )}
                 
                 <div className="flex gap-2">
                   {!message.read && (

@@ -19,6 +19,7 @@ interface ContentFormProps {
 const ContentForm: React.FC<ContentFormProps> = ({ section, initialData, onSave, fields }) => {
   const [formData, setFormData] = useState<Record<string, any>>(initialData || {});
   const [loading, setLoading] = useState(false);
+  const [uploadingFiles, setUploadingFiles] = useState<Record<string, boolean>>({});
   
   useEffect(() => {
     if (initialData) {
@@ -39,19 +40,37 @@ const ContentForm: React.FC<ContentFormProps> = ({ section, initialData, onSave,
     const file = e.target.files?.[0];
     if (!file) return;
     
-    setLoading(true);
+    // Determine which bucket to use based on the section and field
+    const bucketName = section === 'hero' || fieldName.includes('Image') || fieldName.includes('image') 
+      ? 'hero-images' 
+      : 'contact-uploads';
+    
+    setUploadingFiles(prev => ({ ...prev, [fieldName]: true }));
+    
     try {
       const fileExt = file.name.split('.').pop();
       const fileName = `${section}_${fieldName}_${Date.now()}.${fileExt}`;
-      const filePath = `${section}/${fileName}`;
+      const filePath = `${fileName}`;
+      
+      console.log(`Uploading file to bucket: ${bucketName}, path: ${filePath}`);
       
       const { error: uploadError } = await supabase.storage
-        .from('content')
-        .upload(filePath, file);
+        .from(bucketName)
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
       
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        throw uploadError;
+      }
       
-      const { data } = supabase.storage.from('content').getPublicUrl(filePath);
+      const { data } = supabase.storage
+        .from(bucketName)
+        .getPublicUrl(filePath);
+      
+      console.log('File uploaded successfully, URL:', data.publicUrl);
       
       setFormData(prev => ({
         ...prev,
@@ -62,15 +81,15 @@ const ContentForm: React.FC<ContentFormProps> = ({ section, initialData, onSave,
         title: 'File uploaded',
         description: 'The file has been uploaded successfully.',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error uploading file:', error);
       toast({
         title: 'Upload failed',
-        description: 'There was an error uploading the file.',
+        description: error.message || 'There was an error uploading the file.',
         variant: 'destructive',
       });
     } finally {
-      setLoading(false);
+      setUploadingFiles(prev => ({ ...prev, [fieldName]: false }));
     }
   };
   
@@ -79,12 +98,14 @@ const ContentForm: React.FC<ContentFormProps> = ({ section, initialData, onSave,
     setLoading(true);
     
     try {
-      // Add section identifier
+      // Add section identifier and metadata
       const dataToSave = {
         ...formData,
         section,
         updated_at: new Date().toISOString(),
       };
+      
+      console.log('Saving data:', dataToSave);
       
       // Call the onSave callback
       await onSave(dataToSave);
@@ -93,11 +114,11 @@ const ContentForm: React.FC<ContentFormProps> = ({ section, initialData, onSave,
         title: 'Content saved',
         description: 'Your changes have been saved successfully.',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving content:', error);
       toast({
         title: 'Save failed',
-        description: 'There was an error saving your changes.',
+        description: error.message || 'There was an error saving your changes.',
         variant: 'destructive',
       });
     } finally {
@@ -142,6 +163,7 @@ const ContentForm: React.FC<ContentFormProps> = ({ section, initialData, onSave,
                 accept="image/*"
                 onChange={(e) => handleUpload(e, field.name)}
                 className="hidden"
+                disabled={uploadingFiles[field.name]}
               />
               
               <Button
@@ -149,9 +171,14 @@ const ContentForm: React.FC<ContentFormProps> = ({ section, initialData, onSave,
                 onClick={() => document.getElementById(field.name)?.click()}
                 variant="outline"
                 className="w-full border-portfolio-dark text-portfolio-gray-light hover:border-portfolio-accent"
-                disabled={loading}
+                disabled={loading || uploadingFiles[field.name]}
               >
-                {formData[field.name] ? 'Change Image' : 'Upload Image'}
+                {uploadingFiles[field.name] 
+                  ? 'Uploading...' 
+                  : formData[field.name] 
+                    ? 'Change Image' 
+                    : 'Upload Image'
+                }
               </Button>
             </div>
           ) : field.type === 'toggle' ? (
@@ -185,7 +212,7 @@ const ContentForm: React.FC<ContentFormProps> = ({ section, initialData, onSave,
       <Button
         type="submit"
         className="portfolio-button"
-        disabled={loading}
+        disabled={loading || Object.values(uploadingFiles).some(Boolean)}
       >
         {loading ? 'Saving...' : 'Save Changes'}
       </Button>
