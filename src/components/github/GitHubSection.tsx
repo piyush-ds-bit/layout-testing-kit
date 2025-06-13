@@ -21,17 +21,17 @@ const GitHubSection: React.FC = () => {
   };
 
   return (
-    <section className="portfolio-section">
+    <section className="portfolio-section bg-portfolio-dark">
       <div className="portfolio-container">
         <h2 className="portfolio-heading text-white mb-8">GitHub Activity</h2>
         
-        <div className="max-w-6xl mx-auto animate-fade-in">
-          {/* Enhanced Glassmorphism Container */}
-          <div className="portfolio-card relative p-8 hover:shadow-2xl">
+        <div className="max-w-6xl mx-auto">
+          {/* Glassmorphism Container */}
+          <div className="relative bg-[#0d1117]/80 backdrop-blur-sm border border-[#2d3748]/50 p-8 rounded-2xl shadow-2xl shadow-black/20 hover:border-[#30363d]/80 transition-all duration-300">
             {/* Header */}
             <div className="flex items-center mb-8">
-              <Github className="w-6 h-6 mr-3 text-portfolio-accent" />
-              <h3 className="text-xl font-semibold text-white">GitHub Contributions</h3>
+              <Github className="w-6 h-6 mr-3 text-[#58a6ff]" />
+              <h3 className="text-xl font-semibold text-white">GitHub</h3>
             </div>
 
             {/* Calendar Container with Scroll Buttons */}
@@ -39,7 +39,7 @@ const GitHubSection: React.FC = () => {
               {/* Left Scroll Button */}
               <button
                 onClick={scrollLeft}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 portfolio-button-outline rounded-full flex items-center justify-center backdrop-blur-sm"
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-[#21262d]/80 hover:bg-[#30363d] border border-[#30363d] rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200 backdrop-blur-sm"
                 aria-label="Scroll left"
               >
                 <ChevronLeft className="w-5 h-5" />
@@ -48,7 +48,7 @@ const GitHubSection: React.FC = () => {
               {/* Right Scroll Button */}
               <button
                 onClick={scrollRight}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 portfolio-button-outline rounded-full flex items-center justify-center backdrop-blur-sm"
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-[#21262d]/80 hover:bg-[#30363d] border border-[#30363d] rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200 backdrop-blur-sm"
                 aria-label="Scroll right"
               >
                 <ChevronRight className="w-5 h-5" />
@@ -87,15 +87,15 @@ const GitHubSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Enhanced Legend */}
+            {/* Legend */}
             <div className="flex items-center justify-center mt-6 space-x-2 text-sm text-gray-400">
               <span>Less</span>
               <div className="flex space-x-1">
-                <div className="w-3 h-3 rounded-sm bg-[#0d1117] border border-[#21262d] transition-all duration-200 hover:scale-125"></div>
-                <div className="w-3 h-3 rounded-sm bg-[#0e4429] transition-all duration-200 hover:scale-125"></div>
-                <div className="w-3 h-3 rounded-sm bg-[#006d32] transition-all duration-200 hover:scale-125"></div>
-                <div className="w-3 h-3 rounded-sm bg-[#26a641] transition-all duration-200 hover:scale-125"></div>
-                <div className="w-3 h-3 rounded-sm bg-[#39d353] transition-all duration-200 hover:scale-125"></div>
+                <div className="w-3 h-3 rounded-sm bg-[#0d1117] border border-[#21262d]"></div>
+                <div className="w-3 h-3 rounded-sm bg-[#0e4429]"></div>
+                <div className="w-3 h-3 rounded-sm bg-[#006d32]"></div>
+                <div className="w-3 h-3 rounded-sm bg-[#26a641]"></div>
+                <div className="w-3 h-3 rounded-sm bg-[#39d353]"></div>
               </div>
               <span>More</span>
             </div>

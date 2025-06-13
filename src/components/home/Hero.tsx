@@ -33,8 +33,8 @@ const Hero: React.FC = () => {
             <Link to="/experience" className="portfolio-nav-button">
               Experience
             </Link>
-            <Link to="/blog" className="portfolio-nav-button">
-              Blog
+            <Link to="/leetcode" className="portfolio-nav-button">
+              LeetCode
             </Link>
             <Link to="/github" className="portfolio-nav-button">
               GitHub
