@@ -6,7 +6,7 @@ import { FileText } from 'lucide-react';
 
 const Hero: React.FC = () => {
   return (
-    <section className="portfolio-section pt-16 md:pt-24">
+    <section id="hero" className="portfolio-section pt-16 md:pt-24">
       <div className="portfolio-container">
         <div className="flex flex-col items-center text-center">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">

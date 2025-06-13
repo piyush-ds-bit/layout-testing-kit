@@ -1,17 +1,20 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { useScrollToSection } from '@/hooks/useScrollToSection';
+import { useActiveSection } from '@/hooks/useActiveSection';
 import { Button } from "@/components/ui/button";
 import { Home, Menu, X, User, Code, Briefcase, Github, MessageSquare, BookOpen } from "lucide-react";
 
 const navItems = [
-  { label: "Home", path: "/", icon: Home },
-  { label: "Skills", path: "/skills", icon: Code },
-  { label: "Experience", path: "/experience", icon: Briefcase },
-  { label: "Blog", path: "/blog", icon: BookOpen },
-  { label: "GitHub", path: "/github", icon: Github },
-  { label: "Projects", path: "/projects", icon: Code },
-  { label: "Connect", path: "/connect", icon: MessageSquare }
+  { label: "Home", path: "/", icon: Home, sectionId: "hero" },
+  { label: "Skills", path: "/skills", icon: Code, sectionId: "skills" },
+  { label: "Experience", path: "/experience", icon: Briefcase, sectionId: "experience" },
+  { label: "Blog", path: "/blog", icon: BookOpen, sectionId: "blog" },
+  { label: "GitHub", path: "/github", icon: Github, sectionId: "github" },
+  { label: "Projects", path: "/projects", icon: Code, sectionId: "projects" },
+  { label: "Connect", path: "/connect", icon: MessageSquare, sectionId: "connect" }
 ];
 
 const Navbar: React.FC = () => {
@@ -19,6 +22,8 @@ const Navbar: React.FC = () => {
   const [showMobileNav, setShowMobileNav] = useState(false);
   const location = useLocation();
   const { user, isAuthorized, signOut } = useAuth();
+  const scrollToSection = useScrollToSection();
+  const activeSection = useActiveSection();
 
   useEffect(() => {
     const handleResize = () => {
@@ -37,6 +42,23 @@ const Navbar: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleNavClick = (item: typeof navItems[0]) => {
+    if (item.path === '/') {
+      // Always navigate to home for the home link
+      return;
+    }
+    
+    scrollToSection(item.sectionId, item.path);
+    setIsOpen(false);
+  };
+
+  const isActiveItem = (item: typeof navItems[0]) => {
+    if (location.pathname === '/') {
+      return activeSection === item.sectionId;
+    }
+    return location.pathname === item.path;
+  };
+
   return (
     <>
       <header className="sticky top-0 z-50 w-full bg-portfolio-darkest/80 backdrop-blur-md border-b border-portfolio-dark">
@@ -52,15 +74,27 @@ const Navbar: React.FC = () => {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-2">
               {navItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`portfolio-navbar-item ${
-                    location.pathname === item.path ? "active" : ""
-                  }`}
-                >
-                  {item.label}
-                </Link>
+                item.path === '/' ? (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`portfolio-navbar-item ${
+                      isActiveItem(item) ? "active" : ""
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <button
+                    key={item.path}
+                    onClick={() => handleNavClick(item)}
+                    className={`portfolio-navbar-item ${
+                      isActiveItem(item) ? "active" : ""
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                )
               ))}
               
               {user ? (
@@ -75,7 +109,6 @@ const Navbar: React.FC = () => {
                   >
                     Logout
                   </Button>
-                  {/* Only show Dashboard link for authorized users */}
                   {isAuthorized && (
                     <Link to="/admin">
                       <Button variant="outline" className="border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
@@ -112,16 +145,28 @@ const Navbar: React.FC = () => {
         >
           <div className="portfolio-container py-4 flex flex-col space-y-2">
             {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`portfolio-navbar-item ${
-                  location.pathname === item.path ? "active" : ""
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                {item.label}
-              </Link>
+              item.path === '/' ? (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`portfolio-navbar-item ${
+                    isActiveItem(item) ? "active" : ""
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <button
+                  key={item.path}
+                  onClick={() => handleNavClick(item)}
+                  className={`portfolio-navbar-item text-left ${
+                    isActiveItem(item) ? "active" : ""
+                  }`}
+                >
+                  {item.label}
+                </button>
+              )
             ))}
             
             {user ? (
@@ -136,7 +181,6 @@ const Navbar: React.FC = () => {
                 >
                   Logout
                 </Button>
-                {/* Only show Dashboard link for authorized users */}
                 {isAuthorized && (
                   <Link to="/admin" onClick={() => setIsOpen(false)}>
                     <Button variant="outline" className="w-full border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
@@ -160,17 +204,30 @@ const Navbar: React.FC = () => {
       {showMobileNav && (
         <nav className="mobile-bottom-nav md:hidden">
           {navItems.slice(0, 5).map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`mobile-bottom-nav-item ${location.pathname === item.path ? 'active' : ''}`}
-              onClick={() => setIsOpen(false)}
-            >
-              <span className="mobile-bottom-nav-item-icon">
-                <item.icon size={20} />
-              </span>
-              <span className="mobile-bottom-nav-item-label">{item.label}</span>
-            </Link>
+            item.path === '/' ? (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`mobile-bottom-nav-item ${isActiveItem(item) ? 'active' : ''}`}
+                onClick={() => setIsOpen(false)}
+              >
+                <span className="mobile-bottom-nav-item-icon">
+                  <item.icon size={20} />
+                </span>
+                <span className="mobile-bottom-nav-item-label">{item.label}</span>
+              </Link>
+            ) : (
+              <button
+                key={item.path}
+                onClick={() => handleNavClick(item)}
+                className={`mobile-bottom-nav-item ${isActiveItem(item) ? 'active' : ''}`}
+              >
+                <span className="mobile-bottom-nav-item-icon">
+                  <item.icon size={20} />
+                </span>
+                <span className="mobile-bottom-nav-item-label">{item.label}</span>
+              </button>
+            )
           ))}
           <Link to="/connect" className="mobile-bottom-nav-item">
             <span className="mobile-bottom-nav-item-icon">
