@@ -13,10 +13,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   useVisitorTracking();
   
   return (
-    <div className="flex flex-col min-h-screen bg-[#0c111d]">
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-grow pb-16 md:pb-0">
-        {children}
+      <main className="flex-grow pb-16 md:pb-0 bg-gradient-to-br from-[#0c111d] via-[#0f1624] to-[#111827]">
+        <div className="animate-fade-in">
+          {children}
+        </div>
       </main>
       <Footer />
     </div>
