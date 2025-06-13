@@ -27,7 +27,7 @@ const GitHubSection: React.FC = () => {
         
         <div className="max-w-6xl mx-auto">
           {/* Glassmorphism Container */}
-          <div className="relative bg-[#0d1117]/80 backdrop-blur-sm border border-[#2d3748]/50 p-8 rounded-2xl shadow-2xl shadow-black/20 hover:border-[#30363d]/80 transition-all duration-300">
+          <div className="relative bg-[#0d1117]/80 backdrop-blur-sm border border-[#21262d]/50 p-8 rounded-2xl shadow-2xl shadow-black/20 hover:border-[#30363d]/80 transition-all duration-300">
             {/* Header */}
             <div className="flex items-center mb-8">
               <Github className="w-6 h-6 mr-3 text-[#58a6ff]" />
