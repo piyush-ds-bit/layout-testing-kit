@@ -12,10 +12,11 @@ const experiences = [
     description: "Eager to elaborate...."
   },
   {
-    company: "Company A", 
-    position: "Intern",
-    duration: "Jul 2024 - Jan 2025",
-    description: "Eager to elaborate...."
+    company: "Self-Employed",
+    position: "Tuition Teacher (Part-Time)",
+    duration: "Feb 2021 - Present",
+    description:
+      "Provided academic coaching to students from Class 5 to 12. Taught all subjects for Classes 5–8, and Physics, Chemistry, and Mathematics for Classes 9–12. Helped students achieve significant academic improvement, with one scoring 81% (Class 10) and another scoring 75% (Class 12)."
   }
 ];
 
