@@ -3,6 +3,12 @@ import React from 'react';
 import ExperienceCard from './ExperienceCard';
 
 const experiences = [
+   {
+    company: "Company C",
+    position: "Intern",
+    duration: "Jan 2025 - Present",
+    description: "Eager to elaborate...."
+  },
   {
     company: "Company B",
     position: "Intern",
