@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,29 +6,11 @@ import Layout from "@/components/layout/Layout";
 import { Loader2, ArrowLeft } from "lucide-react";
 import type { Project } from "@/types/database";
 
-const ProjectDetailsPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const [project, setProject] = useState<Project | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchProject = async () => {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("projects")
-        .select("*")
-        .eq("id", id)
-        .maybeSingle();
-
-      if (error) {
-        setProject(null);
-        setLoading(false);
-        return;
-      }
-      // If the project title is "WhatsApp Buddy", override the description
-      if (data && data.title === "WhatsApp Buddy") {
-        data.description = `
+const DEMO_PROJECTS: Record<string, Project> = {
+  '1': {
+    id: '1',
+    title: 'WhatsApp Buddy',
+    description: `
 WhatsApp Chat Analyzer
 =======================
 
@@ -93,8 +74,50 @@ Challenges I Faced
 3. Performance with Large Files
 - Chats with 50,000+ messages were slowing down processing
 - I optimized by caching and vectorized Pandas operations
-`.trim();
+`.trim(),
+    category: 'Deployed',
+    image_url: '/whatsapp.jpg',
+    github_url: '#',
+    live_url: '#',
+    technologies: ['Python', 'Streamlit', 'Pandas&Seaborn'],
+    created_at: '',
+  }
+  // Add more demo projects here if needed
+};
+
+const ProjectDetailsPage: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [project, setProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProject = async () => {
+      setLoading(true);
+
+      if (id && DEMO_PROJECTS[id]) {
+        setProject(DEMO_PROJECTS[id]);
+        setLoading(false);
+        return;
       }
+
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("id", id)
+        .maybeSingle();
+
+      if (error || !data) {
+        setProject(null);
+        setLoading(false);
+        return;
+      }
+
+      // If the project title is "WhatsApp Buddy", override the description
+      if (data && data.title === "WhatsApp Buddy") {
+        data.description = DEMO_PROJECTS['1'].description;
+      }
+
       setProject(data as Project | null);
       setLoading(false);
     };
