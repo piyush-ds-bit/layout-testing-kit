@@ -56,7 +56,7 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({ title, icon, skills }) =>
   };
 
   return (
-    <div className="bg-[#121a29] rounded-xl p-6 border border-[#2d3748]">
+    <div className="portfolio-card-hover p-6">
       <div className="flex items-center mb-6">
         <span className="text-3xl mr-3 text-blue-400">{icon}</span>
         <h3 className="text-2xl font-semibold text-white">{title}</h3>

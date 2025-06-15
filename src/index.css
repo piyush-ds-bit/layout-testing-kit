@@ -278,4 +278,38 @@
       @apply text-xs;
     }
   }
+
+  /* 3D float & glow hover effect */
+  .portfolio-card-hover {
+    @apply relative transition-transform duration-300 rounded-xl border border-portfolio-border shadow-lg bg-[#1e293b];
+    background: rgba(24, 36, 55, 0.65);
+    box-shadow: 0 6px 32px 0 rgba(76, 201, 240, 0.12), 0 2px 8px rgba(10,20,30,0.25), 0 1.5px 36px 0 rgba(0,0,0,0.09);
+    border: 1.5px solid rgba(79, 209, 197, 0.21);
+    z-index: 1;
+  }
+  .portfolio-card-hover:hover {
+    @apply shadow-lg;
+    transform: translateY(-7px) scale(1.035);
+    border-color: #4fd1c5;
+    box-shadow: 0 12px 48px 0 rgba(79, 209, 197, 0.30), 0 8px 32px 0 rgba(10,20,30,0.22);
+    background: rgba(24, 36, 55, 0.80);
+  }
+  .portfolio-card-hover::before {
+    --glass-gradient: linear-gradient(
+      135deg,
+      rgba(79, 209, 197, 0.13) 0%,
+      rgba(24, 36, 55, 0.04) 100%
+    );
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--glass-gradient);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .portfolio-card-hover > * {
+    position: relative;
+    z-index: 1;
+  }
 }

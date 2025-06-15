@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
@@ -21,19 +20,17 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
 
   return (
     <div className="flex justify-center">
-      <div className="bg-[#1e293b] rounded-xl border border-[#2d3748] p-6 w-full max-w-xl">
+      <div className="portfolio-card-hover w-full max-w-xl p-6">
         <h3 className="text-2xl font-bold text-white mb-1">{company}</h3>
         <div className="mb-4 text-gray-400">
           <div className="text-lg">{position}</div>
           <div className="text-sm">{duration}</div>
         </div>
-        
         {isExpanded && (
           <div className="text-gray-300 my-4">
             {description}
           </div>
         )}
-        
         <div className="flex justify-end">
           <button 
             className="p-2 text-gray-400 hover:text-white"
