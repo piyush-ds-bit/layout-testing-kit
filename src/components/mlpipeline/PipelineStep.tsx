@@ -1,5 +1,6 @@
 
 import React from "react";
+import { Wrench, Settings } from "lucide-react";
 
 interface PipelineStepProps {
   step: any;
@@ -7,6 +8,11 @@ interface PipelineStepProps {
   onClick: () => void;
   isMobile: boolean;
 }
+
+const iconMap: Record<string, React.ReactNode> = {
+  wrench: <Wrench className="inline w-6 h-6 text-portfolio-accent" />,
+  settings: <Settings className="inline w-6 h-6 text-portfolio-accent" />,
+};
 
 const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, isMobile }) => (
   <button
@@ -32,7 +38,7 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
     <div className={`text-2xl md:text-4xl mb-2 md:mb-3 select-none pulse`} style={{
       filter: "drop-shadow(0 0 6px #4fd1c5aa)",
     }}>
-      {typeof step.icon === "string" ? step.icon : step.icon}
+      {iconMap[step.icon] ?? step.icon}
     </div>
     <div className="text-sm md:text-lg font-semibold text-white text-center drop-shadow mb-1 md:mb-2">
       {step.label}

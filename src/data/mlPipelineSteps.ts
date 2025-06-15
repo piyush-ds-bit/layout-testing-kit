@@ -1,7 +1,4 @@
 
-import { Wrench, Settings } from "lucide-react";
-import React from "react";
-
 export const mlPipelineSteps = [
   {
     label: "Frame the Problem",
@@ -46,7 +43,7 @@ export const mlPipelineSteps = [
   },
   {
     label: "Feature Engineering",
-    icon: <Wrench className="inline w-6 h-6 text-portfolio-accent" />,
+    icon: "wrench",
     tools: [
       "Pandas (column creation/transformation)",
       "scikit-learn (OrdinalEncoder, OneHotEncoder)",
@@ -77,7 +74,7 @@ export const mlPipelineSteps = [
   },
   {
     label: "Testing",
-    icon: <Settings className="inline w-6 h-6 text-portfolio-accent" />,
+    icon: "settings",
     tools: [
       "FastAPI (API testing)",
       "Manual testing via Streamlit UI"
