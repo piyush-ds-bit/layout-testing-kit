@@ -32,6 +32,7 @@ export interface Project {
   github_url?: string;
   live_url?: string;
   technologies: string[];
+  details?: string[] | string; // <-- Add this line to include the new field
   created_at?: string;
 }
 
