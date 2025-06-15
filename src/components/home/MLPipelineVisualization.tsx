@@ -136,10 +136,13 @@ const ArrowDiagonal = ({ right = true }: { right?: boolean }) => (
 const MLPipelineVisualization: React.FC = () => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
-  // Pyramid rows
+  // Pyramid rows for desktop layout
   const row1 = steps.slice(0, 4);
   const row2 = steps.slice(4, 7);
   const row3 = steps.slice(7, 9);
+
+  // For mobile, stack all steps in a column
+  const isMobile = window.innerWidth < 768;
 
   // Utility for rendering a node (keeps card logic the same)
   const renderNode = (step: typeof steps[number], idx: number, gIdx: number) => (
@@ -147,14 +150,15 @@ const MLPipelineVisualization: React.FC = () => {
       key={step.label}
       className={`
         portfolio-card-hover flex flex-col items-center justify-center
-        py-7 px-4 md:p-7 mb-2 md:mb-0
+        py-6 px-3 md:py-7 md:px-4 mb-2 md:mb-0
         bg-[#182437]/80 border-2 border-portfolio-accent
         transition-all duration-300 relative
         ${expandedIndex === gIdx ? "z-20" : ""}
+        ${isMobile ? "w-full max-w-[400px] mx-auto" : ""}
       `}
       style={{
-        minWidth: 136,
-        maxWidth: 175,
+        minWidth: isMobile ? 0 : 136,
+        maxWidth: isMobile ? "100%" : 175,
         boxShadow: expandedIndex === gIdx
           ? "0 0 16px 4px #4fd1c5cc, 0 6px 32px #4fd1c520"
           : undefined,
@@ -163,45 +167,59 @@ const MLPipelineVisualization: React.FC = () => {
       aria-expanded={expandedIndex === gIdx}
       onClick={() => setExpandedIndex(expandedIndex === gIdx ? null : gIdx)}
     >
-      <div className={`text-3xl md:text-4xl mb-3 select-none pulse`} style={{
+      <div className={`text-2xl md:text-4xl mb-2 md:mb-3 select-none pulse`} style={{
         filter: "drop-shadow(0 0 6px #4fd1c5aa)",
       }}>
-        {/* Use node icon */}
         {typeof step.icon === "string" ? step.icon : step.icon}
       </div>
-      <div className="text-[15px] md:text-lg font-semibold text-white text-center drop-shadow mb-2">
+      <div className="text-sm md:text-lg font-semibold text-white text-center drop-shadow mb-1 md:mb-2">
         {step.label}
       </div>
       <div className="w-1 h-1 bg-portfolio-accent rounded-full mb-1" />
       {expandedIndex === gIdx && (
-        <div className="animate-fade-in mt-3 mb-2 px-2">
-          <div className="text-portfolio-accent font-medium mb-1 text-[14px] text-center">Tools:</div>
-          <ul className="space-y-1 text-gray-300 text-[14px] text-left list-disc list-inside">
+        <div className="animate-fade-in mt-2 md:mt-3 mb-0 px-1 md:px-2">
+          <div className="text-portfolio-accent font-medium mb-1 text-xs md:text-[14px] text-center">
+            Tools:
+          </div>
+          <ul className="space-y-1 text-gray-300 text-xs md:text-[14px] text-left list-disc list-inside">
             {step.tools.map((tool, i) =>
               <li key={i} className="pl-2">{tool}</li>
             )}
           </ul>
-          <div className="mt-2 text-gray-400 text-xs text-center">{step.description}</div>
+          <div className="mt-2 text-gray-400 text-[11px] md:text-xs text-center">
+            {step.description}
+          </div>
         </div>
       )}
     </button>
   );
 
-  // Responsive: On mobile, stack vertically by steps (normal flow)
-  // On md+, display pyramid
+  // Responsive pyramid/stack visualization
   return (
     <section
-      className="portfolio-section py-12 pb-0"
+      className="portfolio-section py-10 pb-0 md:py-12"
       style={{ position: "relative", zIndex: 3 }}
       id="ml-pipeline"
     >
       <div className="portfolio-container">
-        <h2 className="portfolio-heading mb-10">
+        <h2 className="portfolio-heading mb-7 md:mb-10">
           ML Pipeline Visualization
         </h2>
 
-        {/* Pyramid Layout */}
-        <div className="w-full flex flex-col items-center gap-0">
+        {/* MOBILE: Single-column, stack nodes with down arrows */}
+        <div className="block md:hidden w-full">
+          <div className="flex flex-col w-full items-center">
+            {steps.map((step, idx) => (
+              <React.Fragment key={step.label}>
+                {renderNode(step, idx, idx)}
+                {idx < steps.length - 1 && <ArrowDown />}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+
+        {/* DESKTOP: Pyramid 4-3-2 with only horizontal and down arrows */}
+        <div className="hidden md:flex flex-col items-center gap-0 w-full">
           {/* Row 1 - 4 steps */}
           <div className="flex flex-row justify-center items-start gap-4 mb-2 md:mb-6">
             {row1.map((step, idx) => (
@@ -212,16 +230,9 @@ const MLPipelineVisualization: React.FC = () => {
             ))}
           </div>
 
-          {/* Down arrows from row 1 → row 2 */}
-          <div className="w-full flex flex-row justify-center items-center mb-2 md:mb-6 gap-0">
-            {[0,1,2,3].map(idx => {
-              // Positions: row1[0] -> row2[0], row1[1] -> row2[0]/[1], row1[2] -> row2[1]/[2], row1[3] -> row2[2]
-              if(idx === 0) return <div key={idx} className="flex-1 flex justify-end"><ArrowDiagonal right /></div>;
-              if(idx === 1) return <div key={idx} className="flex-1 flex justify-center"><ArrowDiagonal right={false} /></div>;
-              if(idx === 2) return <div key={idx} className="flex-1 flex justify-center"><ArrowDiagonal right /></div>;
-              if(idx === 3) return <div key={idx} className="flex-1 flex justify-start"><ArrowDiagonal right={false} /></div>;
-              return null;
-            })}
+          {/* Down arrow to row 2 */}
+          <div className="flex justify-center mb-2 md:mb-6">
+            <ArrowDown />
           </div>
 
           {/* Row 2 - 3 steps */}
@@ -234,15 +245,9 @@ const MLPipelineVisualization: React.FC = () => {
             ))}
           </div>
 
-          {/* Down arrows from row 2 → row 3 */}
-          <div className="w-full flex flex-row justify-center items-center mb-2 md:mb-6 gap-0">
-            {[0,1,2].map(idx => {
-              // Positions: row2[0] -> row3[0], row2[1] -> row3[0/1], row2[2] -> row3[1]
-              if(idx === 0) return <div key={idx} className="flex-1 flex justify-end"><ArrowDiagonal right /></div>;
-              if(idx === 1) return <div key={idx} className="flex-1 flex justify-center"><ArrowDown /></div>;
-              if(idx === 2) return <div key={idx} className="flex-1 flex justify-start"><ArrowDiagonal right={false} /></div>;
-              return null;
-            })}
+          {/* Down arrow to row 3 */}
+          <div className="flex justify-center mb-2 md:mb-6">
+            <ArrowDown />
           </div>
 
           {/* Row 3 - 2 steps */}
@@ -256,7 +261,7 @@ const MLPipelineVisualization: React.FC = () => {
           </div>
         </div>
 
-        <div className="text-xs text-center text-gray-500 mt-8 select-none">
+        <div className="text-xs text-center text-gray-500 mt-7 select-none">
           Tap/click a step to see the tools and details.
         </div>
       </div>
