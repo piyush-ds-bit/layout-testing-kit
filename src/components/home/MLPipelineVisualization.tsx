@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Wrench, Settings } from "lucide-react";
+import { Wrench, Settings, ArrowLeft, ArrowRight } from "lucide-react";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const steps = [
   {
@@ -107,7 +109,7 @@ const ArrowDown = () => (
   </svg>
 );
 
-const ArrowRight = () => (
+const ArrowRightSvg = () => (
   <svg className="w-9 h-6 my-auto" viewBox="0 0 32 16" fill="none">
     <defs>
       <linearGradient id="arrow-right-gradient" x1="0" y1="8" x2="32" y2="8" gradientUnits="userSpaceOnUse">
@@ -119,30 +121,14 @@ const ArrowRight = () => (
   </svg>
 );
 
-// For diagonal arrows (down right or down left)
-const ArrowDiagonal = ({ right = true }: { right?: boolean }) => (
-  <svg className="w-8 h-8 mx-auto my-1" viewBox="0 0 32 32" fill="none" style={{ transform: right ? "" : "scaleX(-1)" }}>
-    <defs>
-      <linearGradient id="arrow-diag-gradient" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#4fd1c5"/>
-        <stop offset="1" stopColor="#38b2ac"/>
-      </linearGradient>
-    </defs>
-    <path d="M4 10l24 14" stroke="url(#arrow-diag-gradient)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M22 24l6 0-4-5" stroke="url(#arrow-diag-gradient)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
 const MLPipelineVisualization: React.FC = () => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const isMobile = useIsMobile();
 
   // Pyramid rows for desktop layout
   const row1 = steps.slice(0, 4);
   const row2 = steps.slice(4, 7);
   const row3 = steps.slice(7, 9);
-
-  // For mobile, stack all steps in a column
-  const isMobile = window.innerWidth < 768;
 
   // Utility for rendering a node (keeps card logic the same)
   const renderNode = (step: typeof steps[number], idx: number, gIdx: number) => (
@@ -154,11 +140,11 @@ const MLPipelineVisualization: React.FC = () => {
         bg-[#182437]/80 border-2 border-portfolio-accent
         transition-all duration-300 relative
         ${expandedIndex === gIdx ? "z-20" : ""}
-        ${isMobile ? "w-full max-w-[400px] mx-auto" : ""}
+        ${isMobile ? "w-full min-w-[240px] max-w-[320px] mx-auto" : ""}
       `}
       style={{
-        minWidth: isMobile ? 0 : 136,
-        maxWidth: isMobile ? "100%" : 175,
+        minWidth: isMobile ? 240 : 136,
+        maxWidth: isMobile ? 320 : 175,
         boxShadow: expandedIndex === gIdx
           ? "0 0 16px 4px #4fd1c5cc, 0 6px 32px #4fd1c520"
           : undefined,
@@ -194,7 +180,6 @@ const MLPipelineVisualization: React.FC = () => {
     </button>
   );
 
-  // Responsive pyramid/stack visualization
   return (
     <section
       className="portfolio-section py-10 pb-0 md:py-12"
@@ -206,16 +191,30 @@ const MLPipelineVisualization: React.FC = () => {
           ML Pipeline Visualization
         </h2>
 
-        {/* MOBILE: Single-column, stack nodes with down arrows */}
+        {/* MOBILE: Horizontal carousel with arrows */}
         <div className="block md:hidden w-full">
-          <div className="flex flex-col w-full items-center">
-            {steps.map((step, idx) => (
-              <React.Fragment key={step.label}>
-                {renderNode(step, idx, idx)}
-                {idx < steps.length - 1 && <ArrowDown />}
-              </React.Fragment>
-            ))}
-          </div>
+          <Carousel className="relative w-full">
+            <CarouselContent className="flex items-stretch">
+              {steps.map((step, idx) => (
+                <CarouselItem key={step.label} className="flex items-center justify-center px-2 py-4">
+                  {renderNode(step, idx, idx)}
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {/* Arrows */}
+            <CarouselPrevious
+              className="left-1 top-1/2 -translate-y-1/2 z-10 bg-portfolio-dark/80 border-portfolio-accent text-portfolio-accent"
+              aria-label="Previous Step"
+            >
+              <ArrowLeft />
+            </CarouselPrevious>
+            <CarouselNext
+              className="right-1 top-1/2 -translate-y-1/2 z-10 bg-portfolio-dark/80 border-portfolio-accent text-portfolio-accent"
+              aria-label="Next Step"
+            >
+              <ArrowRight />
+            </CarouselNext>
+          </Carousel>
         </div>
 
         {/* DESKTOP: Pyramid 4-3-2 with only horizontal and down arrows */}
@@ -225,42 +224,37 @@ const MLPipelineVisualization: React.FC = () => {
             {row1.map((step, idx) => (
               <React.Fragment key={step.label}>
                 {renderNode(step, idx, idx)}
-                {idx < row1.length - 1 && <ArrowRight />}
+                {idx < row1.length - 1 && <ArrowRightSvg />}
               </React.Fragment>
             ))}
           </div>
-
           {/* Down arrow to row 2 */}
           <div className="flex justify-center mb-2 md:mb-6">
             <ArrowDown />
           </div>
-
           {/* Row 2 - 3 steps */}
           <div className="flex flex-row justify-center items-start gap-4 mb-2 md:mb-6">
             {row2.map((step, idx) => (
               <React.Fragment key={step.label}>
                 {renderNode(step, idx, idx + 4)}
-                {idx < row2.length - 1 && <ArrowRight />}
+                {idx < row2.length - 1 && <ArrowRightSvg />}
               </React.Fragment>
             ))}
           </div>
-
           {/* Down arrow to row 3 */}
           <div className="flex justify-center mb-2 md:mb-6">
             <ArrowDown />
           </div>
-
           {/* Row 3 - 2 steps */}
           <div className="flex flex-row justify-center items-start gap-4 mb-2 md:mb-6">
             {row3.map((step, idx) => (
               <React.Fragment key={step.label}>
                 {renderNode(step, idx, idx+7)}
-                {idx < row3.length - 1 && <ArrowRight />}
+                {idx < row3.length - 1 && <ArrowRightSvg />}
               </React.Fragment>
             ))}
           </div>
         </div>
-
         <div className="text-xs text-center text-gray-500 mt-7 select-none">
           Tap/click a step to see the tools and details.
         </div>
