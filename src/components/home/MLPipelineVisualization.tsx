@@ -55,7 +55,7 @@ const steps = [
     description: "Create new features to help models learn better patterns."
   },
   {
-    label: "Model Training/Evaluation/Selection",
+    label: "Model Train/Evaluate",
     icon: "🤖",
     tools: [
       "scikit-learn (Logistic Regression, Decision Trees, etc.)",
@@ -141,9 +141,28 @@ const MLPipelineVisualization: React.FC = () => {
         <h2 className="portfolio-heading mb-10">
           ML Pipeline Visualization
         </h2>
-        {/* Mobile: horizontal scroll / Desktop: grid flow */}
-        <div className="overflow-x-auto scrollbar-hide">
-          <div className="flex md:grid md:grid-cols-9 gap-0 md:gap-0 items-start justify-center px-2 md:px-0">
+        {/* MODIFIED: increase container side padding on mobile so step 1/last aren't clipped */}
+        <div className="overflow-x-auto scrollbar-hide px-4 md:px-0">
+          {/* MODIFIED: Increase grid gap, margin, and provide extra 1st/last col on desktop */}
+          <div
+            className="
+              relative
+              flex md:grid gap-0 md:gap-0 items-start justify-center
+              px-2 md:px-0
+              md:grid-cols-[0.5fr_repeat(9,1fr)_0.5fr]  // left & right spacer columns for step visibility
+              lg:grid-cols-[0.6fr_repeat(9,1fr)_0.6fr]
+              xl:grid-cols-[0.8fr_repeat(9,1fr)_0.8fr]
+            "
+            style={{
+              minWidth: "100vw", // full viewport width for better scroll
+              marginLeft: "-1.5rem",
+              marginRight: "-1.5rem"
+            }}
+          >
+            {/* left spacer on desktop */}
+            <div className="hidden md:block" />
+
+            {/* STEP NODES + ARROWS */}
             {steps.map((step, idx) => (
               <React.Fragment key={step.label}>
                 {/* Node */}
@@ -152,15 +171,20 @@ const MLPipelineVisualization: React.FC = () => {
                     group flex flex-col items-center
                     transition-transform duration-300
                     relative z-10
-                    mx-2 min-w-[148px] md:min-w-0
-                    `}
+                    mx-2 md:mx-0 min-w-[150px] md:min-w-0
+                  `}
+                  style={{
+                    // MODIFIED: increases width slightly, provides extra padding so contents do not overflow box
+                    minWidth: 150,
+                    maxWidth: 172
+                  }}
                 >
-                  {/* Glowing/Nodal Card */}
+                  {/* Modified: more generous padding and no step-cropping */}
                   <button
                     className={`
                       portfolio-card-hover
                       flex flex-col items-center justify-center
-                      py-6 px-3 md:p-6
+                      py-7 px-4 md:p-7
                       mb-2 md:mb-0
                       bg-[#182437]/80 
                       border-2 border-portfolio-accent 
@@ -172,8 +196,8 @@ const MLPipelineVisualization: React.FC = () => {
                       active:scale-100
                     `}
                     style={{
-                      minWidth: 130,
-                      maxWidth: 180,
+                      minWidth: 136,
+                      maxWidth: 175,
                       boxShadow: expandedIndex === idx
                         ? "0 0 16px 4px #4fd1c5cc, 0 6px 32px #4fd1c520"
                         : undefined,
@@ -188,7 +212,7 @@ const MLPipelineVisualization: React.FC = () => {
                       {/* Use node icon */}
                       {typeof step.icon === "string" ? step.icon : step.icon}
                     </div>
-                    <div className="text-[16px] md:text-lg font-semibold text-white text-center drop-shadow mb-2">
+                    <div className="text-[15px] md:text-lg font-semibold text-white text-center drop-shadow mb-2">
                       {step.label}
                     </div>
                     <div className="w-1 h-1 bg-portfolio-accent rounded-full mb-1" />
@@ -205,16 +229,21 @@ const MLPipelineVisualization: React.FC = () => {
                     )}
                   </button>
                 </div>
-                {/* Arrow (no arrow after last node) */}
-                {idx < steps.length - 1 &&
-                  <div className="hidden md:flex">
-                    <AnimatedArrow />
+                {/* ARROW: desktop - flex, absolutely centered with grid */}
+                {idx < steps.length - 1 && (
+                  <div className="hidden md:flex relative" style={{ height: "100%", alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center" style={{
+                        height: "72px", // Matches button/padding height for center
+                        width: "48px",
+                    }}>
+                      <AnimatedArrow />
+                    </div>
                   </div>
-                }
-                {/* On mobile, show arrow below node */}
-                {idx < steps.length - 1 &&
+                )}
+                {/* ARROW: mobile - shown below each node, centered */}
+                {idx < steps.length - 1 && (
                   <div className="md:hidden flex justify-center">
-                    <div className="my-2">
+                    <div className="my-2 flex items-center justify-center">
                       <svg className="w-6 h-6 animate-bounce-x" viewBox="0 0 59 16" fill="none">
                         <defs>
                           <linearGradient id="arrow-grad-mob" x1="0" y1="8" x2="48" y2="8" gradientUnits="userSpaceOnUse">
@@ -230,9 +259,11 @@ const MLPipelineVisualization: React.FC = () => {
                       </svg>
                     </div>
                   </div>
-                }
+                )}
               </React.Fragment>
             ))}
+            {/* right spacer on desktop */}
+            <div className="hidden md:block" />
           </div>
         </div>
         <div className="text-xs text-center text-gray-500 mt-8 select-none">
