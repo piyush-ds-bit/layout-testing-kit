@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,26 +7,32 @@ import ProjectDetailCard from "@/components/projects/ProjectDetailCard";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 
-const DEMO_PROJECTS: Record<string, Project> = {
+const DEMO_PROJECTS: Record<string, Project & { details?: string[] }> = {
   '1': {
     id: '1',
     title: 'WhatsApp Buddy',
-    description: `
-WhatsApp Chat Analyzer
+    description:
+      'Developed a Streamlit-based WhatsApp chat analyzer with sentiment analysis, word clouds, user stats, and emoji insights using Pandas and Matplotlib/Seaborn.',
+    category: 'Deployed',
+    image_url: '/whatsapp.jpg',
+    github_url: '#',
+    live_url: '#',
+    technologies: ['Python', 'Streamlit', 'Pandas&Seaborn'],
+    created_at: '',
+    details: [
+      `WhatsApp Chat Analyzer
 =======================
 
 A user-friendly tool built with Python and Streamlit that allows you to upload exported WhatsApp chats (.txt files) and generate deep insights including sentiment analysis, user activity, message trends, word clouds, and more!
-
------------------------
-Motivation
+`,
+      `Motivation
 -----------------------
 
 As a passionate learner of data science and Python, I wanted to build a real-world, interactive project using personal data we all generate — WhatsApp chats!
 
 This project was born out of curiosity to visually explore conversation patterns, analyze user behavior, and use NLP for sentiment insights — all with a click.
-
------------------------
-Features
+`,
+      `Features
 -----------------------
 
 - Upload exported WhatsApp chat text files directly
@@ -38,9 +43,8 @@ Features
 - WordCloud of most used words
 - Top keywords & common words
 - Group stats (for group chats) & overall engagement metrics
-
------------------------
-Technologies Used
+`,
+      `Technologies Used
 -----------------------
 
 - Python (Core Language)
@@ -51,18 +55,16 @@ Technologies Used
 - NLTK / TextBlob – for sentiment analysis
 - WordCloud – to visualize common terms
 - Regular Expressions (regex) – to parse and clean text
-
------------------------
-How It Works
+`,
+      `How It Works
 -----------------------
 
 1. Export your WhatsApp chat (.txt) from phone
 2. Launch the app locally via Streamlit
 3. Upload the file and choose a user or “Overall”
 4. The app generates stats, charts, and emotion insights
-
------------------------
-Challenges I Faced
+`,
+      `Challenges I Faced
 -----------------------
 
 1. Parsing WhatsApp Chat Format
@@ -76,29 +78,26 @@ Challenges I Faced
 3. Performance with Large Files
 - Chats with 50,000+ messages were slowing down processing
 - I optimized by caching and vectorized Pandas operations
-`.trim(),
-    category: 'Deployed',
-    image_url: '/whatsapp.jpg',
-    github_url: '#',
-    live_url: '#',
-    technologies: ['Python', 'Streamlit', 'Pandas&Seaborn'],
-    created_at: '',
-  }
+`,
+    ],
+  },
   // Add more demo projects here if needed
 };
 
 const ProjectDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [project, setProject] = useState<Project | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [project, setProject] = React.useState<Project | null>(null);
+  const [details, setDetails] = React.useState<string[] | undefined>(undefined);
+  const [loading, setLoading] = React.useState(true);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchProject = async () => {
       setLoading(true);
 
       if (id && DEMO_PROJECTS[id]) {
         setProject(DEMO_PROJECTS[id]);
+        setDetails(DEMO_PROJECTS[id].details);
         setLoading(false);
         return;
       }
@@ -111,16 +110,20 @@ const ProjectDetailsPage: React.FC = () => {
 
       if (error || !data) {
         setProject(null);
+        setDetails(undefined);
         setLoading(false);
         return;
       }
 
-      // If the project title is "WhatsApp Buddy", override the description
-      if (data && data.title === "WhatsApp Buddy") {
-        data.description = DEMO_PROJECTS['1'].description;
+      // Check if this project matches any local demo (for future extensibility)
+      let extraDetails: string[] | undefined;
+      if (data && data.title && Object.values(DEMO_PROJECTS).some(proj => proj.title === data.title)) {
+        const match = Object.values(DEMO_PROJECTS).find(proj => proj.title === data.title);
+        extraDetails = match?.details;
       }
 
       setProject(data as Project | null);
+      setDetails(extraDetails);
       setLoading(false);
     };
     if (id) fetchProject();
@@ -152,7 +155,12 @@ const ProjectDetailsPage: React.FC = () => {
   }
 
   return (
-    <ProjectDetailCard project={project} showBackBtn backHandler={() => navigate(-1)} />
+    <ProjectDetailCard
+      project={project}
+      details={details}
+      showBackBtn
+      backHandler={() => navigate(-1)}
+    />
   );
 };
 

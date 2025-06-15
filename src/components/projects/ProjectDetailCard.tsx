@@ -8,20 +8,48 @@ import { useNavigate } from "react-router-dom";
 
 interface ProjectDetailCardProps {
   project: Project;
+  details?: string[] | string;
   showBackBtn?: boolean;
   backHandler?: () => void;
 }
 
-const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, showBackBtn = false, backHandler }) => {
+const renderDetails = (details?: string[] | string) => {
+  if (!details) return null;
+  if (Array.isArray(details)) {
+    return (
+      <div className="space-y-6">
+        {details.map((section, i) => (
+          <div
+            key={i}
+            className="text-portfolio-gray-light text-md whitespace-pre-line"
+          >{section}</div>
+        ))}
+      </div>
+    );
+  }
+  // If single string, fallback to old rendering
+  return (
+    <p className="text-portfolio-gray-light text-md mb-6 whitespace-pre-line">
+      {details}
+    </p>
+  );
+};
+
+const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({
+  project,
+  details,
+  showBackBtn = false,
+  backHandler,
+}) => {
   const navigate = useNavigate();
 
   return (
     <Layout>
       <div className="portfolio-container py-6">
         {showBackBtn && (
-          <Button 
-            variant="outline" 
-            onClick={backHandler || (() => navigate(-1))} 
+          <Button
+            variant="outline"
+            onClick={backHandler || (() => navigate(-1))}
             className="mb-5"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -41,18 +69,25 @@ const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, showBack
           )}
 
           <div className="flex-1 flex flex-col">
-            <h1 className="text-3xl font-bold text-white mb-2">{project.title}</h1>
+            <h1 className="text-3xl font-bold text-white mb-2">
+              {project.title}
+            </h1>
             <div className="flex items-center gap-2 mb-4">
               <span className="px-3 py-1 text-sm rounded bg-portfolio-accent text-white capitalize">
                 {project.category}
               </span>
               <span className="text-xs text-portfolio-gray-light italic">
-                Created at {project.created_at ? new Date(project.created_at).toLocaleDateString() : ""}
+                {project.created_at
+                  ? `Created at ${new Date(project.created_at).toLocaleDateString()}`
+                  : ""}
               </span>
             </div>
             <p className="text-portfolio-gray-light text-md mb-6 whitespace-pre-line">
               {project.description}
             </p>
+
+            {/* Flexible multi-section details */}
+            {renderDetails(details)}
 
             <div className="mb-6">
               <strong className="text-white">Technologies used:</strong>
