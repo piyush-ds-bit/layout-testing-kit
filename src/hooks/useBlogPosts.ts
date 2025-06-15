@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { BlogPost } from '@/types/database';
@@ -125,6 +124,7 @@ export const useDeleteBlogPost = () => {
       }
     },
     onSuccess: () => {
+      // Ensure blog posts are refetched after deletion
       queryClient.invalidateQueries({ queryKey: ['blog-posts'] });
       toast({
         title: 'Blog post deleted',
