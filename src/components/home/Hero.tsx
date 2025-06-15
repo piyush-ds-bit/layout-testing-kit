@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { FileText } from 'lucide-react';
+import AnimatedGreeting from './AnimatedGreeting';
 
 const Hero: React.FC = () => {
   return (
@@ -10,8 +10,15 @@ const Hero: React.FC = () => {
       <div className="portfolio-container">
         <div className="flex flex-col items-center text-center">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
-            Hello, I'm <span className="text-portfolio-accent">Piyush Kr. Singh</span>
+            <AnimatedGreeting />, I'm <span className="text-portfolio-accent">Piyush Kr. Singh</span>
           </h1>
+          
+          {/* Fallback for JavaScript disabled */}
+          <noscript>
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
+              Hello, I'm <span className="text-portfolio-accent">Piyush Kr. Singh</span>
+            </h1>
+          </noscript>
           
           <h2 className="mt-4 text-xl md:text-2xl text-portfolio-gray-light max-w-2xl mx-auto">
             Data Scientist · AI & ML Enthusiast · Python & Streamlit Developer
