@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
@@ -22,7 +21,7 @@ const ContactMessages: React.FC = () => {
       const { data, error } = await supabase
         .from('contact_messages')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('submitted_at', { ascending: false });
       
       if (error) {
         console.error('Supabase error:', error);
@@ -147,7 +146,9 @@ const ContactMessages: React.FC = () => {
       {!error && messages.length > 0 ? (
         <div className="space-y-6">
           {messages.map((message) => {
-            const date = new Date(message.created_at).toLocaleString();
+            const date = new Date(
+              message.submitted_at || message.created_at
+            ).toLocaleString();
             
             return (
               <div 
@@ -164,6 +165,14 @@ const ContactMessages: React.FC = () => {
                     <a href={`mailto:${message.email}`} className="text-portfolio-accent hover:underline">
                       {message.email}
                     </a>
+                    {message.phone_number && (
+                      <span className="block mt-2 text-sm text-gray-300">
+                        <span className="font-semibold mr-2">Phone:</span>
+                        <a href={`tel:${message.phone_number}`} className="text-portfolio-accent hover:underline">
+                          {message.phone_number}
+                        </a>
+                      </span>
+                    )}
                   </div>
                   
                   <div className="text-sm text-portfolio-gray mt-2 md:mt-0">

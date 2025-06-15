@@ -10,6 +10,9 @@ export interface ContactMessage {
   read: boolean;
   attachment_url?: string | null;
   created_at: string;
+  // Added phone_number and submitted_at fields
+  phone_number?: string | null;
+  submitted_at?: string;
 }
 
 export interface Experience {

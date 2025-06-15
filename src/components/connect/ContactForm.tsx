@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -6,12 +5,20 @@ import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Mail, Paperclip } from 'lucide-react';
 
+// Validate phone number: allow empty, or match basic pattern
+function isValidPhone(number: string) {
+  if (!number.trim()) return true;
+  const phoneRegex = /^[+]?[\d\s-()]{7,20}$/;
+  return phoneRegex.test(number.trim());
+}
+
 const ContactForm: React.FC = () => {
   const { user } = useAuth();
   
   const [formData, setFormData] = useState({
     name: '',
     email: user?.email || '',
+    phone_number: '',
     message: '',
   });
   
@@ -89,6 +96,10 @@ const ContactForm: React.FC = () => {
         throw new Error("Please enter a message");
       }
       
+      if (!isValidPhone(formData.phone_number)) {
+        throw new Error("Please provide a valid phone number or leave it blank.");
+      }
+      
       console.log('Submitting contact form with data:', {
         ...formData,
         attachment_url: uploadedFile
@@ -103,7 +114,9 @@ const ContactForm: React.FC = () => {
           message: formData.message.trim(),
           user_id: user?.id,
           attachment_url: uploadedFile,
-          read: false
+          phone_number: formData.phone_number.trim() || null,
+          read: false,
+          submitted_at: new Date().toISOString(),
         });
       
       if (error) {
@@ -120,6 +133,7 @@ const ContactForm: React.FC = () => {
       setFormData({
         name: '',
         email: user?.email || '',
+        phone_number: '',
         message: '',
       });
       setUploadedFile(null);
@@ -163,6 +177,21 @@ const ContactForm: React.FC = () => {
           className="w-full px-4 py-3 rounded-lg bg-portfolio-card-bg text-white border border-portfolio-dark focus:outline-none focus:ring-1 focus:ring-portfolio-accent"
           placeholder="Your email"
           readOnly={!!user?.email}
+        />
+      </div>
+      
+      <div>
+        <label htmlFor="phone_number" className="block text-sm font-medium text-gray-300 mb-2">Phone Number <span className="text-gray-400">(optional)</span></label>
+        <input
+          type="tel"
+          id="phone_number"
+          name="phone_number"
+          value={formData.phone_number}
+          onChange={handleInputChange}
+          className="w-full px-4 py-3 rounded-lg bg-portfolio-card-bg text-white border border-portfolio-dark focus:outline-none focus:ring-1 focus:ring-portfolio-accent"
+          placeholder="Your phone number"
+          inputMode="tel"
+          pattern="[+]?[\d\s\-()]{7,20}"
         />
       </div>
       
