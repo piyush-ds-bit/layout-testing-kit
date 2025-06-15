@@ -1,6 +1,5 @@
-
 import React, { useState } from "react";
-import { Wrench, Gear } from "lucide-react";
+import { Wrench, Settings } from "lucide-react";
 
 const steps = [
   {
@@ -77,7 +76,7 @@ const steps = [
   },
   {
     label: "Testing",
-    icon: <Gear className="inline w-6 h-6 text-portfolio-accent" />,
+    icon: <Settings className="inline w-6 h-6 text-portfolio-accent" />,
     tools: [
       "FastAPI (API testing)",
       "Manual testing via Streamlit UI"
