@@ -157,13 +157,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signInWithGoogle = async () => {
     try {
       setLoading(true);
+      // Use window.location.origin and redirect to home after login for both envs
+      const redirectPath = window.location.origin + '/';
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `https://piyushkrsingh.lovable.app/admin`,
-        }
+          redirectTo: redirectPath,
+        },
       });
-      
       if (error) {
         toast({
           title: "Google login failed",
@@ -172,8 +173,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         });
         throw error;
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error signing in with Google:', error);
+      toast({
+        title: "Google login failed",
+        description: error?.message || "An unexpected error occurred during Google authentication.",
+        variant: "destructive",
+      });
       throw error;
     } finally {
       setLoading(false);
