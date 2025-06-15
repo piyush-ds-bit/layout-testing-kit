@@ -1,14 +1,14 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useScrollToSection } from '@/hooks/useScrollToSection';
 import { useActiveSection } from '@/hooks/useActiveSection';
 import { Button } from "@/components/ui/button";
-import { Menu, X, User, Code, Briefcase, Github, MessageSquare, BookOpen, Sun, Moon } from "lucide-react";
-import { useTheme } from '@/context/ThemeContext';
+import { Home, Menu, X, User, Code, Briefcase, Github, MessageSquare, BookOpen } from "lucide-react";
 
 const navItems = [
-  { label: "Home", path: "/", icon: Code, sectionId: "hero" },
+  { label: "Home", path: "/", icon: Home, sectionId: "hero" },
   { label: "Skills", path: "/skills", icon: Code, sectionId: "skills" },
   { label: "Experience", path: "/experience", icon: Briefcase, sectionId: "experience" },
   { label: "Blog", path: "/blog", icon: BookOpen, sectionId: "blog" },
@@ -24,25 +24,38 @@ const Navbar: React.FC = () => {
   const { user, isAuthorized, signOut } = useAuth();
   const scrollToSection = useScrollToSection();
   const activeSection = useActiveSection();
-  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
-    const handleResize = () => setShowMobileNav(window.innerWidth <= 768);
+    const handleResize = () => {
+      setShowMobileNav(window.innerWidth <= 768);
+    };
+    
     handleResize();
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   const handleNavClick = (item: typeof navItems[0]) => {
-    if (item.path === '/') return;
+    if (item.path === '/') {
+      // Always navigate to home for the home link
+      return;
+    }
+    
     scrollToSection(item.sectionId, item.path);
     setIsOpen(false);
   };
 
   const isActiveItem = (item: typeof navItems[0]) => {
-    if (location.pathname === '/') return activeSection === item.sectionId;
+    if (location.pathname === '/') {
+      return activeSection === item.sectionId;
+    }
     return location.pathname === item.path;
   };
 
@@ -51,24 +64,14 @@ const Navbar: React.FC = () => {
       <header className="sticky top-0 z-50 w-full bg-portfolio-darkest/80 backdrop-blur-md border-b border-portfolio-dark">
         <div className="portfolio-container py-4">
           <div className="flex items-center justify-between">
-            {/* Brand + Theme Toggle (replace "Home" icon with theme toggle) */}
-            <div className="flex items-center space-x-3">
-              <button
-                aria-label="Toggle dark/light theme"
-                className="rounded-full p-2 transition-colors bg-transparent hover:bg-portfolio-card-bg border border-portfolio-accent"
-                onClick={toggleTheme}
-              >
-                {theme === "dark" ? (
-                  <Sun size={22} className="text-portfolio-accent transition-transform duration-300 rotate-0 scale-100" />
-                ) : (
-                  <Moon size={22} className="text-yellow-400 transition-transform duration-300" />
-                )}
-              </button>
-              <span className="text-xl font-semibold text-white">Portfolio</span>
+            <div className="flex items-center">
+              <Link to="/" className="flex items-center space-x-2 text-white hover:text-portfolio-accent transition-colors">
+                <Home className="w-5 h-5" />
+                <span className="text-xl font-semibold">Portfolio</span>
+              </Link>
             </div>
 
             {/* Desktop Navigation */}
-            
             <nav className="hidden md:flex items-center space-x-2">
               {navItems.map((item) => (
                 item.path === '/' ? (
@@ -93,6 +96,7 @@ const Navbar: React.FC = () => {
                   </button>
                 )
               ))}
+              
               {user ? (
                 <div className="flex items-center ml-4 space-x-3">
                   <span className="text-portfolio-gray-light">
@@ -123,7 +127,6 @@ const Navbar: React.FC = () => {
             </nav>
 
             {/* Mobile Menu Button */}
-            
             <button
               onClick={toggleMenu}
               className="md:hidden p-2 text-white hover:text-portfolio-accent transition-colors"
@@ -135,7 +138,6 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Mobile Navigation Dropdown */}
-        
         <div
           className={`md:hidden fixed top-[62px] left-0 right-0 bg-portfolio-darkest border-b border-portfolio-dark transform ${
             isOpen ? "translate-y-0" : "-translate-y-full"
@@ -199,7 +201,6 @@ const Navbar: React.FC = () => {
       </header>
 
       {/* Android-style Bottom Navigation for Mobile */}
-      
       {showMobileNav && (
         <nav className="mobile-bottom-nav md:hidden">
           {navItems.slice(0, 5).map((item) => (

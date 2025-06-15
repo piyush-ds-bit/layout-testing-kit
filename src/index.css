@@ -78,7 +78,6 @@
   body {
     @apply bg-portfolio-darker text-foreground dark transition-all duration-300;
     font-feature-settings: "rlig" 1, "calt" 1;
-    transition: background 0.3s, color 0.3s;
   }
   
   h1, h2, h3, h4, h5, h6 {
