@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
+import LogoutConfirmationDialog from '@/components/auth/LogoutConfirmationDialog';
 
 const sidebarItems = [
   { label: 'Dashboard', path: '/admin' },
@@ -41,12 +41,13 @@ const AdminSidebar: React.FC = () => {
         </div>
         
         <div className="mt-8 pt-8 border-t border-portfolio-dark">
-          <Button
-            onClick={() => signOut()}
-            className="w-full bg-portfolio-dark text-portfolio-gray-light hover:bg-portfolio-card-bg"
-          >
-            Sign Out
-          </Button>
+          <LogoutConfirmationDialog onLogout={signOut}>
+            <Button
+              className="w-full bg-portfolio-dark text-portfolio-gray-light hover:bg-portfolio-card-bg"
+            >
+              Sign Out
+            </Button>
+          </LogoutConfirmationDialog>
         </div>
       </div>
     </div>

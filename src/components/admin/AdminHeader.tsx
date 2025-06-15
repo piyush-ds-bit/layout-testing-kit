@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
+import LogoutConfirmationDialog from '@/components/auth/LogoutConfirmationDialog';
 
 interface AdminHeaderProps {
   toggleSidebar: () => void;
@@ -46,14 +46,15 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ toggleSidebar, isSidebarOpen 
           </Link>
           
           <div className="md:hidden">
-            <Button
-              onClick={() => signOut()}
-              variant="outline"
-              size="sm"
-              className="border-portfolio-dark text-portfolio-gray-light"
-            >
-              Sign Out
-            </Button>
+            <LogoutConfirmationDialog onLogout={signOut}>
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-portfolio-dark text-portfolio-gray-light"
+              >
+                Sign Out
+              </Button>
+            </LogoutConfirmationDialog>
           </div>
         </div>
       </div>
