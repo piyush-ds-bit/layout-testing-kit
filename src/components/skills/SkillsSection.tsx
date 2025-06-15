@@ -1,4 +1,3 @@
-
 import React from 'react';
 import SkillCategory from './SkillCategory';
 
@@ -45,23 +44,31 @@ const otherSkills = [
 ];
 
 
-const SkillsSection: React.FC = () => (
-  <section className="bg-[#0c111d] py-10">
-    <div className="container mx-auto px-4">
-      <h2 className="text-3xl font-bold text-white mb-10 text-center">
-        Skills
-      </h2>
+const SkillsSection: React.FC = () => {
+  return (
+    <section className="portfolio-section">
+      <div
+        className="max-w-4xl mx-auto relative bg-[#182437]/70 border border-[#4fd1c533] rounded-2xl shadow-2xl backdrop-blur-md p-8
+        transition-all duration-300"
+        style={{
+          boxShadow: '0 6px 32px 0 rgba(76,201,240,0.14), 0 2px 8px rgba(10,20,30,0.18), 0 1.5px 36px 0 rgba(0,0,0,0.13)'
+        }}
+      >
+        <h2 className="text-3xl font-bold text-white mb-10 text-center">
+          Skills
+        </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-        <SkillCategory title="Programming"            icon="💻" skills={programming} />
-        <SkillCategory title="Libraries & Frameworks" icon="📚" skills={librariesFrameworks} />
-        <SkillCategory title="Web & Tools"            icon="🌐" skills={webTools} />
-        <SkillCategory title="Databases"              icon="💾" skills={databases} />
-        <SkillCategory title="Tools"                  icon="🛠️" skills={Tools} />
-        <SkillCategory title="Other"                  icon="✨" skills={otherSkills} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+          <SkillCategory title="Programming"            icon="💻" skills={programming} />
+          <SkillCategory title="Libraries & Frameworks" icon="📚" skills={librariesFrameworks} />
+          <SkillCategory title="Web & Tools"            icon="🌐" skills={webTools} />
+          <SkillCategory title="Databases"              icon="💾" skills={databases} />
+          <SkillCategory title="Tools"                  icon="🛠️" skills={Tools} />
+          <SkillCategory title="Other"                  icon="✨" skills={otherSkills} />
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default SkillsSection;

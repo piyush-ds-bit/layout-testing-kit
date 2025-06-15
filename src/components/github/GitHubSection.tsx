@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import GitHubCalendar from 'react-github-calendar';
 import { ChevronLeft, ChevronRight, Github } from 'lucide-react';
@@ -22,7 +21,13 @@ const GitHubSection: React.FC = () => {
 
   return (
     <section className="portfolio-section bg-portfolio-dark">
-      <div className="portfolio-container">
+      <div
+        className="max-w-4xl mx-auto relative bg-[#182437]/70 border border-[#4fd1c533] rounded-2xl shadow-2xl backdrop-blur-md p-8
+        transition-all duration-300"
+        style={{
+          boxShadow: '0 6px 32px 0 rgba(76,201,240,0.14), 0 2px 8px rgba(10,20,30,0.18), 0 1.5px 36px 0 rgba(0,0,0,0.13)'
+        }}
+      >
         <h2 className="portfolio-heading text-white mb-8">GitHub Activity</h2>
         
         <div className="max-w-6xl mx-auto">
