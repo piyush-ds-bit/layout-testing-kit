@@ -16,14 +16,29 @@ interface BlogCardProps {
   post: BlogPost;
 }
 
+// Helper function to truncate text at word boundaries
+function truncateText(text: string, maxLength: number) {
+  if (text.length <= maxLength) return text;
+  const sub = text.substring(0, maxLength);
+  const lastSpace = sub.lastIndexOf(' ');
+  return sub.substring(0, lastSpace > 0 ? lastSpace : maxLength);
+}
+
+const TRUNCATE_LENGTH = 300;
+
 const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
   const { user, isAuthorized } = useAuth();
   const updateBlogPost = useUpdateBlogPost();
   const deleteBlogPost = useDeleteBlogPost();
-  
+
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(post.title);
   const [editContent, setEditContent] = useState(post.content);
+
+  // For View More/Less logic
+  const [expanded, setExpanded] = useState(false);
+  const isLong = post.content.length > TRUNCATE_LENGTH;
+  const previewContent = truncateText(post.content, TRUNCATE_LENGTH);
 
   const canEdit = user && (user.id === post.user_id || isAuthorized);
   const canDelete = user && (user.id === post.user_id || isAuthorized);
@@ -117,7 +132,21 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
       </CardHeader>
       <CardContent>
         <div className="text-portfolio-gray-light whitespace-pre-wrap">
-          {post.content}
+          {!isLong ? (
+            post.content
+          ) : (
+            <>
+              {expanded ? post.content : `${previewContent}... `}
+              <button
+                className="ml-1 text-portfolio-accent hover:underline transition-colors font-semibold bg-transparent border-none outline-none p-0"
+                onClick={() => setExpanded((e) => !e)}
+                aria-label={expanded ? "Show less" : "Show more"}
+                style={{ cursor: 'pointer' }}
+              >
+                {expanded ? 'less' : 'more'}
+              </button>
+            </>
+          )}
         </div>
       </CardContent>
     </Card>
@@ -125,3 +154,4 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
 };
 
 export default BlogCard;
+
