@@ -99,11 +99,40 @@
   }
   
   .portfolio-card {
-    @apply bg-portfolio-card-bg border border-portfolio-border rounded-xl p-6 transition-all duration-300;
+    @apply relative transition-all duration-300 p-6 rounded-xl border border-portfolio-border;
+    background: rgba(24, 36, 55, 0.65);
+    backdrop-filter: blur(16px) saturate(150%);
+    box-shadow: 0 6px 32px 0 rgba(76, 201, 240, 0.12), 0 2px 8px rgba(10,20,30,0.25), 0 1.5px 36px 0 rgba(0,0,0,0.09);
+    border: 1.5px solid rgba(79, 209, 197, 0.21);
+    z-index: 1;
   }
   
   .portfolio-card:hover {
-    @apply border-portfolio-accent/50 shadow-lg shadow-portfolio-accent/10;
+    @apply shadow-lg;
+    transform: translateY(-7px) scale(1.035);
+    border-color: #4fd1c5;
+    box-shadow: 0 12px 48px 0 rgba(79, 209, 197, 0.30), 0 8px 32px 0 rgba(10,20,30,0.22);
+    background: rgba(24, 36, 55, 0.80);
+  }
+  
+  .portfolio-card::before {
+    --glass-gradient: linear-gradient(
+      135deg,
+      rgba(79, 209, 197, 0.13) 0%,
+      rgba(24, 36, 55, 0.04) 100%
+    );
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--glass-gradient);
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  .portfolio-card > * {
+    position: relative;
+    z-index: 1;
   }
   
   .portfolio-button {
@@ -179,62 +208,72 @@
   @media (max-width: 768px) {
     .portfolio-card {
       @apply rounded-2xl shadow-lg p-5 mb-4;
+      background: rgba(24, 36, 55, 0.91);
+      backdrop-filter: blur(12px) saturate(180%);
+      box-shadow: 0 2px 16px rgba(79,209,197, 0.18),
+        0 2px 8px rgba(10,20,30,0.15);
     }
-    
+
+    .portfolio-card:hover {
+      transform: scale(1.018);
+      border-color: #4fd1c5;
+      background: rgba(24, 36, 55, 0.93);
+    }
+
     .skill-tag {
       @apply bg-[#172032] border-portfolio-border rounded-xl;
     }
-    
+
     .portfolio-nav-button {
       @apply rounded-2xl py-4 text-base;
     }
-    
+
     .social-icon-container {
       @apply w-14 h-14 rounded-2xl;
     }
-    
+
     /* Material-inspired elevation for cards */
     .portfolio-card {
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
-    
+
     /* Android-style buttons */
     button, .portfolio-button, .portfolio-button-outline {
       @apply rounded-xl py-3;
     }
-    
+
     /* Floating action button style for primary actions */
     .mobile-fab {
       @apply fixed bottom-6 right-6 w-14 h-14 rounded-full bg-portfolio-accent flex items-center justify-center shadow-xl;
     }
-    
+
     /* Mobile spacing optimization */
     .portfolio-section {
       @apply py-10;
     }
-    
+
     .portfolio-heading {
       @apply text-2xl font-bold mb-6;
     }
-    
+
     /* Android-style bottom navigation */
     .mobile-bottom-nav {
       @apply fixed bottom-0 left-0 right-0 bg-portfolio-card-bg border-t border-portfolio-border py-3 px-2 flex justify-around;
       z-index: 40;
     }
-    
+
     .mobile-bottom-nav-item {
       @apply flex flex-col items-center text-gray-400;
     }
-    
+
     .mobile-bottom-nav-item.active {
       @apply text-portfolio-accent;
     }
-    
+
     .mobile-bottom-nav-item-icon {
       @apply mb-1 text-lg;
     }
-    
+
     .mobile-bottom-nav-item-label {
       @apply text-xs;
     }
