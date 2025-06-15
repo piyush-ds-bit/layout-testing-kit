@@ -29,7 +29,7 @@ const EditHero: React.FC = () => {
 
       if (sbError) {
         // Show special message for RLS/permission errors
-        if (sbError.code === '42501' || sbError.status === 403 || status === 403) {
+        if (sbError.code === '42501' || status === 403) {
           setError('You do not have permission to access the hero section. (RLS policy or role issue)');
         } else {
           setError(sbError.message || 'Failed to fetch hero section data.');
@@ -114,7 +114,7 @@ const EditHero: React.FC = () => {
           .eq('id', heroData.id);
 
         if (updateError) {
-          if (updateError.code === '42501' || updateError.status === 403 || status === 403) {
+          if (updateError.code === '42501' || status === 403) {
             setError('You do not have permission to update the hero section. (RLS policy or role issue)');
           } else {
             setError(updateError.message || 'Failed to save hero section.');
@@ -142,7 +142,7 @@ const EditHero: React.FC = () => {
           .single();
 
         if (insertError) {
-          if (insertError.code === '42501' || insertError.status === 403 || status === 403) {
+          if (insertError.code === '42501' || status === 403) {
             setError('You do not have permission to create the hero section. (RLS policy or role issue)');
           } else {
             setError(insertError.message || 'Failed to save hero section.');
