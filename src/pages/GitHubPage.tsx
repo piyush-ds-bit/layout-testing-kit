@@ -6,9 +6,7 @@ import GitHubSection from '@/components/github/GitHubSection';
 const GitHubPage: React.FC = () => {
   return (
     <Layout>
-      <div className="pt-10">
-        <GitHubSection />
-      </div>
+      <GitHubSection />
     </Layout>
   );
 };

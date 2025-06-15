@@ -13,7 +13,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   useVisitorTracking();
   
   return (
-    <div className="flex flex-col min-h-screen bg-[#0c111d]">
+    <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-grow pb-16 md:pb-0">
         {children}

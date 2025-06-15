@@ -69,13 +69,15 @@ export default {
         },
         portfolio: {
           dark: "#111827",
-          darker: "#0f172a",
+          darker: "#0f1624",
           darkest: "#030712",
           accent: "#4fd1c5",
           "accent-dark": "#38b2ac",
           gray: "#6b7280",
           "gray-light": "#9ca3af",
           "card-bg": "#1e293b",
+          "card-bg-alt": "#263040",
+          "border": "#2d3748",
         }
       },
       borderRadius: {

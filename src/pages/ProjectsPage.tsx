@@ -6,9 +6,7 @@ import ProjectsSection from '@/components/projects/ProjectsSection';
 const ProjectsPage: React.FC = () => {
   return (
     <Layout>
-      <div className="pt-10">
-        <ProjectsSection />
-      </div>
+      <ProjectsSection />
     </Layout>
   );
 };

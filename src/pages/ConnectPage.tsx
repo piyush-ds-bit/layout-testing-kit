@@ -6,9 +6,7 @@ import ConnectSection from '@/components/connect/ConnectSection';
 const ConnectPage: React.FC = () => {
   return (
     <Layout>
-      <div className="pt-10">
-        <ConnectSection />
-      </div>
+      <ConnectSection />
     </Layout>
   );
 };

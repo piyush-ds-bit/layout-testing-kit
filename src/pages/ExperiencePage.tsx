@@ -6,9 +6,7 @@ import ExperienceSection from '@/components/experience/ExperienceSection';
 const ExperiencePage: React.FC = () => {
   return (
     <Layout>
-      <div className="pt-10">
-        <ExperienceSection />
-      </div>
+      <ExperienceSection />
     </Layout>
   );
 };

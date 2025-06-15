@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -26,7 +27,7 @@ const Hero: React.FC = () => {
           
           <div className="mt-10">
             <Link to="/resume">
-              <Button size="lg" className="bg-[#263040] hover:bg-[#1e293b] text-white border border-gray-700 rounded-full px-8 py-6 flex items-center gap-2">
+              <Button size="lg" className="bg-portfolio-card-bg-alt hover:bg-portfolio-card-bg text-white border border-portfolio-border rounded-full px-8 py-6 flex items-center gap-2 transition-colors duration-300">
                 <FileText className="w-5 h-5" />
                 <span className="text-lg">View Resume</span>
               </Button>
