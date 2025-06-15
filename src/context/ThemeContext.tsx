@@ -14,7 +14,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("theme") as Theme;
       if (saved === "light" || saved === "dark") return saved;
-      // System preference
       return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     }
     return "dark";
@@ -30,20 +29,25 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setTheme(theme === "dark" ? "light" : "dark");
   }, [theme, setTheme]);
 
+  // Ensure class is set right after mount (hydration)
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
+    if (typeof window !== "undefined") {
+      document.documentElement.classList.toggle("dark", theme === "dark");
+    }
   }, [theme]);
 
   useEffect(() => {
-    // Listen to system color scheme changes
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const systemListener = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem("theme")) {
-        setTheme(e.matches ? "dark" : "light");
-      }
-    };
-    media.addEventListener("change", systemListener);
-    return () => media.removeEventListener("change", systemListener);
+    // System color scheme preference changes
+    if (typeof window !== "undefined") {
+      const media = window.matchMedia("(prefers-color-scheme: dark)");
+      const systemListener = (e: MediaQueryListEvent) => {
+        if (!localStorage.getItem("theme")) {
+          setTheme(e.matches ? "dark" : "light");
+        }
+      };
+      media.addEventListener("change", systemListener);
+      return () => media.removeEventListener("change", systemListener);
+    }
   }, [setTheme]);
 
   return (

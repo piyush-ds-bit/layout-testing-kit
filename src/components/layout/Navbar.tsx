@@ -51,21 +51,19 @@ const Navbar: React.FC = () => {
       <header className="sticky top-0 z-50 w-full bg-portfolio-darkest/80 backdrop-blur-md border-b border-portfolio-dark">
         <div className="portfolio-container py-4">
           <div className="flex items-center justify-between">
-            {/* Brand + Theme Toggle */}
+            {/* Brand + Theme Toggle (replace "Home" icon with theme toggle) */}
             <div className="flex items-center space-x-3">
-              <Button
-                variant="ghost"
-                size="icon"
+              <button
                 aria-label="Toggle dark/light theme"
-                className="transition-colors focus:outline-none"
+                className="rounded-full p-2 transition-colors bg-transparent hover:bg-portfolio-card-bg border border-portfolio-accent"
                 onClick={toggleTheme}
               >
                 {theme === "dark" ? (
-                  <Sun size={22} className="text-portfolio-accent transition-transform duration-300 rotate-0 scale-100 dark:rotate-90 dark:scale-0" />
+                  <Sun size={22} className="text-portfolio-accent transition-transform duration-300 rotate-0 scale-100" />
                 ) : (
-                  <Moon size={22} className="text-yellow-400 transition-transform duration-300 dark:-rotate-90 dark:scale-0" />
+                  <Moon size={22} className="text-yellow-400 transition-transform duration-300" />
                 )}
-              </Button>
+              </button>
               <span className="text-xl font-semibold text-white">Portfolio</span>
             </div>
 
