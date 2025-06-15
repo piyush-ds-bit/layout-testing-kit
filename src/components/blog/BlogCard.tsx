@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { BlogPost } from '@/types/database';
 import { useAuth } from '@/context/AuthContext';
@@ -40,7 +39,9 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
   const isLong = post.content.length > TRUNCATE_LENGTH;
   const previewContent = truncateText(post.content, TRUNCATE_LENGTH);
 
-  const canEdit = user && (user.id === post.user_id || isAuthorized);
+  // Can edit: only if user is the author (even admin can edit only own posts)
+  const canEdit = user && user.id === post.user_id;
+  // Can delete: admin can delete any post, users can delete their own
   const canDelete = user && (user.id === post.user_id || isAuthorized);
 
   const handleSave = () => {
@@ -54,7 +55,18 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
 
   const handleDelete = () => {
     if (window.confirm('Are you sure you want to delete this blog post?')) {
-      deleteBlogPost.mutate(post.id!);
+      deleteBlogPost.mutate(post.id!, {
+        onError: (error: any) => {
+          // Show error using toast (if not already handled in hook)
+          if (typeof window !== "undefined" && window.toast) {
+            window.toast({
+              title: "Error deleting blog post",
+              description: error.message || "There was a problem deleting the blog post.",
+              variant: "destructive"
+            });
+          }
+        }
+      });
     }
   };
 
@@ -154,4 +166,3 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
 };
 
 export default BlogCard;
-
