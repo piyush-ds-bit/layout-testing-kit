@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Layout from '@/components/layout/Layout';
 import Hero from '@/components/home/Hero';
@@ -7,7 +8,8 @@ import ProjectsPreview from '@/components/home/ProjectsPreview';
 import GitHubPreview from '@/components/home/GitHubPreview';
 import BlogPreview from '@/components/home/BlogPreview';
 import ConnectPreview from '@/components/home/ConnectPreview';
-import MLPipelineVisualization from '@/components/home/MLPipelineVisualization';
+// Updated import path
+import MLPipelineVisualization from '@/components/mlpipeline/MLPipelineVisualization';
 
 const HomePage: React.FC = () => {
   return (
