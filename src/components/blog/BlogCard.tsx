@@ -44,7 +44,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
   };
 
   return (
-    <Card className="bg-portfolio-dark border-portfolio-dark hover:border-portfolio-accent/50 transition-colors">
+    <Card className="bg-portfolio-grey border-portfolio-dark hover:border-portfolio-accent/50 transition-colors">
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="space-y-2">
