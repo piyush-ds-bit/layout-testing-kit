@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,6 +16,7 @@ import ConnectPage from "./pages/ConnectPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ResumePage from "./pages/ResumePage";
+import ProjectDetailsPage from "./pages/ProjectDetailsPage";
 
 // Admin Pages
 import AdminLayout from "./pages/AdminLayout";
@@ -47,6 +47,7 @@ const App = () => (
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/github" element={<GitHubPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/projects/:id" element={<ProjectDetailsPage />} />
             <Route path="/connect" element={<ConnectPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
