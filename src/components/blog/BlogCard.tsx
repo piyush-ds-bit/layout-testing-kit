@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { BlogPost } from '@/types/database';
 import { useAuth } from '@/context/AuthContext';
@@ -10,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Edit, Trash2, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
+import { toast } from '@/components/ui/use-toast';
 
 interface BlogCardProps {
   post: BlogPost;
@@ -39,9 +41,10 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
   const isLong = post.content.length > TRUNCATE_LENGTH;
   const previewContent = truncateText(post.content, TRUNCATE_LENGTH);
 
-  // Can edit: only if user is the author (even admin can edit only own posts)
+  // Only allow user to edit their own post (admin or not)
   const canEdit = user && user.id === post.user_id;
-  // Can delete: admin can delete any post, users can delete their own
+
+  // Allow delete for admin (isAuthorized) or post author
   const canDelete = user && (user.id === post.user_id || isAuthorized);
 
   const handleSave = () => {
@@ -57,14 +60,11 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
     if (window.confirm('Are you sure you want to delete this blog post?')) {
       deleteBlogPost.mutate(post.id!, {
         onError: (error: any) => {
-          // Show error using toast (if not already handled in hook)
-          if (typeof window !== "undefined" && window.toast) {
-            window.toast({
-              title: "Error deleting blog post",
-              description: error.message || "There was a problem deleting the blog post.",
-              variant: "destructive"
-            });
-          }
+          toast({
+            title: "Error deleting blog post",
+            description: error.message || "There was a problem deleting the blog post.",
+            variant: "destructive"
+          });
         }
       });
     }
@@ -91,6 +91,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
           </div>
           {(canEdit || canDelete) && (
             <div className="flex gap-2">
+              {/* Only show Edit if author (even if admin) */}
               {canEdit && (
                 <Dialog open={isEditing} onOpenChange={setIsEditing}>
                   <DialogTrigger asChild>
@@ -128,6 +129,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
                   </DialogContent>
                 </Dialog>
               )}
+              {/* Delete allowed for author or admin */}
               {canDelete && (
                 <Button 
                   variant="outline" 
