@@ -25,9 +25,9 @@ const MLPipelineVisualization: React.FC = () => {
         {`
           .pulse { animation: pulseGlow 1.9s cubic-bezier(0.4,0,0.6,1) infinite; }
           @keyframes pulseGlow {
-            0% { text-shadow: 0 0 4px #06b6d4cc, 0 0 8px #06b6d488;}
-            50% { text-shadow: 0 0 20px #06b6d4f0, 0 0 12px #06b6d4a0;}
-            100% { text-shadow: 0 0 4px #06b6d4cc, 0 0 8px #06b6d488;}
+            0% { text-shadow: 0 0 4px #a855f7cc, 0 0 8px #a855f788;}
+            50% { text-shadow: 0 0 20px #a855f7f0, 0 0 12px #a855f7a0;}
+            100% { text-shadow: 0 0 4px #a855f7cc, 0 0 8px #a855f788;}
           }
         `}
       </style>

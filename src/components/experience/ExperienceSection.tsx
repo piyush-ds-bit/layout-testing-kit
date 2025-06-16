@@ -3,18 +3,16 @@ import ExperienceCard from './ExperienceCard';
 
 const experiences = [
    {
-    company: "Self-Initiated",
-    position: "Machine Learning & Data Science Developer",
-    duration: "2024 - Present",
-    description:
-      "Building end-to-end data-driven applications like WhatsApp Chat Analyzer, Movie Recommender System, and Insurance Premium Predictor using Python, Streamlit, and various ML libraries. Focused on data preprocessing, model building, deployment, and UI integration."
+    company: "Company C",
+    position: "Intern",
+    duration: "Jan 2025 - Present",
+    description: "Eager to elaborate...."
   },
   {
-    company: "AEIE Department, HIT",
-    position: "Academic Project Contributor",
-    duration: "Aug 2023 - Present",
-    description:
-      "Learning and working on interdisciplinary academic projects blending electronics and AI, including sensor-based data acquisition systems and analysis using Python. Applied knowledge from instrumentation to real-world predictive modeling."
+    company: "Company B",
+    position: "Intern",
+    duration: "Jan 2025 - Present",
+    description: "Eager to elaborate...."
   },
   {
     company: "Self Employed",

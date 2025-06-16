@@ -28,7 +28,7 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
       minWidth: isMobile ? 240 : 136,
       maxWidth: isMobile ? 320 : 175,
       boxShadow: expanded
-        ? "0 0 16px 4px #06b6d4cc, 0 6px 32px #06b6d420"
+        ? "0 0 16px 4px #a855f7cc, 0 6px 32px #a855f720"
         : undefined,
       transform: expanded ? "scale(1.055)" : undefined
     }}
@@ -36,7 +36,7 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
     onClick={onClick}
   >
     <div className={`text-2xl md:text-4xl mb-2 md:mb-3 select-none pulse`} style={{
-      filter: "drop-shadow(0 0 6px #06b6d4aa)",
+      filter: "drop-shadow(0 0 6px #a855f7aa)",
     }}>
       {iconMap[step.icon] ?? step.icon}
     </div>

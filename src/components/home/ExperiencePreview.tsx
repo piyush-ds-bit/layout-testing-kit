@@ -6,11 +6,10 @@ import ExperienceCard from '@/components/experience/ExperienceCard';
 
 const experiences = [
   {
-    company: "AEIE Department, HIT",
-    position: "Academic Project Contributor",
-    duration: "Aug 2023 - Present",
-    description:
-      "Learning and working on interdisciplinary academic projects blending electronics and AI, including sensor-based data acquisition systems and analysis using Python. Applied knowledge from instrumentation to real-world predictive modeling."
+    company: "Company B",
+    position: "Intern",
+    duration: "Jan 2025 - Present",
+    description: "Eager to elaborate...."
   },
   {
     company: "Self-Employed",
