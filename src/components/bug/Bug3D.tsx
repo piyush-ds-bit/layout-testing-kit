@@ -1,7 +1,7 @@
 
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Mesh, Vector3 } from 'three';
+import { Mesh, Vector3, Group } from 'three';
 
 interface Bug3DProps {
   position: [number, number, number];
@@ -10,7 +10,7 @@ interface Bug3DProps {
 }
 
 const Bug3D: React.FC<Bug3DProps> = ({ position, targetPosition, isVisible }) => {
-  const bugRef = useRef<Mesh>(null);
+  const bugRef = useRef<Group>(null);
   const wingLeftRef = useRef<Mesh>(null);
   const wingRightRef = useRef<Mesh>(null);
   
