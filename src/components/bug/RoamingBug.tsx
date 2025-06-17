@@ -87,12 +87,20 @@ const RoamingBug: React.FC = () => {
 
   return (
     <div 
-      className="fixed inset-0 pointer-events-none z-[9999]"
-      style={{ mixBlendMode: 'normal' }}
+      className="fixed inset-0 z-[9999]"
+      style={{ 
+        pointerEvents: 'none',
+        mixBlendMode: 'normal'
+      }}
     >
       <Canvas
         camera={{ position: [0, 0, 5], fov: 75 }}
-        style={{ background: 'transparent' }}
+        style={{ 
+          background: 'transparent',
+          pointerEvents: 'none'
+        }}
+        eventSource={undefined}
+        eventPrefix="client"
       >
         <ambientLight intensity={0.6} />
         <directionalLight position={[5, 5, 5]} intensity={0.8} />

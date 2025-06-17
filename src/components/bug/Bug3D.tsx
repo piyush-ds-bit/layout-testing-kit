@@ -40,38 +40,52 @@ const Bug3D: React.FC<Bug3DProps> = ({ position, targetPosition, isVisible }) =>
   
   return (
     <group ref={bugRef} position={position} visible={isVisible} scale={0.5}>
-      {/* Bug body */}
+      {/* Bug body - red ladybug */}
       <mesh>
         <sphereGeometry args={[0.1, 8, 8]} />
-        <meshLambertMaterial color="#2d4a22" />
+        <meshLambertMaterial color="#dc2626" />
       </mesh>
       
-      {/* Bug head */}
+      {/* Bug head - darker red */}
       <mesh position={[0, 0, 0.08]}>
         <sphereGeometry args={[0.06, 6, 6]} />
-        <meshLambertMaterial color="#1a2e15" />
+        <meshLambertMaterial color="#991b1b" />
       </mesh>
       
-      {/* Left wing */}
+      {/* Black spots on the body */}
+      <mesh position={[-0.03, 0.05, 0.02]}>
+        <sphereGeometry args={[0.015, 6, 6]} />
+        <meshLambertMaterial color="#000000" />
+      </mesh>
+      <mesh position={[0.03, 0.05, 0.02]}>
+        <sphereGeometry args={[0.015, 6, 6]} />
+        <meshLambertMaterial color="#000000" />
+      </mesh>
+      <mesh position={[0, -0.04, 0.02]}>
+        <sphereGeometry args={[0.02, 6, 6]} />
+        <meshLambertMaterial color="#000000" />
+      </mesh>
+      
+      {/* Left wing - transparent with slight red tint */}
       <mesh ref={wingLeftRef} position={[-0.05, 0.02, 0]} rotation={[0, 0, 0.3]}>
         <planeGeometry args={[0.08, 0.15]} />
-        <meshLambertMaterial color="#ffffff" transparent opacity={0.7} />
+        <meshLambertMaterial color="#ffffff" transparent opacity={0.8} />
       </mesh>
       
-      {/* Right wing */}
+      {/* Right wing - transparent with slight red tint */}
       <mesh ref={wingRightRef} position={[0.05, 0.02, 0]} rotation={[0, 0, -0.3]}>
         <planeGeometry args={[0.08, 0.15]} />
-        <meshLambertMaterial color="#ffffff" transparent opacity={0.7} />
+        <meshLambertMaterial color="#ffffff" transparent opacity={0.8} />
       </mesh>
       
-      {/* Antennae */}
+      {/* Antennae - black */}
       <mesh position={[-0.02, 0.05, 0.1]}>
         <cylinderGeometry args={[0.002, 0.002, 0.04]} />
-        <meshLambertMaterial color="#1a2e15" />
+        <meshLambertMaterial color="#000000" />
       </mesh>
       <mesh position={[0.02, 0.05, 0.1]}>
         <cylinderGeometry args={[0.002, 0.002, 0.04]} />
-        <meshLambertMaterial color="#1a2e15" />
+        <meshLambertMaterial color="#000000" />
       </mesh>
     </group>
   );
