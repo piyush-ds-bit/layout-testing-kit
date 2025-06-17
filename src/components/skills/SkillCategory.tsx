@@ -48,7 +48,7 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({ title, icon, skills }) =>
 
       // Other
       case 'git': return '🔧';
-      case 'leetcode': return '🧩';
+      case 'problemsolving': return '🧩';
 
       // Fallback
       default: return '🔹';

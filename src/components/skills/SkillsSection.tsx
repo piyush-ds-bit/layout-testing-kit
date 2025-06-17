@@ -1,3 +1,4 @@
+
 import React from 'react';
 import SkillCategory from './SkillCategory';
 
@@ -34,15 +35,14 @@ const Tools = [
   { name: 'IntelliJ',          icon: 'intellijidea' },
   { name: 'Jupyter Notebook',  icon: 'jupyter' },
   { name: 'PyCharm',           icon: 'pycharm' },
-  { name: 'Google Colab',      icon: 'googlecolab' },
+  { name: 'Google Colab',      icon: 'googlecolab' },
   { name: 'Kaggle',            icon: 'kaggle' }
 ];
 
 const otherSkills = [
-  { name: 'Problem Solving (LeetCode)', icon: 'leetcode' },
-  { name: 'Git',                         icon: 'git' }
+  { name: 'Problem Solving', icon: 'problemsolving' },
+  { name: 'Git',             icon: 'git' }
 ];
-
 
 const SkillsSection: React.FC = () => {
   return (
