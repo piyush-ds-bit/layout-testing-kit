@@ -2,6 +2,7 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import RoamingBug from '@/components/bug/RoamingBug';
 import { useVisitorTracking } from '@/hooks/useVisitorTracking';
 
 interface LayoutProps {
@@ -19,6 +20,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {children}
       </main>
       <Footer />
+      <RoamingBug />
     </div>
   );
 };
