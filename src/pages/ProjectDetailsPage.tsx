@@ -94,11 +94,12 @@ This project was born out of curiosity to visually explore conversation patterns
     details: [
       `🌐 Personal Portfolio – Built Entirely Using AI (Lovable.ai)
       =======================
+      
 Welcome to my personal portfolio website, a digital reflection of my learning journey, projects, and passion for Machine Learning and Data Science.
-What makes this portfolio special? It’s built entirely using AI tools, with no prior experience in React or frontend development.`,
-
-`🎯 Why I Built This
------------------------
+What makes this portfolio special? It’s built entirely using AI tools, with no prior experience in React or frontend development.`
+      ,
+      `🎯 Why I Built This
+      -----------------------
       
 As someone deeply passionate about becoming a Data Scientist, I wanted a place to:
 
@@ -106,11 +107,11 @@ Showcase my projects, skills, and blogs
 Share my learning path with others
 Experiment with creative tech like AI-driven design
 Create an engaging experience — even adding a randomly roaming bug 🐞 for fun!
-Despite having zero frontend experience, I used Lovable.ai, my creativity, and well-crafted prompts to build a fully responsive, modern site — all by myself.`,
-
-`🚀 Features
-
------------------------ 
+Despite having zero frontend experience, I used Lovable.ai, my creativity, and well-crafted prompts to build a fully responsive, modern site — all by myself.`
+      ,
+      
+      `🚀 Features
+      ----------------------- 
   
 ✨ Fully AI-generated layout using Lovable.ai
 📂 Sections for Skills, Experience, Projects, Blogs, and Contact
@@ -131,58 +132,54 @@ Framer Motion – For animations
 Custom SVGs & Icons – For visual identity
 GitHub – For version control and deployment history
 🌱 My Ongoing Mission
-This portfolio is a testament to the power of learning + creativity.`,
-
-`I’m currently:
-
------------------------
+This portfolio is a testament to the power of learning + creativity.`
+      ,
+      `I’m currently:
+      -----------------------
 
 🌟 Learning core ML algorithms and data science techniques
 🧠 Building ML projects using Python, Pandas, scikit-learn, and more
 🔁 Constantly evolving and adding features to this site
-📌 My dream is to become a Data Scientist, and I’m working day and night to make that dream real — through building, experimenting, and learning.
-
-🔍 How It Was Built
-“I didn’t write a single line of frontend code manually.`,
-
-`Instead:
-
------------------------
+📌 My dream is to become a Data Scientist, and I’m working day and night to make that dream real — through building, experimenting, and learning.`
+      ,
+      `🔍 How It Was Built
+      -----------------------
+      
+I didn’t write a single line of frontend code manually.`
+      ,
+      `Instead:
+      -----------------------
 
 I used prompts and imagination.
 I guided Lovable.ai to bring the site to life.
 I connected the backend using Supabase.
 I deployed the site and polished every section myself.
-🧠 AI helped me code it, but I envisioned it.`.
-
-`🖼️ Live Preview
-
------------------------
+🧠 AI helped me code it, but I envisioned it.`
+      ,
+      `🖼️ Live Preview
+      -----------------------
       
-👉 https://piyushkrsingh.lovable.app`,
-
-`📬 Contact Me
-
------------------------
+👉 https://piyushkrsingh.lovable.app`
+      ,
+      `📬 Contact Me
+      -----------------------
 
 Feel free to drop a message via the Connect section on the website.
 
 Name: Piyush Kumar Singh
 Email: piyushjuly04@gmail.com
-Portfolio: piyushkrsingh.lovable.app`,
-      
-`🙏 Acknowledgements
-
------------------------
+Portfolio: piyushkrsingh.lovable.app`
+      ,
+      `🙏 Acknowledgements
+      -----------------------
       
 Lovable.ai – for empowering me to build without knowing React
 Supabase – for seamless backend integration
 OpenAI – for guidance, support, and intelligence 😉
-And to everyone who's believed in learning by doing`,
-      
-`⭐ Final Note
-
------------------------ 
+And to everyone who's believed in learning by doing`
+      ,
+      `⭐ Final Note
+      ----------------------- 
 
 "You don’t need to know everything to start — just the courage to begin."
 
