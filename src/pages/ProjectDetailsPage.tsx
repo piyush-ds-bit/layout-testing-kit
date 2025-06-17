@@ -81,26 +81,26 @@ This project was born out of curiosity to visually explore conversation patterns
 `,
     ],
   },
-  '2':{id: '2',
+  '2':{id: 2,
     title: 'Piyush Portfolio',
-    description:
-      'Developed a Streamlit-based WhatsApp chat analyzer with sentiment analysis, word clouds, user stats, and emoji insights using Pandas and Matplotlib/Seaborn.',
+    description: 'Developed a personal portfolio website using lovable.ai and Firebase with an admin panel for real-time content updates, showcasing projects, skills, and contact information.',
+    image: '/portfolio.jpg',
     category: 'Deployed',
-    image_url: '/whatsapp.jpg',
-    github_url: '#',
-    live_url: '#',
-    technologies: ['Python', 'Streamlit', 'Pandas&Seaborn'],
+    technologies: ['lovable.ai', 'Supabase', 'SQLite'],
+    githubUrl: 'https://github.com/piyush-ds-bit/Portfolio-website',
+    liveUrl: '#',
+    technologies: ['lovable.ai', 'Supabase', 'SQLlite'],
     created_at: '',
     details: [
       `🌐 Personal Portfolio – Built Entirely Using AI (Lovable.ai)
       =======================
 Welcome to my personal portfolio website, a digital reflection of my learning journey, projects, and passion for Machine Learning and Data Science.
-What makes this portfolio special? It’s built entirely using AI tools, with no prior experience in React or frontend development.",
+What makes this portfolio special? It’s built entirely using AI tools, with no prior experience in React or frontend development.`,
 
-"🎯 Why I Built This
-      -----------------------
+`🎯 Why I Built This
+-----------------------
       
-      As someone deeply passionate about becoming a Data Scientist, I wanted a place to:
+As someone deeply passionate about becoming a Data Scientist, I wanted a place to:
 
 Showcase my projects, skills, and blogs
 Share my learning path with others
@@ -188,7 +188,8 @@ And to everyone who's believed in learning by doing`,
 
 If you like my work, feel free to ⭐ star the repo (if public), or connect with me on GitHub and LinkedIn.
 
-Thanks for stopping by 🙏`,],
+Thanks for stopping by 🙏`,
+    ],
   }// Add more demo projects here if needed
 };
 
