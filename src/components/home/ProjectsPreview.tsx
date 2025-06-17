@@ -12,7 +12,7 @@ const featuredProjects = [
     image: '/whatsapp.jpg',
     category: 'Deployed',
     technologies: ['Python', 'Streamlit', 'Pandas&Seaborn'],
-    githubUrl: '#',
+    githubUrl: 'https://github.com/piyush-ds-bit/whatsapp_chat_analyzer',
     liveUrl: '#',
   },
   {
@@ -22,7 +22,7 @@ const featuredProjects = [
     image: '/portfolio.jpg',
     category: 'Deployed',
     technologies: ['lovable.ai', 'Supabase', 'SQLite'],
-    githubUrl: '#',
+    githubUrl: 'https://github.com/piyush-ds-bit/Portfolio-website',
     liveUrl: '#',
   },
   {
@@ -32,7 +32,7 @@ const featuredProjects = [
     image: '/moviemate.jpg',
     category: 'In Development',
     technologies: ['Python', 'ScikitLearn', 'Streamlit'],
-    githubUrl: '#',
+    githubUrl: 'https://github.com/piyush-ds-bit/Movie-Recommender-System',
   }
 ];
 
