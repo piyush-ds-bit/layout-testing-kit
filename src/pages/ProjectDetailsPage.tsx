@@ -84,7 +84,7 @@ This project was born out of curiosity to visually explore conversation patterns
   '2':{id: 2,
     title: 'Piyush Portfolio',
     description: 'Developed a personal portfolio website using lovable.ai and Firebase with an admin panel for real-time content updates, showcasing projects, skills, and contact information.',
-    image: '/portfolio.jpg',
+    image_url: '/lovable-uploads/portfolio_1.png',
     category: 'Deployed',
     technologies: ['lovable.ai', 'Supabase', 'SQLite'],
     githubUrl: 'https://github.com/piyush-ds-bit/Portfolio-website',
