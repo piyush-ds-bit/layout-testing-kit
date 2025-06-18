@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { FileText } from 'lucide-react';
 import AnimatedGreeting from './AnimatedGreeting';
+import BlogCTA from '@/components/blog/BlogCTA';
 
 const Hero: React.FC = () => {
   return (
@@ -41,9 +42,7 @@ const Hero: React.FC = () => {
             <Link to="/experience" className="portfolio-nav-button">
               Experience
             </Link>
-            <Link to="/blog" className="portfolio-nav-button">
-              Blog
-            </Link>
+            <BlogCTA variant="hero" className="portfolio-nav-button-override" />
             <Link to="/github" className="portfolio-nav-button">
               GitHub
             </Link>

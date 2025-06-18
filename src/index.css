@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -165,6 +164,16 @@
     transition-all duration-300 flex items-center justify-center hover:border-portfolio-accent/50;
   }
   
+  .portfolio-nav-button-override {
+    @apply bg-portfolio-card-bg hover:bg-portfolio-card-bg-alt text-white text-lg font-medium py-5 px-4 rounded-xl border border-portfolio-border
+    transition-all duration-300 flex items-center justify-center hover:border-portfolio-accent/50;
+    /* Override to remove default button styles for blog CTA */
+    all: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
   .skill-tag {
     @apply bg-portfolio-card-bg border border-portfolio-border px-4 py-2 rounded-lg flex items-center gap-2 text-gray-300
     hover:border-portfolio-accent transition-all duration-200;
@@ -313,4 +322,84 @@
     position: relative;
     z-index: 1;
   }
+}
+
+/* Enhanced Blog CTA Styles */
+.portfolio-nav-button-override {
+  @apply bg-portfolio-card-bg hover:bg-portfolio-card-bg-alt text-white text-lg font-medium py-5 px-4 rounded-xl border border-portfolio-border
+  transition-all duration-300 flex items-center justify-center hover:border-portfolio-accent/50;
+  /* Override to remove default button styles for blog CTA */
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Magnetic hover effect for blog buttons */
+.blog-magnetic-hover {
+  transition: transform 0.2s ease-out;
+}
+
+.blog-magnetic-hover:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* Gentle scroll animation */
+@keyframes gentle-fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-gentle-fade-up {
+  animation: gentle-fade-up 0.6s ease-out forwards;
+}
+
+/* Slide in animation for notification */
+@keyframes slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(100%) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.4s ease-out forwards;
+}
+
+/* Enhanced gradient border animation */
+@keyframes gradient-border {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-border {
+  background: linear-gradient(-45deg, #a855f7, #3b82f6, #8b5cf6, #06b6d4);
+  background-size: 400% 400%;
+  animation: gradient-border 3s ease infinite;
+}
+
+/* Blog section entrance animation */
+.blog-section-enter {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.blog-section-enter.visible {
+  opacity: 1;
+  transform: translateY(0);
 }

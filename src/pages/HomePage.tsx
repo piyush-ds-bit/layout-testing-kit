@@ -8,6 +8,7 @@ import ProjectsPreview from '@/components/home/ProjectsPreview';
 import GitHubPreview from '@/components/home/GitHubPreview';
 import BlogPreview from '@/components/home/BlogPreview';
 import ConnectPreview from '@/components/home/ConnectPreview';
+import BlogNotification from '@/components/blog/BlogNotification';
 // Updated import path
 import MLPipelineVisualization from '@/components/mlpipeline/MLPipelineVisualization';
 
@@ -23,6 +24,7 @@ const HomePage: React.FC = () => {
         <GitHubPreview />
         <BlogPreview />
         <ConnectPreview />
+        <BlogNotification />
       </div>
     </Layout>
   );
