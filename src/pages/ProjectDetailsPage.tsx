@@ -15,6 +15,8 @@ const DEMO_PROJECTS: Record<string, Project & { details?: string[] }> = {
       'Developed a Streamlit-based WhatsApp chat analyzer with sentiment analysis, word clouds, user stats, and emoji insights using Pandas and Matplotlib/Seaborn.',
     category: 'Deployed',
     image_url: '/whatsapp.jpg',
+    image_url: '/lovable-uploads/Whatsapp_2.jpg',
+    image_url: '/lovable-uploads/Whatsapp_3.jpg',
     github_url: '#',
     live_url: '#',
     technologies: ['Python', 'Streamlit', 'Pandas&Seaborn'],
