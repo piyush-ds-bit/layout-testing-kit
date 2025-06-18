@@ -14,7 +14,6 @@ const DEMO_PROJECTS: Record<string, Project & { details?: string[] }> = {
     description:
       'Developed a Streamlit-based WhatsApp chat analyzer with sentiment analysis, word clouds, user stats, and emoji insights using Pandas and Matplotlib/Seaborn.',
     category: 'Deployed',
-    image_url: '/whatsapp.jpg',
     image_url: '/lovable-uploads/Whatsapp_2.png',
     github_url: '#',
     live_url: '#',
@@ -82,7 +81,7 @@ This project was born out of curiosity to visually explore conversation patterns
 `,
     ],
   },
-  '2':{id: 2,
+  '2':{id: '2',
     title: 'Piyush Portfolio',
     description: 'Developed a personal portfolio website using lovable.ai and Firebase with an admin panel for real-time content updates, showcasing projects, skills, and contact information.',
     image_url: '/lovable-uploads/portfolio_2.png',
@@ -90,7 +89,6 @@ This project was born out of curiosity to visually explore conversation patterns
     technologies: ['lovable.ai', 'Supabase', 'SQLite'],
     githubUrl: 'https://github.com/piyush-ds-bit/Portfolio-website',
     liveUrl: '#',
-    technologies: ['lovable.ai', 'Supabase', 'SQLlite'],
     created_at: '',
     details: [
       `🌐 Personal Portfolio – Built Entirely Using AI (Lovable.ai)
