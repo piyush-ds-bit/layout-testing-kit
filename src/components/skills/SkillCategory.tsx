@@ -16,8 +16,6 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({ title, icon, skills }) =>
     switch (iconName.toLowerCase()) {
       // Programming
       case 'python': return '🐍';
-      case 'sql': return '🗃️';
-      case 'yaml': return '📄';
       case 'dart': return '🎯';
       case 'html5': return '🌐';
 
@@ -34,10 +32,10 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({ title, icon, skills }) =>
       case 'fastapi': return '🚀';
       case 'pydantic': return '🛡️';
       case 'flutter': return '📱';
+      case 'docker': return '🐳';
 
       // Databases
       case 'supabase': return '🔋';
-      case 'sqlite': return '💾';
 
       // Tools
       case 'intellij': return '🧠';
@@ -47,7 +45,6 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({ title, icon, skills }) =>
       case 'kaggle': return '🏅';
 
       // Other
-      case 'git': return '🔧';
       case 'problemsolving': return '🧩';
 
       // Fallback
