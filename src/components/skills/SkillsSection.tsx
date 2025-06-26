@@ -4,8 +4,6 @@ import SkillCategory from './SkillCategory';
 
 const programming = [
   { name: 'Python',    icon: 'python' },
-  { name: 'SQL',       icon: 'sql' },
-  { name: 'YAML',      icon: 'yaml' },
   { name: 'Dart',      icon: 'dart' },
   { name: 'HTML/CSS',  icon: 'html5' }
 ];
@@ -23,12 +21,12 @@ const webTools = [
   { name: 'Streamlit', icon: 'streamlit' },
   { name: 'FastAPI',   icon: 'fastapi' },
   { name: 'Pydantic',  icon: 'pydantic' },
-  { name: 'Flutter',   icon: 'flutter' }
+  { name: 'Flutter',   icon: 'flutter' },
+  { name: 'Docker',    icon: 'docker' },
 ];
 
 const databases = [
   { name: 'Supabase', icon: 'supabase' },
-  { name: 'SQLite',   icon: 'sqlite' }
 ];
 
 const Tools = [
@@ -41,7 +39,6 @@ const Tools = [
 
 const otherSkills = [
   { name: 'Problem Solving', icon: 'problemsolving' },
-  { name: 'Git',             icon: 'git' }
 ];
 
 const SkillsSection: React.FC = () => {
