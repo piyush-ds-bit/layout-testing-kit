@@ -12,7 +12,7 @@ const ResumePage: React.FC = () => {
           <h2 className="portfolio-heading">My Resume</h2>
           
           <div className="flex flex-col items-center mb-8">
-            <a href="/Resume.pdf" target="_blank" rel="noopener noreferrer">
+            <a href="/ResumeJune.pdf" target="_blank" rel="noopener noreferrer">
               <Button 
                 className="bg-portfolio-accent text-white hover:bg-portfolio-accent/80 flex items-center gap-2 mb-8"
               >
@@ -71,7 +71,7 @@ const ResumePage: React.FC = () => {
                     
                     <div>
                       <h4 className="font-semibold text-gray-300 mb-2">Programming</h4>
-                      <p className="text-gray-400">Python, SQL, YAML, Dart, HTML/CSS (Basics)</p>
+                      <p className="text-gray-400">Python, Dart, HTML/CSS (Basics)</p>
                     </div>
                 
                     <div>
@@ -81,12 +81,12 @@ const ResumePage: React.FC = () => {
                 
                     <div>
                       <h4 className="font-semibold text-gray-300 mb-2">Web & Tools</h4>
-                      <p className="text-gray-400">Streamlit, FastAPI, Pydantic, Flutter</p>
+                      <p className="text-gray-400">Streamlit, FastAPI, Pydantic, Flutter, Docker</p>
                     </div>
                 
                     <div>
                       <h4 className="font-semibold text-gray-300 mb-2">Databases</h4>
-                      <p className="text-gray-400">Supabase, SQLite</p>
+                      <p className="text-gray-400">Supabase</p>
                     </div>
                 
                     <div>
@@ -96,7 +96,7 @@ const ResumePage: React.FC = () => {
                 
                     <div>
                       <h4 className="font-semibold text-gray-300 mb-2">Other</h4>
-                      <p className="text-gray-400">Problem Solving (LeetCode), Git</p>
+                      <p className="text-gray-400">Problem Solving</p>
                     </div>
                     
                   </div>
@@ -117,13 +117,23 @@ const ResumePage: React.FC = () => {
                       </p>
                     </div>
 
-                      <div>
+                    <div>
                       <div className="flex justify-between">
                         <h4 className="text-lg font-semibold">Movie Recommender System</h4>
                         <span className="text-portfolio-accent">2025</span>
                       </div>
                       <p className="text-gray-300 mt-2">
                           Built a content-based movie recommender using Bag-of-Words with a dataset of 5000+ movies.
+                      </p>
+                    </div>
+
+                    <div>
+                      <div className="flex justify-between">
+                        <h4 className="text-lg font-semibold">Insurance Premium API</h4>
+                        <span className="text-portfolio-accent">2025</span>
+                      </div>
+                      <p className="text-gray-300 mt-2">
+                          Built a Machine Learning API using FastAPI to classify users into insurance premium categories (High, Medium, Low).
                       </p>
                     </div>
                     
