@@ -6,7 +6,6 @@ import SkillCategory from '@/components/skills/SkillCategory';
 
 const programming = [
   { name: 'Python', icon: 'python' },
-  { name: 'SQL', icon: 'sql' },
   { name: 'HTML/CSS', icon: 'html5' }
 ];
 
