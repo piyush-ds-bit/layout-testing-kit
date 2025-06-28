@@ -5,6 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import SkillCategory from '@/components/skills/SkillCategory';
 
 const programming = [
+  
   { name: 'Python', icon: 'python' },
   { name: 'HTML/CSS', icon: 'html5' }
 ];
