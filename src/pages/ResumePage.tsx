@@ -23,7 +23,7 @@ const ResumePage: React.FC = () => {
             
             <div className="portfolio-card w-full max-w-4xl">
               <div className="space-y-6">
-                {/* Resume Header */}
+                {/* Resume Heade */}
                 <div className="text-center mb-8">
                   <h1 className="text-3xl font-bold text-portfolio-accent mb-2">Piyush Kr. Singh</h1>
                   <p className="text-gray-400">Data Scientist · AI & ML Enthusiast · Python & Streamlit Developer</p>
