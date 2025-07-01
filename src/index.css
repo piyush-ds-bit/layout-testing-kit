@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -91,15 +92,15 @@
   }
   
   .portfolio-section {
-    @apply py-16 md:py-24;
+    @apply py-12 md:py-16 lg:py-24;
   }
   
   .portfolio-heading {
-    @apply text-3xl md:text-4xl font-bold text-white mb-8 text-center;
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-6 md:mb-8 text-center;
   }
   
   .portfolio-card {
-    @apply relative transition-all duration-300 p-6 rounded-xl border border-portfolio-border;
+    @apply relative transition-all duration-300 p-4 md:p-6 rounded-xl border border-portfolio-border;
     background: rgba(24, 36, 55, 0.65);
     backdrop-filter: blur(16px) saturate(150%);
     box-shadow: 0 6px 32px 0 rgba(168, 85, 247, 0.12), 0 2px 8px rgba(10,20,30,0.25), 0 1.5px 36px 0 rgba(0,0,0,0.09);
@@ -109,7 +110,7 @@
   
   .portfolio-card:hover {
     @apply shadow-lg;
-    transform: translateY(-7px) scale(1.035);
+    transform: translateY(-4px) scale(1.02);
     border-color: #a855f7;
     box-shadow: 0 12px 48px 0 rgba(168, 85, 247, 0.30), 0 8px 32px 0 rgba(10,20,30,0.22);
     background: rgba(24, 36, 55, 0.80);
@@ -136,17 +137,17 @@
   }
   
   .portfolio-button {
-    @apply bg-portfolio-accent text-white font-medium px-5 py-2.5 rounded-lg 
+    @apply bg-portfolio-accent text-white font-medium px-4 py-2 md:px-5 md:py-2.5 rounded-lg 
     hover:bg-portfolio-accent-dark transition-all duration-300 inline-flex items-center justify-center;
   }
   
   .portfolio-button-outline {
-    @apply bg-transparent text-portfolio-accent border border-portfolio-accent font-medium px-5 py-2.5 rounded-lg 
+    @apply bg-transparent text-portfolio-accent border border-portfolio-accent font-medium px-4 py-2 md:px-5 md:py-2.5 rounded-lg 
     hover:bg-portfolio-accent hover:text-white transition-all duration-300 inline-flex items-center justify-center;
   }
   
   .portfolio-input {
-    @apply bg-portfolio-card-bg border border-portfolio-border text-white rounded-lg px-4 py-3 w-full
+    @apply bg-portfolio-card-bg border border-portfolio-border text-white rounded-lg px-3 py-2 md:px-4 md:py-3 w-full
     focus:outline-none focus:ring-2 focus:ring-portfolio-accent focus:border-transparent;
   }
   
@@ -160,14 +161,13 @@
   }
   
   .portfolio-nav-button {
-    @apply bg-portfolio-card-bg hover:bg-portfolio-card-bg-alt text-white text-lg font-medium py-5 px-4 rounded-xl border border-portfolio-border
+    @apply bg-portfolio-card-bg hover:bg-portfolio-card-bg-alt text-white text-base md:text-lg font-medium py-4 md:py-5 px-3 md:px-4 rounded-xl border border-portfolio-border
     transition-all duration-300 flex items-center justify-center hover:border-portfolio-accent/50;
   }
   
   .portfolio-nav-button-override {
-    @apply bg-portfolio-card-bg hover:bg-portfolio-card-bg-alt text-white text-lg font-medium py-5 px-4 rounded-xl border border-portfolio-border
+    @apply bg-portfolio-card-bg hover:bg-portfolio-card-bg-alt text-white text-base md:text-lg font-medium py-4 md:py-5 px-3 md:px-4 rounded-xl border border-portfolio-border
     transition-all duration-300 flex items-center justify-center hover:border-portfolio-accent/50;
-    /* Override to remove default button styles for blog CTA */
     all: unset;
     display: flex;
     align-items: center;
@@ -175,12 +175,12 @@
   }
   
   .skill-tag {
-    @apply bg-portfolio-card-bg border border-portfolio-border px-4 py-2 rounded-lg flex items-center gap-2 text-gray-300
+    @apply bg-portfolio-card-bg border border-portfolio-border px-3 py-2 md:px-4 md:py-2 rounded-lg flex items-center gap-2 text-gray-300
     hover:border-portfolio-accent transition-all duration-200;
   }
   
   .social-icon-container {
-    @apply w-16 h-16 rounded-full bg-portfolio-card-bg border border-portfolio-border flex items-center justify-center
+    @apply w-12 h-12 md:w-16 md:h-16 rounded-full bg-portfolio-card-bg border border-portfolio-border flex items-center justify-center
     hover:border-portfolio-accent transition-all duration-300;
   }
 
@@ -214,192 +214,115 @@
     animation: slideUp 0.6s ease-out forwards;
   }
   
-  /* Mobile-specific styles (Android-inspired UI) */
+  /* Mobile-specific optimizations */
   @media (max-width: 768px) {
-    .portfolio-card {
-      @apply rounded-2xl shadow-lg p-5 mb-4;
-      background: rgba(24, 36, 55, 0.91);
-      backdrop-filter: blur(12px) saturate(180%);
-      box-shadow: 0 2px 16px rgba(168, 85, 247, 0.18),
-        0 2px 8px rgba(10,20,30,0.15);
-    }
-
-    .portfolio-card:hover {
-      transform: scale(1.018);
-      border-color: #a855f7;
-      background: rgba(24, 36, 55, 0.93);
-    }
-
-    .skill-tag {
-      @apply bg-[#172032] border-portfolio-border rounded-xl;
-    }
-
-    .portfolio-nav-button {
-      @apply rounded-2xl py-4 text-base;
-    }
-
-    .social-icon-container {
-      @apply w-14 h-14 rounded-2xl;
-    }
-
-    /* Material-inspired elevation for cards */
-    .portfolio-card {
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Android-style buttons */
-    button, .portfolio-button, .portfolio-button-outline {
-      @apply rounded-xl py-3;
-    }
-
-    /* Floating action button style for primary actions */
-    .mobile-fab {
-      @apply fixed bottom-6 right-6 w-14 h-14 rounded-full bg-portfolio-accent flex items-center justify-center shadow-xl;
-    }
-
-    /* Mobile spacing optimization */
     .portfolio-section {
-      @apply py-10;
+      @apply py-8;
     }
 
     .portfolio-heading {
-      @apply text-2xl font-bold mb-6;
+      @apply text-xl md:text-2xl mb-4;
     }
 
-    /* Android-style bottom navigation */
-    .mobile-bottom-nav {
-      @apply fixed bottom-0 left-0 right-0 bg-portfolio-card-bg border-t border-portfolio-border py-3 px-2 flex justify-around;
-      z-index: 40;
+    .portfolio-card {
+      @apply rounded-2xl p-4 mb-4;
+      background: rgba(24, 36, 55, 0.85);
+      backdrop-filter: blur(12px) saturate(180%);
     }
 
-    .mobile-bottom-nav-item {
-      @apply flex flex-col items-center text-gray-400;
+    .portfolio-card:hover {
+      transform: scale(1.01);
+      background: rgba(24, 36, 55, 0.90);
     }
 
-    .mobile-bottom-nav-item.active {
-      @apply text-portfolio-accent;
+    .skill-tag {
+      @apply bg-portfolio-card-bg border-portfolio-border rounded-xl px-3 py-2;
     }
 
-    .mobile-bottom-nav-item-icon {
-      @apply mb-1 text-lg;
+    .portfolio-nav-button {
+      @apply rounded-2xl py-3 text-base;
     }
 
-    .mobile-bottom-nav-item-label {
-      @apply text-xs;
+    .social-icon-container {
+      @apply w-12 h-12 rounded-2xl;
+    }
+
+    .portfolio-container {
+      @apply px-3;
     }
   }
 
-  /* 3D float & glow hover effect */
-  .portfolio-card-hover {
-    @apply relative transition-transform duration-300 rounded-xl border border-portfolio-border shadow-lg bg-[#1e293b];
-    background: rgba(24, 36, 55, 0.65);
-    box-shadow: 0 6px 32px 0 rgba(168, 85, 247, 0.12), 0 2px 8px rgba(10,20,30,0.25), 0 1.5px 36px 0 rgba(0,0,0,0.09);
-    border: 1.5px solid rgba(168, 85, 247, 0.21);
-    z-index: 1;
+  /* Enhanced Blog CTA and other animations */
+  .portfolio-nav-button-override {
+    @apply bg-portfolio-card-bg hover:bg-portfolio-card-bg-alt text-white text-base md:text-lg font-medium py-4 md:py-5 px-3 md:px-4 rounded-xl border border-portfolio-border
+    transition-all duration-300 flex items-center justify-center hover:border-portfolio-accent/50;
+    all: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .portfolio-card-hover:hover {
-    @apply shadow-lg;
-    transform: translateY(-7px) scale(1.035);
-    border-color: #a855f7;
-    box-shadow: 0 12px 48px 0 rgba(168, 85, 247, 0.30), 0 8px 32px 0 rgba(10,20,30,0.22);
-    background: rgba(24, 36, 55, 0.80);
+
+  .blog-magnetic-hover {
+    transition: transform 0.2s ease-out;
   }
-  .portfolio-card-hover::before {
-    --glass-gradient: linear-gradient(
-      135deg,
-      rgba(168, 85, 247, 0.13) 0%,
-      rgba(24, 36, 55, 0.04) 100%
-    );
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: var(--glass-gradient);
-    pointer-events: none;
-    z-index: 0;
+
+  .blog-magnetic-hover:hover {
+    transform: translateY(-2px) scale(1.02);
   }
-  .portfolio-card-hover > * {
-    position: relative;
-    z-index: 1;
+
+  @keyframes gentle-fade-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-}
 
-/* Enhanced Blog CTA Styles */
-.portfolio-nav-button-override {
-  @apply bg-portfolio-card-bg hover:bg-portfolio-card-bg-alt text-white text-lg font-medium py-5 px-4 rounded-xl border border-portfolio-border
-  transition-all duration-300 flex items-center justify-center hover:border-portfolio-accent/50;
-  /* Override to remove default button styles for blog CTA */
-  all: unset;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .animate-gentle-fade-up {
+    animation: gentle-fade-up 0.6s ease-out forwards;
+  }
 
-/* Magnetic hover effect for blog buttons */
-.blog-magnetic-hover {
-  transition: transform 0.2s ease-out;
-}
+  @keyframes slide-in {
+    0% {
+      opacity: 0;
+      transform: translateX(100%) translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) translateY(0);
+    }
+  }
 
-.blog-magnetic-hover:hover {
-  transform: translateY(-2px) scale(1.02);
-}
+  .animate-slide-in {
+    animation: slide-in 0.4s ease-out forwards;
+  }
 
-/* Gentle scroll animation */
-@keyframes gentle-fade-up {
-  0% {
+  @keyframes gradient-border {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .animate-gradient-border {
+    background: linear-gradient(-45deg, #a855f7, #3b82f6, #8b5cf6, #06b6d4);
+    background-size: 400% 400%;
+    animation: gradient-border 3s ease infinite;
+  }
+
+  .blog-section-enter {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  100% {
+
+  .blog-section-enter.visible {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.animate-gentle-fade-up {
-  animation: gentle-fade-up 0.6s ease-out forwards;
-}
-
-/* Slide in animation for notification */
-@keyframes slide-in {
-  0% {
-    opacity: 0;
-    transform: translateX(100%) translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) translateY(0);
-  }
-}
-
-.animate-slide-in {
-  animation: slide-in 0.4s ease-out forwards;
-}
-
-/* Enhanced gradient border animation */
-@keyframes gradient-border {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-.animate-gradient-border {
-  background: linear-gradient(-45deg, #a855f7, #3b82f6, #8b5cf6, #06b6d4);
-  background-size: 400% 400%;
-  animation: gradient-border 3s ease infinite;
-}
-
-/* Blog section entrance animation */
-.blog-section-enter {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.blog-section-enter.visible {
-  opacity: 1;
-  transform: translateY(0);
 }
