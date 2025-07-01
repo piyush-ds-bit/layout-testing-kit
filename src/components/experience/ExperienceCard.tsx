@@ -3,6 +3,7 @@ import React from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useAdminEdit } from '@/context/AdminEditContext';
 import AdminActionButtons from '@/components/admin/AdminActionButtons';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface ExperienceCardProps {
   company: string;
@@ -51,7 +52,21 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
         <p className="text-portfolio-gray-light text-sm">{duration}</p>
       </div>
       
-      <p className="text-portfolio-gray-light leading-relaxed">{description}</p>
+      {isExpanded && (
+        <div className="text-portfolio-gray-light leading-relaxed my-4">
+          {description}
+        </div>
+      )}
+
+      <div className="flex justify-end">
+        <button
+          className="p-2 text-portfolio-gray-light hover:text-white transition-colors"
+          onClick={() => setIsExpanded(!isExpanded)}
+          aria-label="Toggle Description"
+        >
+          {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+        </button>
+      </div>
     </div>
   );
 };
