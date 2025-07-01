@@ -17,6 +17,11 @@ const librariesFrameworks = [
 ];
 
 const SkillsPreview: React.FC = () => {
+  // Empty handler for preview - admin functionality not available on home page
+  const handleAddSkill = () => {
+    // No-op for preview
+  };
+
   return (
     <section id="skills" className="portfolio-section">
       <div 
@@ -37,8 +42,20 @@ const SkillsPreview: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-          <SkillCategory title="Programming" icon="💻" skills={programming} />
-          <SkillCategory title="Libraries & Frameworks" icon="📚" skills={librariesFrameworks} />
+          <SkillCategory 
+            title="Programming" 
+            icon="💻" 
+            skills={programming} 
+            categoryKey="programming"
+            onAddSkill={handleAddSkill}
+          />
+          <SkillCategory 
+            title="Libraries & Frameworks" 
+            icon="📚" 
+            skills={librariesFrameworks} 
+            categoryKey="libraries"
+            onAddSkill={handleAddSkill}
+          />
         </div>
       </div>
     </section>
