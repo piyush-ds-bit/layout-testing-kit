@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useAdminEdit } from '@/context/AdminEditContext';
 import AdminActionButtons from '@/components/admin/AdminActionButtons';
@@ -13,28 +12,34 @@ interface ExperienceCardProps {
   index: number;
 }
 
-const ExperienceCard: React.FC<ExperienceCardProps> = ({ 
-  company, 
-  position, 
-  duration, 
-  description, 
-  index 
+const ExperienceCard: React.FC<ExperienceCardProps> = ({
+  company,
+  position,
+  duration,
+  description,
+  index
 }) => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const handleEdit = () => {
     console.log('Edit experience:', { company, position, duration, description });
-    // TODO: Open edit modal
   };
 
   const handleDelete = () => {
     console.log('Delete experience:', { company, position });
-    // TODO: Implement delete with confirmation
   };
 
+  const toggleExpanded = () => setIsExpanded(prev => !prev);
+
+  // Shorten text for collapsed view
+  const maxPreviewLength = 120;
+  const isLongText = description.length > maxPreviewLength;
+  const previewText = isLongText ? description.slice(0, maxPreviewLength) + '...' : description;
+
   return (
-    <div className={`group relative portfolio-card max-w-md mx-auto ${
+    <div className={`group relative portfolio-card max-w-md mx-auto transition-all duration-300 ${
       index % 2 === 0 ? 'md:mr-auto md:ml-0' : 'md:ml-auto md:mr-0'
     }`}>
       {isAuthorized && isEditMode && (
@@ -51,22 +56,22 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
         <h4 className="text-portfolio-accent font-medium mb-1">{company}</h4>
         <p className="text-portfolio-gray-light text-sm">{duration}</p>
       </div>
-      
-      {isExpanded && (
-        <div className="text-portfolio-gray-light leading-relaxed my-4">
-          {description}
+
+      <div className="text-portfolio-gray-light leading-relaxed transition-all duration-300 ease-in-out">
+        {isExpanded ? description : previewText}
+      </div>
+
+      {isLongText && (
+        <div className="flex justify-end mt-2">
+          <button
+            className="p-2 text-portfolio-gray-light hover:text-white transition-colors"
+            onClick={toggleExpanded}
+            aria-label="Toggle Description"
+          >
+            {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+          </button>
         </div>
       )}
-
-      <div className="flex justify-end">
-        <button
-          className="p-2 text-portfolio-gray-light hover:text-white transition-colors"
-          onClick={() => setIsExpanded(!isExpanded)}
-          aria-label="Toggle Description"
-        >
-          {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-        </button>
-      </div>
     </div>
   );
 };
