@@ -1,11 +1,13 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useScrollToSection } from '@/hooks/useScrollToSection';
 import { useActiveSection } from '@/hooks/useActiveSection';
 import { Button } from "@/components/ui/button";
-import { Home, Menu, X, User, Code, Briefcase, Github, MessageSquare, BookOpen } from "lucide-react";
+import { Home, Menu, X, User, Code, Briefcase, Github, MessageSquare, BookOpen, Mail } from "lucide-react";
 import LogoutConfirmationDialog from "@/components/auth/LogoutConfirmationDialog";
+import EditModeToggle from "@/components/admin/EditModeToggle";
 
 const navItems = [
   { label: "Home", path: "/", icon: Home, sectionId: "hero" },
@@ -69,6 +71,7 @@ const Navbar: React.FC = () => {
                 <Home className="w-5 h-5" />
                 <span className="text-xl font-semibold">Portfolio</span>
               </Link>
+              <EditModeToggle />
             </div>
 
             {/* Desktop Navigation */}
@@ -102,6 +105,14 @@ const Navbar: React.FC = () => {
                   <span className="text-portfolio-gray-light">
                     Hi, {user.user_metadata?.name || user.email?.split('@')[0] || 'User'}
                   </span>
+                  {isAuthorized && (
+                    <Link to="/contact-messages">
+                      <Button variant="outline" className="border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
+                        <Mail className="w-4 h-4 mr-2" />
+                        Messages
+                      </Button>
+                    </Link>
+                  )}
                   <LogoutConfirmationDialog onLogout={signOut}>
                     <Button 
                       variant="outline" 
@@ -110,13 +121,6 @@ const Navbar: React.FC = () => {
                       Logout
                     </Button>
                   </LogoutConfirmationDialog>
-                  {isAuthorized && (
-                    <Link to="/admin">
-                      <Button variant="outline" className="border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
-                        Dashboard
-                      </Button>
-                    </Link>
-                  )}
                 </div>
               ) : (
                 <Link to="/login" className="ml-4">
@@ -175,6 +179,14 @@ const Navbar: React.FC = () => {
                 <span className="text-portfolio-gray-light">
                   Hi, {user.user_metadata?.name || user.email?.split('@')[0] || 'User'}
                 </span>
+                {isAuthorized && (
+                  <Link to="/contact-messages" onClick={() => setIsOpen(false)}>
+                    <Button variant="outline" className="w-full border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
+                      <Mail className="w-4 h-4 mr-2" />
+                      Messages
+                    </Button>
+                  </Link>
+                )}
                 <LogoutConfirmationDialog onLogout={signOut}>
                   <Button 
                     variant="outline" 
@@ -183,13 +195,6 @@ const Navbar: React.FC = () => {
                     Logout
                   </Button>
                 </LogoutConfirmationDialog>
-                {isAuthorized && (
-                  <Link to="/admin" onClick={() => setIsOpen(false)}>
-                    <Button variant="outline" className="w-full border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
-                      Dashboard
-                    </Button>
-                  </Link>
-                )}
               </div>
             ) : (
               <Link to="/login" onClick={() => setIsOpen(false)}>
