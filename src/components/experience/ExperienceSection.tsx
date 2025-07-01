@@ -1,5 +1,10 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import ExperienceCard from './ExperienceCard';
+import { useAuth } from '@/context/AuthContext';
+import { useAdminEdit } from '@/context/AdminEditContext';
+import AdminAddButton from '@/components/admin/AdminAddButton';
+import AdminExperienceModal from '@/components/admin/experience/AdminExperienceModal';
 
 const experiences = [
    {
@@ -25,6 +30,14 @@ const experiences = [
 ];
 
 const ExperienceSection: React.FC = () => {
+  const { isAuthorized } = useAuth();
+  const { isEditMode } = useAdminEdit();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddExperience = () => {
+    setIsModalOpen(true);
+  };
+
   return (
     <section className="portfolio-section">
       <div
@@ -34,7 +47,16 @@ const ExperienceSection: React.FC = () => {
           boxShadow: '0 6px 32px 0 rgba(76,201,240,0.14), 0 2px 8px rgba(10,20,30,0.18), 0 1.5px 36px 0 rgba(0,0,0,0.13)'
         }}
       >
-        <h2 className="portfolio-heading">Work Experience</h2>
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="portfolio-heading flex-1">Work Experience</h2>
+          {isAuthorized && isEditMode && (
+            <AdminAddButton
+              onAdd={handleAddExperience}
+              label="Add Experience"
+              className="ml-4"
+            />
+          )}
+        </div>
         
         <div className="relative">
           {/* Timeline line */}
@@ -58,6 +80,13 @@ const ExperienceSection: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {isModalOpen && (
+        <AdminExperienceModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </section>
   );
 };

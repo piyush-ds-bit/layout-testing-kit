@@ -1,6 +1,9 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
+import { useAdminEdit } from '@/context/AdminEditContext';
+import AdminActionButtons from '@/components/admin/AdminActionButtons';
 
 interface Project {
   id: number;
@@ -18,8 +21,30 @@ interface ProjectCardProps {
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
+  const { isAuthorized } = useAuth();
+  const { isEditMode } = useAdminEdit();
+
+  const handleEdit = () => {
+    console.log('Edit project:', project);
+    // TODO: Open edit modal
+  };
+
+  const handleDelete = () => {
+    console.log('Delete project:', project);
+    // TODO: Implement delete with confirmation
+  };
+
   return (
-    <div className="portfolio-card overflow-hidden flex flex-col">
+    <div className="group portfolio-card overflow-hidden flex flex-col relative">
+      {isAuthorized && isEditMode && (
+        <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+          <AdminActionButtons
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        </div>
+      )}
+
       <div className="relative h-48 mb-4 overflow-hidden rounded-lg">
         <img 
           src={project.image} 

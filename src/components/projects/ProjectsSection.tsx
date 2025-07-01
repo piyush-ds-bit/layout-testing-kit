@@ -1,6 +1,10 @@
 
 import React, { useState } from 'react';
 import ProjectCard from './ProjectCard';
+import { useAuth } from '@/context/AuthContext';
+import { useAdminEdit } from '@/context/AdminEditContext';
+import AdminAddButton from '@/components/admin/AdminAddButton';
+import AdminProjectModal from '@/components/admin/projects/AdminProjectModal';
 
 // Sample project data
 const projects = [
@@ -42,30 +46,14 @@ const projects = [
     category: 'In Development',
     technologies: ['Python', 'FastAPI','Streamlit'],
     githubUrl: '#',
-  },
-  // {
-  //   id: 5,
-  //   title: 'Stone Paper Scissors',
-  //   description: 'A web implementation of the classic game with computer vision.',
-  //   image: '/placeholder.svg',
-  //   category: 'web',
-  //   technologies: ['JavaScript', 'TensorFlow.js'],
-  //   githubUrl: '#',
-  //   liveUrl: '#',
-  // },
-  // {
-  //   id: 6,
-  //   title: 'Moon Mission Simulator',
-  //   description: 'A 3D simulation of a moon landing mission.',
-  //   image: '/placeholder.svg',
-  //   category: 'python',
-  //   technologies: ['Python', 'Pygame'],
-  //   githubUrl: '#',
-  // },
+  }
 ];
 
 const ProjectsSection: React.FC = () => {
+  const { isAuthorized } = useAuth();
+  const { isEditMode } = useAdminEdit();
   const [activeCategory, setActiveCategory] = useState('all');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   const filteredProjects = activeCategory === 'all' 
     ? projects 
@@ -76,11 +64,24 @@ const ProjectsSection: React.FC = () => {
     { id: 'Deployed', label: 'Deployed' },
     { id: 'In Development', label: 'In Development' }
   ];
+
+  const handleAddProject = () => {
+    setIsModalOpen(true);
+  };
   
   return (
     <section className="portfolio-section">
       <div className="portfolio-container">
-        <h2 className="portfolio-heading">All Projects (App, Web & Python)</h2>
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="portfolio-heading flex-1">All Projects (App, Web & Python)</h2>
+          {isAuthorized && isEditMode && (
+            <AdminAddButton
+              onAdd={handleAddProject}
+              label="Add Project"
+              className="ml-4"
+            />
+          )}
+        </div>
         
         <div className="flex justify-center mb-8 space-x-4">
           {categories.map(category => (
@@ -115,6 +116,13 @@ const ProjectsSection: React.FC = () => {
           </div>
         )}
       </div>
+
+      {isModalOpen && (
+        <AdminProjectModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </section>
   );
 };

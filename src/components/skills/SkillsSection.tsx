@@ -1,6 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import SkillCategory from './SkillCategory';
+import { useAuth } from '@/context/AuthContext';
+import { useAdminEdit } from '@/context/AdminEditContext';
+import AdminAddButton from '@/components/admin/AdminAddButton';
+import AdminSkillModal from '@/components/admin/skills/AdminSkillModal';
 
 const programming = [
   { name: 'Python',    icon: 'python' },
@@ -42,6 +46,25 @@ const otherSkills = [
 ];
 
 const SkillsSection: React.FC = () => {
+  const { isAuthorized } = useAuth();
+  const { isEditMode } = useAdminEdit();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+
+  const handleAddSkill = (category: string) => {
+    setSelectedCategory(category);
+    setIsModalOpen(true);
+  };
+
+  const categories = [
+    { title: "Programming", icon: "💻", skills: programming, key: "programming" },
+    { title: "Libraries & Frameworks", icon: "📚", skills: librariesFrameworks, key: "libraries" },
+    { title: "Web & Tools", icon: "🌐", skills: webTools, key: "webtools" },
+    { title: "Databases", icon: "💾", skills: databases, key: "databases" },
+    { title: "Tools", icon: "🛠️", skills: Tools, key: "tools" },
+    { title: "Other", icon: "✨", skills: otherSkills, key: "other" }
+  ];
+
   return (
     <section className="portfolio-section">
       <div
@@ -51,19 +74,41 @@ const SkillsSection: React.FC = () => {
           boxShadow: '0 6px 32px 0 rgba(76,201,240,0.14), 0 2px 8px rgba(10,20,30,0.18), 0 1.5px 36px 0 rgba(0,0,0,0.13)'
         }}
       >
-        <h2 className="text-3xl font-bold text-white mb-10 text-center">
-          Skills
-        </h2>
+        <div className="flex items-center justify-between mb-10">
+          <h2 className="text-3xl font-bold text-white text-center flex-1">
+            Skills
+          </h2>
+          {isAuthorized && isEditMode && (
+            <AdminAddButton
+              onAdd={() => handleAddSkill('')}
+              label="Add Skill Category"
+              className="ml-4"
+            />
+          )}
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-          <SkillCategory title="Programming"            icon="💻" skills={programming} />
-          <SkillCategory title="Libraries & Frameworks" icon="📚" skills={librariesFrameworks} />
-          <SkillCategory title="Web & Tools"            icon="🌐" skills={webTools} />
-          <SkillCategory title="Databases"              icon="💾" skills={databases} />
-          <SkillCategory title="Tools"                  icon="🛠️" skills={Tools} />
-          <SkillCategory title="Other"                  icon="✨" skills={otherSkills} />
+          {categories.map((category) => (
+            <div key={category.key} className="relative">
+              <SkillCategory 
+                title={category.title} 
+                icon={category.icon} 
+                skills={category.skills}
+                categoryKey={category.key}
+                onAddSkill={() => handleAddSkill(category.key)}
+              />
+            </div>
+          ))}
         </div>
       </div>
+
+      {isModalOpen && (
+        <AdminSkillModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          category={selectedCategory}
+        />
+      )}
     </section>
   );
 };
