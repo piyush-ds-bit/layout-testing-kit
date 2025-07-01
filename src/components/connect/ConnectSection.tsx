@@ -1,10 +1,11 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import SocialLinks from './SocialLinks';
 import ContactForm from './ContactForm';
-import { Mail } from 'lucide-react';
+import { Mail, MessageSquare } from 'lucide-react';
 
 const ConnectSection: React.FC = () => {
   const { user, isAuthorized } = useAuth();
@@ -18,7 +19,18 @@ const ConnectSection: React.FC = () => {
           boxShadow: '0 6px 32px 0 rgba(76,201,240,0.14), 0 2px 8px rgba(10,20,30,0.18), 0 1.5px 36px 0 rgba(0,0,0,0.13)'
         }}
       >
-        <h2 className="portfolio-heading">Let's Connect</h2>
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="portfolio-heading">Let's Connect</h2>
+          {isAuthorized && (
+            <Link to="/contact-messages">
+              <Button className="bg-portfolio-accent hover:bg-portfolio-accent-dark">
+                <MessageSquare className="w-4 h-4 mr-2" />
+                View Messages
+              </Button>
+            </Link>
+          )}
+        </div>
+        
         <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
           Find me on social media or send a direct message to get in touch
         </p>
@@ -31,7 +43,7 @@ const ConnectSection: React.FC = () => {
           {/* Hide the contact form for admins */}
           {isAuthorized ? (
             <div className="text-center text-gray-400 py-12">
-              <p>Contact form is hidden for admins.<br />Admins don’t need to contact themselves.</p>
+              <p>Contact form is hidden for admins.<br />Admins don't need to contact themselves.</p>
             </div>
           ) : (
             <div>

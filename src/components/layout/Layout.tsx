@@ -3,6 +3,8 @@ import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import RoamingBug from '@/components/bug/RoamingBug';
+import { AdminEditProvider } from '@/context/AdminEditContext';
+import EditModeToggle from '@/components/admin/EditModeToggle';
 import { useVisitorTracking } from '@/hooks/useVisitorTracking';
 
 interface LayoutProps {
@@ -14,14 +16,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   useVisitorTracking();
   
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-grow pb-16 md:pb-0">
-        {children}
-      </main>
-      <Footer />
-      <RoamingBug />
-    </div>
+    <AdminEditProvider>
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <EditModeToggle />
+        <main className="flex-grow pb-16 md:pb-0">
+          {children}
+        </main>
+        <Footer />
+        <RoamingBug />
+      </div>
+    </AdminEditProvider>
   );
 };
 
