@@ -50,9 +50,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           });
         } else {
           toast({
-            title: "Access restricted",
-            description: "You don't have admin privileges for this application.",
-            variant: "destructive",
+            title: "Welcome!",
+            description: `Signed in as ${userEmail}`,
           });
         }
       }
@@ -99,7 +98,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         email, 
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/admin`
+          emailRedirectTo: `${window.location.origin}/`
         }
       });
       

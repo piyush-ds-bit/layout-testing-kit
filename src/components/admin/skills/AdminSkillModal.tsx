@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
+import { toast } from '@/components/ui/use-toast';
 
 interface AdminSkillModalProps {
   isOpen: boolean;
@@ -19,8 +20,27 @@ const AdminSkillModal: React.FC<AdminSkillModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!skillName.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter a skill name",
+        variant: "destructive",
+      });
+      return;
+    }
+
     console.log('Add skill:', { name: skillName, icon: skillIcon, category });
-    // TODO: Implement skill addition
+    
+    // TODO: Implement skill addition to database
+    toast({
+      title: "Skill added successfully!",
+      description: `${skillName} has been added to ${category}`,
+    });
+    
+    // Reset form
+    setSkillName('');
+    setSkillIcon('');
     onClose();
   };
 

@@ -11,21 +11,15 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   
   useEffect(() => {
-    // If user is already logged in, redirect appropriately
+    // If user is already logged in, redirect to home page
     if (user) {
-      if (isAuthorized) {
-        toast({
-          title: "Already logged in",
-          description: "You are already logged in with admin access.",
-        });
-        navigate('/admin');
-      } else {
-        toast({
-          title: "Already logged in",
-          description: "You are already logged in as " + (user.email || 'an authenticated user'),
-        });
-        navigate('/');
-      }
+      toast({
+        title: "Already logged in",
+        description: isAuthorized 
+          ? "Welcome back, admin!" 
+          : `Welcome back, ${user.email?.split('@')[0] || 'User'}!`,
+      });
+      navigate('/');
     }
   }, [user, isAuthorized, navigate]);
   
@@ -42,7 +36,7 @@ const LoginPage: React.FC = () => {
   
   // Redirect if already logged in
   if (user) {
-    return <Navigate to={isAuthorized ? "/admin" : "/"} />;
+    return <Navigate to="/" />;
   }
   
   return (

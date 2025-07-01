@@ -61,7 +61,16 @@ export function useContactForm() {
           "Please provide a valid phone number or leave it blank."
         );
 
-      const { error } = await supabase.from("contact_messages").insert({
+      console.log('Attempting to submit contact form:', {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        message: formData.message.trim(),
+        user_id: user?.id,
+        attachment_url: uploadedFile,
+        phone_number: formData.phone_number.trim() || null,
+      });
+
+      const { error, data } = await supabase.from("contact_messages").insert({
         name: formData.name.trim(),
         email: formData.email.trim(),
         message: formData.message.trim(),
@@ -71,7 +80,13 @@ export function useContactForm() {
         read: false,
         submitted_at: new Date().toISOString(),
       });
-      if (error) throw new Error("Failed to send message. Please try again later.");
+
+      if (error) {
+        console.error('Supabase error:', error);
+        throw new Error(`Failed to send message: ${error.message}`);
+      }
+
+      console.log('Message sent successfully:', data);
 
       toast({
         title: "Message sent successfully",
@@ -86,6 +101,7 @@ export function useContactForm() {
       });
       setUploadedFile(null);
     } catch (error: any) {
+      console.error('Contact form submission error:', error);
       toast({
         title: "Failed to send message",
         description:

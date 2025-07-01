@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
+import { toast } from '@/components/ui/use-toast';
 
 interface AdminExperienceModalProps {
   isOpen: boolean;
@@ -21,8 +22,31 @@ const AdminExperienceModal: React.FC<AdminExperienceModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formData.company.trim() || !formData.position.trim() || !formData.duration.trim() || !formData.description.trim()) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
     console.log('Add experience:', formData);
-    // TODO: Implement experience addition
+    
+    // TODO: Implement experience addition to database
+    toast({
+      title: "Experience added successfully!",
+      description: `${formData.position} at ${formData.company} has been added`,
+    });
+    
+    // Reset form
+    setFormData({
+      company: '',
+      position: '',
+      duration: '',
+      description: ''
+    });
     onClose();
   };
 

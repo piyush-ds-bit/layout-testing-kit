@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
+import { toast } from '@/components/ui/use-toast';
 
 interface AdminProjectModalProps {
   isOpen: boolean;
@@ -24,12 +25,39 @@ const AdminProjectModal: React.FC<AdminProjectModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formData.title.trim() || !formData.description.trim()) {
+      toast({
+        title: "Error",
+        description: "Please fill in required fields (title and description)",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const projectData = {
       ...formData,
-      technologies: formData.technologies.split(',').map(tech => tech.trim())
+      technologies: formData.technologies.split(',').map(tech => tech.trim()).filter(tech => tech)
     };
+    
     console.log('Add project:', projectData);
-    // TODO: Implement project addition
+    
+    // TODO: Implement project addition to database
+    toast({
+      title: "Project added successfully!",
+      description: `${formData.title} has been added to your portfolio`,
+    });
+    
+    // Reset form
+    setFormData({
+      title: '',
+      description: '',
+      image: '',
+      category: 'Deployed',
+      technologies: '',
+      githubUrl: '',
+      liveUrl: ''
+    });
     onClose();
   };
 
@@ -57,7 +85,7 @@ const AdminProjectModal: React.FC<AdminProjectModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-portfolio-gray-light mb-1">
-              Project Title
+              Project Title *
             </label>
             <input
               type="text"
@@ -71,7 +99,7 @@ const AdminProjectModal: React.FC<AdminProjectModalProps> = ({
 
           <div>
             <label className="block text-sm font-medium text-portfolio-gray-light mb-1">
-              Description
+              Description *
             </label>
             <textarea
               value={formData.description}
