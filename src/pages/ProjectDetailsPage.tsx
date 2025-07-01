@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -62,7 +61,7 @@ This project was born out of curiosity to visually explore conversation patterns
 
 1. Export your WhatsApp chat (.txt) from phone
 2. Launch the app locally via Streamlit
-3. Upload the file and choose a user or "Overall"
+3. Upload the file and choose a user or “Overall”
 4. The app generates stats, charts, and emotion insights
 `,
       `Challenges I Faced
@@ -88,15 +87,15 @@ This project was born out of curiosity to visually explore conversation patterns
     image_url: '/lovable-uploads/portfolio_2.png',
     category: 'Deployed',
     technologies: ['lovable.ai', 'Supabase', 'SQLite'],
-    github_url: 'https://github.com/piyush-ds-bit/Portfolio-website',
-    live_url: '#',
+    githubUrl: 'https://github.com/piyush-ds-bit/Portfolio-website',
+    liveUrl: '#',
     created_at: '',
     details: [
       `🌐 Personal Portfolio – Built Entirely Using AI (Lovable.ai)
       =======================
       
 Welcome to my personal portfolio website, a digital reflection of my learning journey, projects, and passion for Machine Learning and Data Science.
-What makes this portfolio special? It's built entirely using AI tools, with no prior experience in React or frontend development.`
+What makes this portfolio special? It’s built entirely using AI tools, with no prior experience in React or frontend development.`
       ,
       `🎯 Why I Built This
       -----------------------
@@ -134,18 +133,18 @@ GitHub – For version control and deployment history
 🌱 My Ongoing Mission
 This portfolio is a testament to the power of learning + creativity.`
       ,
-      `I'm currently:
+      `I’m currently:
       -----------------------
 
 🌟 Learning core ML algorithms and data science techniques
 🧠 Building ML projects using Python, Pandas, scikit-learn, and more
 🔁 Constantly evolving and adding features to this site
-📌 My dream is to become a Data Scientist, and I'm working day and night to make that dream real — through building, experimenting, and learning.`
+📌 My dream is to become a Data Scientist, and I’m working day and night to make that dream real — through building, experimenting, and learning.`
       ,
       `🔍 How It Was Built
       -----------------------
       
-I didn't write a single line of frontend code manually.`
+I didn’t write a single line of frontend code manually.`
       ,
       `Instead:
       -----------------------
@@ -181,7 +180,7 @@ And to everyone who's believed in learning by doing`
       `⭐ Final Note
       ----------------------- 
 
-"You don't need to know everything to start — just the courage to begin."
+"You don’t need to know everything to start — just the courage to begin."
 
 If you like my work, feel free to ⭐ star the repo (if public), or connect with me on GitHub and LinkedIn.
 

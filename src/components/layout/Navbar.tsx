@@ -1,96 +1,245 @@
-import React, { useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { Menu, X } from 'lucide-react';
+import { useScrollToSection } from '@/hooks/useScrollToSection';
+import { useActiveSection } from '@/hooks/useActiveSection';
+import { Button } from "@/components/ui/button";
+import { Home, Menu, X, User, Code, Briefcase, Github, MessageSquare, BookOpen } from "lucide-react";
+import LogoutConfirmationDialog from "@/components/auth/LogoutConfirmationDialog";
 
-interface NavItem {
-  name: string;
-  path: string;
-}
+const navItems = [
+  { label: "Home", path: "/", icon: Home, sectionId: "hero" },
+  { label: "Skills", path: "/skills", icon: Code, sectionId: "skills" },
+  { label: "Experience", path: "/experience", icon: Briefcase, sectionId: "experience" },
+  { label: "Blog", path: "/blog", icon: BookOpen, sectionId: "blog" },
+  { label: "GitHub", path: "/github", icon: Github, sectionId: "github" },
+  { label: "Projects", path: "/projects", icon: Code, sectionId: "projects" },
+  { label: "Connect", path: "/connect", icon: MessageSquare, sectionId: "connect" }
+];
 
 const Navbar: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, signOut, isAuthorized } = useAuth();
-  const isMobile = useIsMobile();
+  const [isOpen, setIsOpen] = useState(false);
+  const [showMobileNav, setShowMobileNav] = useState(false);
   const location = useLocation();
+  const { user, isAuthorized, signOut } = useAuth();
+  const scrollToSection = useScrollToSection();
+  const activeSection = useActiveSection();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setShowMobileNav(window.innerWidth <= 768);
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsOpen(!isOpen);
   };
 
-  const closeMenu = () => {
-    setIsMenuOpen(false);
+  const handleNavClick = (item: typeof navItems[0]) => {
+    if (item.path === '/') {
+      // Always navigate to home for the home link
+      return;
+    }
+    
+    scrollToSection(item.sectionId, item.path);
+    setIsOpen(false);
   };
 
-  const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Skills', path: '/skills' },
-    { name: 'Experience', path: '/experience' },
-    { name: 'Projects', path: '/projects' },
-    { name: 'Blog', path: '/blog' },
-    { name: 'GitHub', path: '/github' },
-    { name: 'Connect', path: '/connect' },
-    ...(isAuthorized ? [{ name: 'Messages', path: '/contact-messages' }] : []),
-  ];
+  const isActiveItem = (item: typeof navItems[0]) => {
+    if (location.pathname === '/') {
+      return activeSection === item.sectionId;
+    }
+    return location.pathname === item.path;
+  };
 
   return (
-    <nav className="bg-portfolio-darker border-b border-portfolio-dark sticky top-0 z-40">
-      <div className="portfolio-container py-4 flex items-center justify-between">
-        <Link to="/" className="text-2xl font-semibold text-white">
-          Piyush
-        </Link>
+    <>
+      <header className="sticky top-0 z-50 w-full bg-portfolio-darkest/80 backdrop-blur-md border-b border-portfolio-dark">
+        <div className="portfolio-container py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <Link to="/" className="flex items-center space-x-2 text-white hover:text-portfolio-accent transition-colors">
+                <Home className="w-5 h-5" />
+                <span className="text-xl font-semibold">Portfolio</span>
+              </Link>
+            </div>
 
-        {/* Mobile Menu Button */}
-        {isMobile ? (
-          <button
-            onClick={toggleMenu}
-            className="text-portfolio-gray-light hover:text-white focus:outline-none"
-            aria-label="Toggle Menu"
-          >
-            {isMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </button>
-        ) : (
-          <div className="flex items-center space-x-6">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.name}
-                to={item.path}
-                className={({ isActive }) =>
-                  `portfolio-navbar-item ${isActive ? 'active' : ''}`
-                }
-              >
-                {item.name}
-              </NavLink>
-            ))}
-          </div>
-        )}
-      </div>
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center space-x-2">
+              {navItems.map((item) => (
+                item.path === '/' ? (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`portfolio-navbar-item ${
+                      isActiveItem(item) ? "active" : ""
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <button
+                    key={item.path}
+                    onClick={() => handleNavClick(item)}
+                    className={`portfolio-navbar-item ${
+                      isActiveItem(item) ? "active" : ""
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                )
+              ))}
+              
+              {user ? (
+                <div className="flex items-center ml-4 space-x-3">
+                  <span className="text-portfolio-gray-light">
+                    Hi, {user.user_metadata?.name || user.email?.split('@')[0] || 'User'}
+                  </span>
+                  <LogoutConfirmationDialog onLogout={signOut}>
+                    <Button 
+                      variant="outline" 
+                      className="border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white"
+                    >
+                      Logout
+                    </Button>
+                  </LogoutConfirmationDialog>
+                  {isAuthorized && (
+                    <Link to="/admin">
+                      <Button variant="outline" className="border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
+                        Dashboard
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              ) : (
+                <Link to="/login" className="ml-4">
+                  <Button variant="outline" className="border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
+                    Login
+                  </Button>
+                </Link>
+              )}
+            </nav>
 
-      {/* Mobile Menu */}
-      {isMobile && isMenuOpen && (
-        <div className="bg-portfolio-darker border-b border-portfolio-dark py-4">
-          <div className="portfolio-container flex flex-col space-y-4">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.name}
-                to={item.path}
-                className={({ isActive }) =>
-                  `portfolio-navbar-item ${isActive ? 'active' : ''}`
-                }
-                onClick={closeMenu}
-              >
-                {item.name}
-              </NavLink>
-            ))}
+            {/* Mobile Menu Button */}
+            <button
+              onClick={toggleMenu}
+              className="md:hidden p-2 text-white hover:text-portfolio-accent transition-colors"
+              aria-label="Toggle Menu"
+            >
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Navigation Dropdown */}
+        <div
+          className={`md:hidden fixed top-[62px] left-0 right-0 bg-portfolio-darkest border-b border-portfolio-dark transform ${
+            isOpen ? "translate-y-0" : "-translate-y-full"
+          } transition-transform duration-300 ease-in-out`}
+        >
+          <div className="portfolio-container py-4 flex flex-col space-y-2">
+            {navItems.map((item) => (
+              item.path === '/' ? (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`portfolio-navbar-item ${
+                    isActiveItem(item) ? "active" : ""
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <button
+                  key={item.path}
+                  onClick={() => handleNavClick(item)}
+                  className={`portfolio-navbar-item text-left ${
+                    isActiveItem(item) ? "active" : ""
+                  }`}
+                >
+                  {item.label}
+                </button>
+              )
+            ))}
+            
+            {user ? (
+              <div className="flex flex-col space-y-2 pt-2">
+                <span className="text-portfolio-gray-light">
+                  Hi, {user.user_metadata?.name || user.email?.split('@')[0] || 'User'}
+                </span>
+                <LogoutConfirmationDialog onLogout={signOut}>
+                  <Button 
+                    variant="outline" 
+                    className="w-full border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white"
+                  >
+                    Logout
+                  </Button>
+                </LogoutConfirmationDialog>
+                {isAuthorized && (
+                  <Link to="/admin" onClick={() => setIsOpen(false)}>
+                    <Button variant="outline" className="w-full border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
+                      Dashboard
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            ) : (
+              <Link to="/login" onClick={() => setIsOpen(false)}>
+                <Button variant="outline" className="w-full border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
+                  Login
+                </Button>
+              </Link>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {/* Android-style Bottom Navigation for Mobile */}
+      {showMobileNav && (
+        <nav className="mobile-bottom-nav md:hidden">
+          {navItems.slice(0, 5).map((item) => (
+            item.path === '/' ? (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`mobile-bottom-nav-item ${isActiveItem(item) ? 'active' : ''}`}
+                onClick={() => setIsOpen(false)}
+              >
+                <span className="mobile-bottom-nav-item-icon">
+                  <item.icon size={20} />
+                </span>
+                <span className="mobile-bottom-nav-item-label">{item.label}</span>
+              </Link>
+            ) : (
+              <button
+                key={item.path}
+                onClick={() => handleNavClick(item)}
+                className={`mobile-bottom-nav-item ${isActiveItem(item) ? 'active' : ''}`}
+              >
+                <span className="mobile-bottom-nav-item-icon">
+                  <item.icon size={20} />
+                </span>
+                <span className="mobile-bottom-nav-item-label">{item.label}</span>
+              </button>
+            )
+          ))}
+          <Link to="/connect" className="mobile-bottom-nav-item">
+            <span className="mobile-bottom-nav-item-icon">
+              <User size={20} />
+            </span>
+            <span className="mobile-bottom-nav-item-label">Account</span>
+          </Link>
+        </nav>
       )}
-    </nav>
+    </>
   );
 };
 

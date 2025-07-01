@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,7 +17,15 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ResumePage from "./pages/ResumePage";
 import ProjectDetailsPage from "./pages/ProjectDetailsPage";
-import ContactMessagesPage from "./pages/ContactMessagesPage";
+
+// Admin Pages
+import AdminLayout from "./pages/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import EditHero from "./pages/admin/EditHero";
+import ManageSkills from "./pages/admin/ManageSkills";
+import ManageExperience from "./pages/admin/ManageExperience";
+import ManageProjects from "./pages/admin/ManageProjects";
+import ContactMessages from "./pages/admin/ContactMessages";
 
 // Not Found Page
 import NotFound from "./pages/NotFound";
@@ -45,7 +52,16 @@ const App = () => (
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/resume" element={<ResumePage />} />
-            <Route path="/contact-messages" element={<ContactMessagesPage />} />
+            
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="hero" element={<EditHero />} />
+              <Route path="skills" element={<ManageSkills />} />
+              <Route path="experience" element={<ManageExperience />} />
+              <Route path="projects" element={<ManageProjects />} />
+              <Route path="messages" element={<ContactMessages />} />
+            </Route>
             
             {/* Catch-all Route */}
             <Route path="*" element={<NotFound />} />
