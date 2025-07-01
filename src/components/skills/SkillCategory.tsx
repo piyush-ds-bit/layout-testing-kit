@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useAdminEdit } from '@/context/AdminEditContext';
@@ -38,12 +37,52 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({
     // TODO: Implement delete with confirmation
   };
 
+  const getIcon = (iconName: string) => {
+    switch (iconName.toLowerCase()) {
+      // Programming
+      case 'python': return '🐍';
+      case 'dart': return '🎯';
+      case 'html5': return '🌐';
+
+      // Libraries & Frameworks
+      case 'pandas': return '🐼';
+      case 'numpy': return '➗';
+      case 'matplotlib': return '📊';
+      case 'seaborn': return '🌊';
+      case 'scikit-learn': return '🧠';
+      case 'tensorflow': return '🔶';
+
+      // Web & Tools
+      case 'streamlit': return '📈';
+      case 'fastapi': return '🚀';
+      case 'pydantic': return '🛡️';
+      case 'flutter': return '📱';
+      case 'docker': return '🐳';
+
+      // Databases
+      case 'supabase': return '🔋';
+
+      // Tools
+      case 'intellij': return '🧠';
+      case 'jupyter': return '📓';
+      case 'pycharm': return '🧪';
+      case 'google-colab': return '🤖';
+      case 'kaggle': return '🏅';
+
+      // Other
+      case 'problemsolving': return '🧩';
+
+      // Fallback
+      default: return '🔹';
+    }
+  };
+
   return (
-    <div className="portfolio-card">
-      <div className="flex items-center justify-between mb-4">
+    <div className="portfolio-card-hover p-6 bg-[#1a202c] rounded-lg shadow-md">
+      <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
-          <span className="text-2xl mr-3">{icon}</span>
-          <h3 className="text-xl font-semibold text-white">{title}</h3>
+          <span className="text-3xl mr-3 text-blue-400">{icon}</span>
+          <h3 className="text-2xl font-semibold text-white">{title}</h3>
         </div>
         {isAuthorized && isEditMode && (
           <AdminAddButton
@@ -53,13 +92,16 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({
           />
         )}
       </div>
-      
+
       <div className="grid grid-cols-2 gap-3">
         {skills.map((skill, index) => (
-          <div key={index} className="group relative flex items-center p-2 rounded-lg bg-portfolio-darker/50 hover:bg-portfolio-darker transition-colors">
-            <span className="text-sm mr-2">{skill.icon}</span>
-            <span className="text-portfolio-gray-light text-sm flex-1">{skill.name}</span>
-            
+          <div
+            key={index}
+            className="group relative flex items-center gap-2 py-2 px-4 rounded-full bg-[#1e2738] border border-[#2d3748] transition-colors hover:bg-[#2a3448]"
+          >
+            <span className="text-xl">{getIcon(skill.icon)}</span>
+            <span className="text-gray-200 text-sm flex-1">{skill.name}</span>
+
             {isAuthorized && isEditMode && (
               <div className="opacity-0 group-hover:opacity-100 transition-opacity ml-2">
                 <AdminActionButtons
