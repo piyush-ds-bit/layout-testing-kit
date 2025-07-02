@@ -6,7 +6,7 @@ import { useAdminEdit } from '@/context/AdminEditContext';
 import AdminActionButtons from '@/components/admin/AdminActionButtons';
 
 interface Project {
-  id: number;
+  id: string; // Changed from number to string
   title: string;
   description: string;
   image_url?: string;
@@ -18,7 +18,7 @@ interface Project {
 
 interface ProjectCardProps {
   project: Project;
-  onEdit?: (projectData: Partial<Project>) => Promise<boolean>;
+  onEdit?: (projectData: Partial<Omit<Project, 'id' | 'created_at'>>) => Promise<boolean>;
   onDelete?: () => Promise<boolean>;
 }
 

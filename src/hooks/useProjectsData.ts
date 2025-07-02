@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 
 export interface Project {
-  id: number;
+  id: string; // Changed from number to string to match Supabase UUID
   title: string;
   description: string;
   image_url?: string;
@@ -12,15 +12,17 @@ export interface Project {
   technologies?: string[];
   github_url?: string;
   live_url?: string;
+  details?: string[] | string;
+  created_at?: string;
 }
 
 export const useProjectsData = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fallbackProjects = [
+  const fallbackProjects: Project[] = [
     {
-      id: 1,
+      id: '1',
       title: 'WhatsApp Buddy',
       description: 'Developed a Streamlit-based WhatsApp chat analyzer with sentiment analysis, word clouds, user stats, and emoji insights using Pandas and Matplotlib/Seaborn.',
       image_url: '/lovable-uploads/Whatsapp_3.png',
@@ -30,7 +32,7 @@ export const useProjectsData = () => {
       live_url: '#',
     },
     {
-      id: 2,
+      id: '2',
       title: 'Piyush Portfolio',
       description: 'Developed a personal portfolio website using lovable.ai and Firebase with an admin panel for real-time content updates, showcasing projects, skills, and contact information.',
       image_url: '/lovable-uploads/portfolio_1.png',
@@ -40,7 +42,7 @@ export const useProjectsData = () => {
       live_url: '#',
     },
     {
-      id: 3,
+      id: '3',
       title: 'MovieMate',
       description: 'Built a content-based movie recommender using Bag-of-Words with a dataset of 5000+ movies.',
       image_url: '/lovable-uploads/Moviemate_3.png',
@@ -50,7 +52,7 @@ export const useProjectsData = () => {
       live_url: '#',
     },
     {
-      id: 4,
+      id: '4',
       title: 'Patient Partner',
       description: 'Developed an insurance premium prediction app using Streamlit frontend and FastAPI backend. It takes user inputs like age, gender, BMI, and smoking habits to predict premium cost.',
       image_url: '/lovable-uploads/insurance_1.png',
@@ -84,7 +86,7 @@ export const useProjectsData = () => {
     fetchProjects();
   }, []);
 
-  const addProject = async (projectData: Omit<Project, 'id'>) => {
+  const addProject = async (projectData: Omit<Project, 'id' | 'created_at'>) => {
     try {
       const { data, error } = await supabase
         .from('projects')
@@ -113,7 +115,7 @@ export const useProjectsData = () => {
     }
   };
 
-  const updateProject = async (id: number, projectData: Partial<Project>) => {
+  const updateProject = async (id: string, projectData: Partial<Omit<Project, 'id' | 'created_at'>>) => {
     try {
       const { data, error } = await supabase
         .from('projects')
@@ -145,7 +147,7 @@ export const useProjectsData = () => {
     }
   };
 
-  const deleteProject = async (id: number) => {
+  const deleteProject = async (id: string) => {
     try {
       const { error } = await supabase
         .from('projects')
