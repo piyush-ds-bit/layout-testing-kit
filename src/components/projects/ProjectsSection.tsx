@@ -19,6 +19,40 @@ interface Project {
   live_url: string | null;
 }
 
+// Fallback data when no data is available from Supabase
+const fallbackProjects = [
+  {
+    id: '1',
+    title: 'WhatsApp Buddy',
+    description: 'Developed a Streamlit-based WhatsApp chat analyzer with sentiment analysis, word clouds, user stats, and emoji insights using Pandas and Matplotlib/Seaborn.',
+    image_url: '/lovable-uploads/Whatsapp_3.png',
+    category: 'Deployed',
+    technologies: ['Python', 'Streamlit', 'Pandas&Seaborn'],
+    github_url: 'https://github.com/piyush-ds-bit/whatsapp_chat_analyzer',
+    live_url: '#'
+  },
+  {
+    id: '2',
+    title: 'Piyush Portfolio',
+    description: 'Developed a personal portfolio website using lovable.ai and Firebase with an admin panel for real-time content updates, showcasing projects, skills, and contact information.',
+    image_url: '/lovable-uploads/portfolio_1.png',
+    category: 'Deployed',
+    technologies: ['lovable.ai', 'Supabase', 'SQLite'],
+    github_url: 'https://github.com/piyush-ds-bit/Portfolio-website',
+    live_url: '#'
+  },
+  {
+    id: '3',
+    title: 'MovieMate',
+    description: 'Built a content-based movie recommender using Bag-of-Words with a dataset of 5000+ movies.',
+    image_url: '/lovable-uploads/Moviemate_3.png',
+    category: 'In Development',
+    technologies: ['Python', 'ScikitLearn', 'Streamlit'],
+    github_url: 'https://github.com/piyush-ds-bit/Movie-Recommender-System',
+    live_url: null
+  }
+];
+
 const ProjectsSection: React.FC = () => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
@@ -37,13 +71,19 @@ const ProjectsSection: React.FC = () => {
 
       if (error) throw error;
 
-      setProjects(data || []);
+      // If no data from Supabase, use fallback data
+      if (!data || data.length === 0) {
+        setProjects(fallbackProjects);
+      } else {
+        setProjects(data || []);
+      }
     } catch (error) {
       console.error('Error fetching projects:', error);
+      // Use fallback data on error
+      setProjects(fallbackProjects);
       toast({
-        title: "Error",
-        description: "Failed to load projects",
-        variant: "destructive",
+        title: "Using default projects",
+        description: "Could not load projects from database, showing default content",
       });
     } finally {
       setLoading(false);

@@ -21,6 +21,27 @@ interface SkillCategory {
   skills: Skill[];
 }
 
+// Fallback data when no data is available from Supabase
+const fallbackCategories = [
+  {
+    id: 'programming',
+    name: 'Programming',
+    skills: [
+      { id: '1', name: 'Python', icon: 'python', category_id: 'programming' },
+      { id: '2', name: 'HTML/CSS', icon: 'html5', category_id: 'programming' }
+    ]
+  },
+  {
+    id: 'libraries',
+    name: 'Libraries & Frameworks',
+    skills: [
+      { id: '3', name: 'Pandas', icon: 'pandas', category_id: 'libraries' },
+      { id: '4', name: 'NumPy', icon: 'numpy', category_id: 'libraries' },
+      { id: '5', name: 'TensorFlow', icon: 'tensorflow', category_id: 'libraries' }
+    ]
+  }
+];
+
 const SkillsSection: React.FC = () => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
@@ -56,13 +77,19 @@ const SkillsSection: React.FC = () => {
         skills: (skillsData || []).filter(skill => skill.category_id === category.id)
       }));
 
-      setCategories(categoriesWithSkills);
+      // If no data from Supabase, use fallback data
+      if (categoriesWithSkills.length === 0) {
+        setCategories(fallbackCategories);
+      } else {
+        setCategories(categoriesWithSkills);
+      }
     } catch (error) {
       console.error('Error fetching skills:', error);
+      // Use fallback data on error
+      setCategories(fallbackCategories);
       toast({
-        title: "Error",
-        description: "Failed to load skills data",
-        variant: "destructive",
+        title: "Using default skills",
+        description: "Could not load skills from database, showing default content",
       });
     } finally {
       setLoading(false);

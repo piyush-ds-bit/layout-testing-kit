@@ -25,7 +25,7 @@ const SignupForm: React.FC = () => {
         title: "Account created successfully!",
         description: "Please check your email to confirm your account.",
       });
-      navigate('/login'); // Redirect to login after signup
+      navigate('/'); // Redirect to home page instead of login
     } catch (error: any) {
       console.error('Signup error:', error);
       toast({

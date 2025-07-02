@@ -18,6 +18,28 @@ interface Experience {
   description: string;
 }
 
+// Fallback data when no data is available from Supabase
+const fallbackExperiences = [
+  {
+    id: 'fallback-1',
+    company: "AEIE Department, HIT",
+    position: "Academic Project Contributor",
+    start_date: "2023-08-01",
+    end_date: null,
+    current: true,
+    description: "Learning and working on interdisciplinary academic projects blending electronics and AI, including sensor-based data acquisition systems and analysis using Python. Applied knowledge from instrumentation to real-world predictive modeling."
+  },
+  {
+    id: 'fallback-2',
+    company: "Self-Employed",
+    position: "Tuition Teacher (Part-Time)",
+    start_date: "2021-02-01",
+    end_date: null,
+    current: true,
+    description: "Provided academic coaching to students from Class 5 to 12. Taught all subjects for Classes 5–8, and Physics, Chemistry, and Mathematics for Classes 9–12. Helped students achieve significant academic improvement, with one scoring 81% (Class 10) and another scoring 75% (Class 12)."
+  }
+];
+
 const ExperienceSection: React.FC = () => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
@@ -35,13 +57,19 @@ const ExperienceSection: React.FC = () => {
 
       if (error) throw error;
 
-      setExperiences(data || []);
+      // If no data from Supabase, use fallback data
+      if (!data || data.length === 0) {
+        setExperiences(fallbackExperiences);
+      } else {
+        setExperiences(data || []);
+      }
     } catch (error) {
       console.error('Error fetching experiences:', error);
+      // Use fallback data on error
+      setExperiences(fallbackExperiences);
       toast({
-        title: "Error",
-        description: "Failed to load experiences",
-        variant: "destructive",
+        title: "Using default experiences",
+        description: "Could not load experiences from database, showing default content",
       });
     } finally {
       setLoading(false);
