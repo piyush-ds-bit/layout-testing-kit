@@ -3,22 +3,26 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface AdminSkillModalProps {
   isOpen: boolean;
   onClose: () => void;
-  category: string;
+  onSkillAdded: () => void;
+  categoryId: string;
 }
 
 const AdminSkillModal: React.FC<AdminSkillModalProps> = ({ 
   isOpen, 
   onClose, 
-  category 
+  onSkillAdded,
+  categoryId 
 }) => {
   const [skillName, setSkillName] = useState('');
   const [skillIcon, setSkillIcon] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!skillName.trim()) {
@@ -30,18 +34,40 @@ const AdminSkillModal: React.FC<AdminSkillModalProps> = ({
       return;
     }
 
-    console.log('Add skill:', { name: skillName, icon: skillIcon, category });
-    
-    // TODO: Implement skill addition to database
-    toast({
-      title: "Skill added successfully!",
-      description: `${skillName} has been added to ${category}`,
-    });
-    
-    // Reset form
-    setSkillName('');
-    setSkillIcon('');
-    onClose();
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from('skills')
+        .insert([
+          {
+            name: skillName.trim(),
+            icon: skillIcon.trim() || '🔹',
+            category_id: categoryId,
+          },
+        ]);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: `${skillName} has been added successfully!`,
+      });
+      
+      // Reset form
+      setSkillName('');
+      setSkillIcon('');
+      onSkillAdded();
+    } catch (error) {
+      console.error('Error adding skill:', error);
+      toast({
+        title: "Error",
+        description: "Failed to add skill. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -73,6 +99,7 @@ const AdminSkillModal: React.FC<AdminSkillModalProps> = ({
               className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white placeholder-portfolio-gray-light focus:outline-none focus:ring-2 focus:ring-portfolio-accent"
               placeholder="e.g. React"
               required
+              disabled={isSubmitting}
             />
           </div>
 
@@ -86,6 +113,7 @@ const AdminSkillModal: React.FC<AdminSkillModalProps> = ({
               onChange={(e) => setSkillIcon(e.target.value)}
               className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white placeholder-portfolio-gray-light focus:outline-none focus:ring-2 focus:ring-portfolio-accent"
               placeholder="e.g. ⚛️ or 'react'"
+              disabled={isSubmitting}
             />
           </div>
 
@@ -93,14 +121,16 @@ const AdminSkillModal: React.FC<AdminSkillModalProps> = ({
             <Button
               type="submit"
               className="flex-1 bg-portfolio-accent hover:bg-portfolio-accent-dark text-white"
+              disabled={isSubmitting}
             >
-              Add Skill
+              {isSubmitting ? 'Adding...' : 'Add Skill'}
             </Button>
             <Button
               type="button"
               onClick={onClose}
               variant="outline"
               className="flex-1 border-portfolio-dark text-portfolio-gray-light hover:bg-portfolio-darker"
+              disabled={isSubmitting}
             >
               Cancel
             </Button>

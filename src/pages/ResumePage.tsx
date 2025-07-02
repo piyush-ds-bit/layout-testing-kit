@@ -12,7 +12,7 @@ const ResumePage: React.FC = () => {
           <h2 className="portfolio-heading">My Resume</h2>
           
           <div className="flex flex-col items-center mb-8">
-            <a href="/ResumeJune.pdf" target="_blank" rel="noopener noreferrer">
+            <a href="/lovable-uploads/ResumeJune.pdf" target="_blank" rel="noopener noreferrer">
               <Button 
                 className="bg-portfolio-accent text-white hover:bg-portfolio-accent/80 flex items-center gap-2 mb-8"
               >

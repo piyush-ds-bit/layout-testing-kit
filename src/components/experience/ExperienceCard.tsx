@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useAdminEdit } from '@/context/AdminEditContext';
@@ -5,30 +6,35 @@ import AdminActionButtons from '@/components/admin/AdminActionButtons';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface ExperienceCardProps {
+  id: string;
   company: string;
   position: string;
   duration: string;
   description: string;
   index: number;
+  onDelete: (id: string) => void;
 }
 
 const ExperienceCard: React.FC<ExperienceCardProps> = ({
+  id,
   company,
   position,
   duration,
   description,
-  index
+  index,
+  onDelete
 }) => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleEdit = () => {
-    console.log('Edit experience:', { company, position, duration, description });
+    console.log('Edit experience:', { id, company, position, duration, description });
+    // TODO: Implement edit modal
   };
 
   const handleDelete = () => {
-    console.log('Delete experience:', { company, position });
+    onDelete(id);
   };
 
   const toggleExpanded = () => setIsExpanded(prev => !prev);

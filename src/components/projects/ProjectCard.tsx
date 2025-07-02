@@ -18,9 +18,10 @@ interface Project {
 
 interface ProjectCardProps {
   project: Project;
+  onDelete?: (id: string) => void;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ project, onDelete }) => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
 
@@ -30,8 +31,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   };
 
   const handleDelete = () => {
-    console.log('Delete project:', project);
-    // TODO: Implement delete with confirmation
+    if (onDelete) {
+      onDelete(project.id.toString());
+    }
   };
 
   return (
