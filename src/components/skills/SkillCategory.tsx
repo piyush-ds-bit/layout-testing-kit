@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useAdminEdit } from '@/context/AdminEditContext';
 import AdminActionButtons from '@/components/admin/AdminActionButtons';
@@ -16,8 +15,6 @@ interface SkillCategoryProps {
   skills: Skill[];
   categoryKey: string;
   onAddSkill: () => void;
-  onEditSkill?: (skill: any, newName: string, newIcon: string) => void;
-  onDeleteSkill?: (skillId: string) => void;
 }
 
 const SkillCategory: React.FC<SkillCategoryProps> = ({ 
@@ -25,36 +22,19 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({
   icon, 
   skills, 
   categoryKey, 
-  onAddSkill,
-  onEditSkill,
-  onDeleteSkill
+  onAddSkill 
 }) => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
-  const [editingSkill, setEditingSkill] = useState<any>(null);
-  const [editName, setEditName] = useState('');
-  const [editIcon, setEditIcon] = useState('');
 
-  const handleEditSkill = (skill: Skill, index: number) => {
-    setEditingSkill({ ...skill, index });
-    setEditName(skill.name);
-    setEditIcon(skill.icon);
+  const handleEditSkill = (skill: Skill) => {
+    console.log('Edit skill:', skill);
+    // TODO: Open edit modal
   };
 
-  const handleSaveEdit = () => {
-    if (onEditSkill && editingSkill) {
-      onEditSkill(editingSkill, editName, editIcon);
-      setEditingSkill(null);
-      setEditName('');
-      setEditIcon('');
-    }
-  };
-
-  const handleDeleteSkill = (skill: Skill, index: number) => {
-    if (onDeleteSkill) {
-      // For now, we'll use the index as ID since we don't have actual IDs
-      onDeleteSkill(`${categoryKey}_${index}`);
-    }
+  const handleDeleteSkill = (skill: Skill) => {
+    console.log('Delete skill:', skill);
+    // TODO: Implement delete with confirmation
   };
 
   const getIcon = (iconName: string) => {
@@ -93,7 +73,7 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({
       case 'problemsolving': return '🧩';
 
       // Fallback
-      default: return iconName || '🔹';
+      default: return '🔹';
     }
   };
 
@@ -119,49 +99,17 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({
             key={index}
             className="group relative flex items-center gap-2 py-2 px-4 rounded-full bg-[#1e2738] border border-[#2d3748] transition-colors hover:bg-[#2a3448]"
           >
-            {editingSkill?.index === index ? (
-              <div className="flex-1 flex items-center gap-2">
-                <input
-                  type="text"
-                  value={editIcon}
-                  onChange={(e) => setEditIcon(e.target.value)}
-                  className="w-8 bg-transparent text-xl text-center"
-                  placeholder="🔹"
-                />
-                <input
-                  type="text"
-                  value={editName}
-                  onChange={(e) => setEditName(e.target.value)}
-                  className="flex-1 bg-transparent text-gray-200 text-sm border-b border-portfolio-accent focus:outline-none"
-                />
-                <button
-                  onClick={handleSaveEdit}
-                  className="text-green-500 hover:text-green-400 text-xs"
-                >
-                  ✓
-                </button>
-                <button
-                  onClick={() => setEditingSkill(null)}
-                  className="text-red-500 hover:text-red-400 text-xs"
-                >
-                  ✕
-                </button>
-              </div>
-            ) : (
-              <>
-                <span className="text-xl">{getIcon(skill.icon)}</span>
-                <span className="text-gray-200 text-sm flex-1">{skill.name}</span>
+            <span className="text-xl">{getIcon(skill.icon)}</span>
+            <span className="text-gray-200 text-sm flex-1">{skill.name}</span>
 
-                {isAuthorized && isEditMode && (
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity ml-2">
-                    <AdminActionButtons
-                      onEdit={() => handleEditSkill(skill, index)}
-                      onDelete={() => handleDeleteSkill(skill, index)}
-                      className="scale-75"
-                    />
-                  </div>
-                )}
-              </>
+            {isAuthorized && isEditMode && (
+              <div className="opacity-0 group-hover:opacity-100 transition-opacity ml-2">
+                <AdminActionButtons
+                  onEdit={() => handleEditSkill(skill)}
+                  onDelete={() => handleDeleteSkill(skill)}
+                  className="scale-75"
+                />
+              </div>
             )}
           </div>
         ))}

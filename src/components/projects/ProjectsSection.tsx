@@ -1,55 +1,51 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ProjectCard from './ProjectCard';
 import { useAuth } from '@/context/AuthContext';
 import { useAdminEdit } from '@/context/AdminEditContext';
 import AdminAddButton from '@/components/admin/AdminAddButton';
 import AdminProjectModal from '@/components/admin/projects/AdminProjectModal';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
 
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  image_url: string | null;
-  category: string;
-  technologies: string[];
-  github_url: string | null;
-  live_url: string | null;
-}
-
-// Fallback data when no data is available from Supabase
-const fallbackProjects = [
+// Sample project data
+const projects = [
   {
-    id: '1',
+    id: 1,
     title: 'WhatsApp Buddy',
-    description: 'Developed a Streamlit-based WhatsApp chat analyzer with sentiment analysis, word clouds, user stats, and emoji insights using Pandas and Matplotlib/Seaborn.',
-    image_url: '/lovable-uploads/Whatsapp_3.png',
+    description: 'Developed a Streamlit-based WhatsApp chat analyzer with sentiment analysis, word clouds,user stats, and emoji insights using Pandas and Matplotlib/Seaborn.',
+    image: '/lovable-uploads/Whatsapp_3.png',
     category: 'Deployed',
     technologies: ['Python', 'Streamlit', 'Pandas&Seaborn'],
-    github_url: 'https://github.com/piyush-ds-bit/whatsapp_chat_analyzer',
-    live_url: '#'
+    githubUrl: 'https://github.com/piyush-ds-bit/whatsapp_chat_analyzer',
+    liveUrl: '#',
   },
   {
-    id: '2',
+    id: 2,
     title: 'Piyush Portfolio',
-    description: 'Developed a personal portfolio website using lovable.ai and Firebase with an admin panel for real-time content updates, showcasing projects, skills, and contact information.',
-    image_url: '/lovable-uploads/portfolio_1.png',
+    description: 'Developed a personal portfolio website using lovable.ai and Firebase with an admin panel forreal-time content updates, showcasing projects, skills, and contact information.',
+    image: '/lovable-uploads/portfolio_1.png',
     category: 'Deployed',
     technologies: ['lovable.ai', 'Supabase', 'SQLite'],
-    github_url: 'https://github.com/piyush-ds-bit/Portfolio-website',
-    live_url: '#'
+    githubUrl: 'https://github.com/piyush-ds-bit/Portfolio-website',
+    liveUrl: '#',
   },
   {
-    id: '3',
+    id: 3,
     title: 'MovieMate',
     description: 'Built a content-based movie recommender using Bag-of-Words with a dataset of 5000+ movies.',
-    image_url: '/lovable-uploads/Moviemate_3.png',
-    category: 'In Development',
+    image: '/lovable-uploads/Moviemate_3.png',
+    category: 'Deployed',
     technologies: ['Python', 'ScikitLearn', 'Streamlit'],
-    github_url: 'https://github.com/piyush-ds-bit/Movie-Recommender-System',
-    live_url: null
+    githubUrl: 'https://github.com/piyush-ds-bit/Movie-Recommender-System',
+    liveUrl: '#',
+  },
+  {
+    id: 4,
+    title: 'Patient Partner',
+    description: 'Developed an insurance premium prediction app using Streamlit frontend and FastAPI backend. It takes user inputs like age, gender, BMI, and smoking habits to predict premium cost.',
+    image: '/lovable-uploads/insurance_1.png',
+    category: 'In Development',
+    technologies: ['Python', 'FastAPI','Streamlit'],
+    githubUrl: '#',
   }
 ];
 
@@ -58,42 +54,7 @@ const ProjectsSection: React.FC = () => {
   const { isEditMode } = useAdminEdit();
   const [activeCategory, setActiveCategory] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
   
-  const fetchProjects = async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-
-      // If no data from Supabase, use fallback data
-      if (!data || data.length === 0) {
-        setProjects(fallbackProjects);
-      } else {
-        setProjects(data || []);
-      }
-    } catch (error) {
-      console.error('Error fetching projects:', error);
-      // Use fallback data on error
-      setProjects(fallbackProjects);
-      toast({
-        title: "Using default projects",
-        description: "Could not load projects from database, showing default content",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchProjects();
-  }, []);
-
   const filteredProjects = activeCategory === 'all' 
     ? projects 
     : projects.filter(project => project.category === activeCategory);
@@ -107,48 +68,6 @@ const ProjectsSection: React.FC = () => {
   const handleAddProject = () => {
     setIsModalOpen(true);
   };
-
-  const handleProjectAdded = () => {
-    fetchProjects();
-    setIsModalOpen(false);
-  };
-
-  const handleDeleteProject = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this project?')) return;
-
-    try {
-      const { error } = await supabase
-        .from('projects')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: "Project deleted successfully",
-      });
-
-      fetchProjects();
-    } catch (error) {
-      console.error('Error deleting project:', error);
-      toast({
-        title: "Error",
-        description: "Failed to delete project",
-        variant: "destructive",
-      });
-    }
-  };
-
-  if (loading) {
-    return (
-      <section className="portfolio-section">
-        <div className="portfolio-container">
-          <div className="text-center text-white">Loading projects...</div>
-        </div>
-      </section>
-    );
-  }
   
   return (
     <section className="portfolio-section">
@@ -182,20 +101,7 @@ const ProjectsSection: React.FC = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map(project => (
-            <ProjectCard 
-              key={project.id} 
-              project={{
-                id: parseInt(project.id),
-                title: project.title,
-                description: project.description,
-                image: project.image_url || '',
-                category: project.category,
-                technologies: project.technologies || [],
-                githubUrl: project.github_url || undefined,
-                liveUrl: project.live_url || undefined,
-              }}
-              onDelete={handleDeleteProject}
-            />
+            <ProjectCard key={project.id} project={project} />
           ))}
         </div>
         
@@ -215,7 +121,6 @@ const ProjectsSection: React.FC = () => {
         <AdminProjectModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          onProjectAdded={handleProjectAdded}
         />
       )}
     </section>

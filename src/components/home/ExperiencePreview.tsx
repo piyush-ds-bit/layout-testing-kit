@@ -6,7 +6,6 @@ import ExperienceCard from '@/components/experience/ExperienceCard';
 
 const experiences = [
   {
-    id: 'preview-1',
     company: "AEIE Department, HIT",
     position: "Academic Project Contributor",
     duration: "Aug 2023 - Present",
@@ -14,7 +13,6 @@ const experiences = [
       "Learning and working on interdisciplinary academic projects blending electronics and AI, including sensor-based data acquisition systems and analysis using Python. Applied knowledge from instrumentation to real-world predictive modeling."
   },
   {
-    id: 'preview-2',
     company: "Self-Employed",
     position: "Tuition Teacher (Part-Time)",
     duration: "Feb 2021 - Present",
@@ -24,11 +22,6 @@ const experiences = [
 ];
 
 const ExperiencePreview: React.FC = () => {
-  // Empty handler for preview - no delete functionality needed
-  const handleDelete = () => {
-    // No-op for preview component
-  };
-
   return (
     <section id="experience" className="portfolio-section">
       <div
@@ -52,16 +45,14 @@ const ExperiencePreview: React.FC = () => {
           <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-portfolio-accent/30"></div>
           <div className="space-y-16">
             {experiences.slice(0, 2).map((experience, index) => (
-              <div key={experience.id} className="relative">
+              <div key={index} className="relative">
                 <div className="absolute left-1/2 transform -translate-x-1/2 -top-3 w-6 h-6 rounded-full bg-[#0f1624] border-4 border-portfolio-accent"></div>
                 <ExperienceCard 
-                  id={experience.id}
                   company={experience.company}
                   position={experience.position}
                   duration={experience.duration}
                   description={experience.description}
                   index={index}
-                  onDelete={handleDelete}
                 />
               </div>
             ))}

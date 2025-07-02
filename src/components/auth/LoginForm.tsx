@@ -25,7 +25,7 @@ const LoginForm: React.FC = () => {
         title: "Login successful",
         description: "Welcome back!",
       });
-      navigate('/'); // Redirect to home page instead of admin
+      navigate('/admin');
     } catch (error: any) {
       console.error('Login error:', error);
       toast({
