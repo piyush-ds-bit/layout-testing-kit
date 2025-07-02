@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useAdminEdit } from '@/context/AdminEditContext';
@@ -5,30 +6,42 @@ import AdminActionButtons from '@/components/admin/AdminActionButtons';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface ExperienceCardProps {
+  id: string;
   company: string;
   position: string;
   duration: string;
   description: string;
   index: number;
+  onEdit?: (data: any) => Promise<boolean>;
+  onDelete?: () => Promise<boolean>;
 }
 
 const ExperienceCard: React.FC<ExperienceCardProps> = ({
+  id,
   company,
   position,
   duration,
   description,
-  index
+  index,
+  onEdit,
+  onDelete
 }) => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleEdit = () => {
-    console.log('Edit experience:', { company, position, duration, description });
+    console.log('Edit experience:', { id, company, position, duration, description });
+    // TODO: Open edit modal with experience data
+    if (onEdit) {
+      console.log('Edit functionality triggered for:', position, 'at', company);
+    }
   };
 
-  const handleDelete = () => {
-    console.log('Delete experience:', { company, position });
+  const handleDelete = async () => {
+    if (onDelete && window.confirm(`Are you sure you want to delete the experience at "${company}"?`)) {
+      await onDelete();
+    }
   };
 
   const toggleExpanded = () => setIsExpanded(prev => !prev);

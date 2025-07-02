@@ -5,38 +5,30 @@ import { useAuth } from '@/context/AuthContext';
 import { useAdminEdit } from '@/context/AdminEditContext';
 import AdminAddButton from '@/components/admin/AdminAddButton';
 import AdminExperienceModal from '@/components/admin/experience/AdminExperienceModal';
-
-const experiences = [
-   {
-    company: "Self-Initiated",
-    position: "Machine Learning & Data Science Developer",
-    duration: "2024 - Present",
-    description:
-      "Building end-to-end data-driven applications like WhatsApp Chat Analyzer, Movie Recommender System, and Insurance Premium Predictor using Python, Streamlit, and various ML libraries. Focused on data preprocessing, model building, deployment, and UI integration."
-  },
-  {
-    company: "AEIE Department, HIT",
-    position: "Academic Project Contributor",
-    duration: "Aug 2023 - Present",
-    description:
-      "Learning and working on interdisciplinary academic projects blending electronics and AI, including sensor-based data acquisition systems and analysis using Python. Applied knowledge from instrumentation to real-world predictive modeling."
-  },
-  {
-    company: "Self Employed",
-    position: "Tuition Teacher(Part-time)",
-    duration: "Feb 2021 - Present",
-    description: "Provided academic coaching to students from Class 5 to 12. Taught all subjects for Classes 5–8, and Physics, Chemistry, and Mathematics for Classes 9–12.Helped students achieve significant academic improvement, with one scoring 81% (Class 10) and another scoring 75% (Class 12)."
-  }
-];
+import { useExperienceData } from '@/hooks/useExperienceData';
 
 const ExperienceSection: React.FC = () => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { experiences, loading, addExperience, updateExperience, deleteExperience, formatDuration } = useExperienceData();
+
   const handleAddExperience = () => {
     setIsModalOpen(true);
   };
+
+  if (loading) {
+    return (
+      <section className="portfolio-section">
+        <div className="max-w-4xl mx-auto relative bg-[#182437]/70 border border-[#4fd1c533] rounded-2xl shadow-2xl backdrop-blur-md p-8">
+          <div className="flex items-center justify-center">
+            <div className="text-white">Loading experiences...</div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="portfolio-section">
@@ -64,16 +56,19 @@ const ExperienceSection: React.FC = () => {
           
           <div className="space-y-20">
             {experiences.map((experience, index) => (
-              <div key={index} className="relative">
+              <div key={experience.id} className="relative">
                 {/* Timeline dot */}
                 <div className="absolute left-1/2 transform -translate-x-1/2 -top-3 w-6 h-6 rounded-full bg-[#0f1624] border-4 border-portfolio-accent"></div>
                 
                 <ExperienceCard 
+                  id={experience.id}
                   company={experience.company}
                   position={experience.position}
-                  duration={experience.duration}
+                  duration={formatDuration(experience.start_date, experience.end_date, experience.current)}
                   description={experience.description}
                   index={index}
+                  onEdit={(data) => updateExperience(experience.id, data)}
+                  onDelete={() => deleteExperience(experience.id)}
                 />
               </div>
             ))}
@@ -85,6 +80,12 @@ const ExperienceSection: React.FC = () => {
         <AdminExperienceModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
+          onSubmit={async (experienceData) => {
+            const success = await addExperience(experienceData);
+            if (success) {
+              setIsModalOpen(false);
+            }
+          }}
         />
       )}
     </section>

@@ -9,29 +9,36 @@ interface Project {
   id: number;
   title: string;
   description: string;
-  image: string;
+  image_url?: string;
   category: string;
-  technologies: string[];
-  githubUrl?: string;
-  liveUrl?: string;
+  technologies?: string[];
+  github_url?: string;
+  live_url?: string;
 }
 
 interface ProjectCardProps {
   project: Project;
+  onEdit?: (projectData: Partial<Project>) => Promise<boolean>;
+  onDelete?: () => Promise<boolean>;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ project, onEdit, onDelete }) => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
 
   const handleEdit = () => {
     console.log('Edit project:', project);
-    // TODO: Open edit modal
+    // TODO: Open edit modal with project data
+    if (onEdit) {
+      // For now, just log - you can implement edit modal later
+      console.log('Edit functionality triggered for:', project.title);
+    }
   };
 
-  const handleDelete = () => {
-    console.log('Delete project:', project);
-    // TODO: Implement delete with confirmation
+  const handleDelete = async () => {
+    if (onDelete && window.confirm(`Are you sure you want to delete "${project.title}"?`)) {
+      await onDelete();
+    }
   };
 
   return (
@@ -47,7 +54,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
       <div className="relative h-48 mb-4 overflow-hidden rounded-lg">
         <img 
-          src={project.image} 
+          src={project.image_url || '/placeholder.svg'} 
           alt={project.title} 
           className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
         />
@@ -58,7 +65,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       <p className="text-portfolio-gray-light mb-4 flex-grow">{project.description}</p>
       
       <div className="flex flex-wrap gap-2 mb-4">
-        {project.technologies.map((tech, index) => (
+        {project.technologies?.map((tech, index) => (
           <span 
             key={index} 
             className="text-xs px-2 py-1 bg-portfolio-darker text-portfolio-gray-light rounded"
@@ -69,9 +76,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       </div>
       
       <div className="flex items-center space-x-3 mt-auto">
-        {project.githubUrl && (
+        {project.github_url && project.github_url !== '#' && (
           <a 
-            href={project.githubUrl}
+            href={project.github_url}
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-portfolio-accent hover:text-portfolio-accent-dark transition-colors"
@@ -80,9 +87,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           </a>
         )}
         
-        {project.liveUrl && (
+        {project.live_url && project.live_url !== '#' && (
           <a 
-            href={project.liveUrl}
+            href={project.live_url}
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-portfolio-accent hover:text-portfolio-accent-dark transition-colors"
