@@ -25,7 +25,7 @@ const LoginForm: React.FC = () => {
         title: "Login successful",
         description: "Welcome back!",
       });
-      navigate('/admin');
+      navigate('/');
     } catch (error: any) {
       console.error('Login error:', error);
       toast({

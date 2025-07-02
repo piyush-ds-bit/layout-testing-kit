@@ -12,7 +12,7 @@ const ResumePage: React.FC = () => {
           <h2 className="portfolio-heading">My Resume</h2>
           
           <div className="flex flex-col items-center mb-8">
-            <a href="/ResumeJune.pdf" target="_blank" rel="noopener noreferrer">
+            <a href="/lovable-uploads/ResumeJune.pdf" target="_blank" rel="noopener noreferrer">
               <Button 
                 className="bg-portfolio-accent text-white hover:bg-portfolio-accent/80 flex items-center gap-2 mb-8"
               >
@@ -23,7 +23,7 @@ const ResumePage: React.FC = () => {
             
             <div className="portfolio-card w-full max-w-4xl">
               <div className="space-y-6">
-                {/* Resume Heade */}
+                {/* Resume Header */}
                 <div className="text-center mb-8">
                   <h1 className="text-3xl font-bold text-portfolio-accent mb-2">Piyush Kr. Singh</h1>
                   <p className="text-gray-400">Data Scientist · AI & ML Enthusiast · Python & Streamlit Developer</p>
