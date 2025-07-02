@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
+import { Json } from '@/integrations/supabase/types';
 
 export interface Project {
   id: string; // Changed from number to string to match Supabase UUID
@@ -62,6 +63,20 @@ export const useProjectsData = () => {
     }
   ];
 
+  // Helper function to convert Json to string[] | string
+  const convertDetailsFromJson = (details: Json | null): string[] | string | undefined => {
+    if (!details) return undefined;
+    if (typeof details === 'string') return details;
+    if (Array.isArray(details)) return details as string[];
+    return undefined;
+  };
+
+  // Helper function to convert string[] | string to Json for database
+  const convertDetailsToJson = (details: string[] | string | undefined): Json => {
+    if (!details) return null;
+    return details as Json;
+  };
+
   const fetchProjects = async () => {
     try {
       const { data, error } = await supabase
@@ -70,7 +85,12 @@ export const useProjectsData = () => {
         .order('created_at', { ascending: false });
 
       if (!error && data && data.length > 0) {
-        setProjects(data);
+        // Convert the data to match our Project interface
+        const convertedData: Project[] = data.map(project => ({
+          ...project,
+          details: convertDetailsFromJson(project.details)
+        }));
+        setProjects(convertedData);
       } else {
         setProjects(fallbackProjects);
       }
@@ -88,15 +108,27 @@ export const useProjectsData = () => {
 
   const addProject = async (projectData: Omit<Project, 'id' | 'created_at'>) => {
     try {
+      // Convert details to Json format for database
+      const dataForDb = {
+        ...projectData,
+        details: convertDetailsToJson(projectData.details)
+      };
+
       const { data, error } = await supabase
         .from('projects')
-        .insert([projectData])
+        .insert([dataForDb])
         .select()
         .single();
 
       if (error) throw error;
 
-      setProjects(prev => [data, ...prev]);
+      // Convert the returned data back to our Project interface
+      const convertedProject: Project = {
+        ...data,
+        details: convertDetailsFromJson(data.details)
+      };
+
+      setProjects(prev => [convertedProject, ...prev]);
 
       toast({
         title: "Success",
@@ -117,17 +149,29 @@ export const useProjectsData = () => {
 
   const updateProject = async (id: string, projectData: Partial<Omit<Project, 'id' | 'created_at'>>) => {
     try {
+      // Convert details to Json format for database
+      const dataForDb = {
+        ...projectData,
+        details: projectData.details ? convertDetailsToJson(projectData.details) : undefined
+      };
+
       const { data, error } = await supabase
         .from('projects')
-        .update(projectData)
+        .update(dataForDb)
         .eq('id', id)
         .select()
         .single();
 
       if (error) throw error;
 
+      // Convert the returned data back to our Project interface
+      const convertedProject: Project = {
+        ...data,
+        details: convertDetailsFromJson(data.details)
+      };
+
       setProjects(prev => prev.map(project => 
-        project.id === id ? data : project
+        project.id === id ? convertedProject : project
       ));
 
       toast({
