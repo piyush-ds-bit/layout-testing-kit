@@ -3,193 +3,198 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 
-export interface Skill {
-  id: string;
-  name: string;
-  icon: string;
-  category_id: string;
-}
-
 export interface SkillCategory {
   id: string;
   name: string;
+  skills: Skill[];
+}
+
+export interface Skill {
+  id: string;
+  name: string;
+  icon: string | null;
+  category_id: string;
 }
 
 export const useSkillsData = () => {
-  const [categories, setCategories] = useState<SkillCategory[]>([]);
-  const [skills, setSkills] = useState<{ [categoryId: string]: Skill[] }>({});
+  const [skillCategories, setSkillCategories] = useState<SkillCategory[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fallbackData = {
-    programming: [
-      { id: 'fallback-1', name: 'Python', icon: 'python', category_id: 'programming' },
-      { id: 'fallback-2', name: 'Dart', icon: 'dart', category_id: 'programming' },
-      { id: 'fallback-3', name: 'HTML/CSS', icon: 'html5', category_id: 'programming' }
-    ],
-    libraries: [
-      { id: 'fallback-4', name: 'Pandas', icon: 'pandas', category_id: 'libraries' },
-      { id: 'fallback-5', name: 'NumPy', icon: 'numpy', category_id: 'libraries' },
-      { id: 'fallback-6', name: 'Matplotlib', icon: 'matplotlib', category_id: 'libraries' },
-      { id: 'fallback-7', name: 'Seaborn', icon: 'seaborn', category_id: 'libraries' },
-      { id: 'fallback-8', name: 'Scikit‑learn', icon: 'scikitlearn', category_id: 'libraries' },
-      { id: 'fallback-9', name: 'TensorFlow', icon: 'tensorflow', category_id: 'libraries' }
-    ],
-    webtools: [
-      { id: 'fallback-10', name: 'Streamlit', icon: 'streamlit', category_id: 'webtools' },
-      { id: 'fallback-11', name: 'FastAPI', icon: 'fastapi', category_id: 'webtools' },
-      { id: 'fallback-12', name: 'Pydantic', icon: 'pydantic', category_id: 'webtools' },
-      { id: 'fallback-13', name: 'Flutter', icon: 'flutter', category_id: 'webtools' },
-      { id: 'fallback-14', name: 'Docker', icon: 'docker', category_id: 'webtools' }
-    ],
-    databases: [
-      { id: 'fallback-15', name: 'Supabase', icon: 'supabase', category_id: 'databases' }
-    ],
-    tools: [
-      { id: 'fallback-16', name: 'IntelliJ', icon: 'intellijidea', category_id: 'tools' },
-      { id: 'fallback-17', name: 'Jupyter Notebook', icon: 'jupyter', category_id: 'tools' },
-      { id: 'fallback-18', name: 'PyCharm', icon: 'pycharm', category_id: 'tools' },
-      { id: 'fallback-19', name: 'Google Colab', icon: 'googlecolab', category_id: 'tools' },
-      { id: 'fallback-20', name: 'Kaggle', icon: 'kaggle', category_id: 'tools' }
-    ],
-    other: [
-      { id: 'fallback-21', name: 'Problem Solving', icon: 'problemsolving', category_id: 'other' }
-    ]
-  };
-
-  const fallbackCategories = [
-    { id: 'programming', name: 'Programming' },
-    { id: 'libraries', name: 'Libraries & Frameworks' },
-    { id: 'webtools', name: 'Web & Tools' },
-    { id: 'databases', name: 'Databases' },
-    { id: 'tools', name: 'Tools' },
-    { id: 'other', name: 'Other' }
+  const fallbackCategories: SkillCategory[] = [
+    {
+      id: 'frontend',
+      name: 'Frontend Development',
+      skills: [
+        { id: '1', name: 'React', icon: '⚛️', category_id: 'frontend' },
+        { id: '2', name: 'TypeScript', icon: '🔷', category_id: 'frontend' },
+        { id: '3', name: 'JavaScript', icon: '🟨', category_id: 'frontend' },
+        { id: '4', name: 'HTML/CSS', icon: '🎨', category_id: 'frontend' },
+        { id: '5', name: 'Tailwind CSS', icon: '🎨', category_id: 'frontend' },
+      ]
+    },
+    {
+      id: 'backend',
+      name: 'Backend Development',
+      skills: [
+        { id: '6', name: 'Python', icon: '🐍', category_id: 'backend' },
+        { id: '7', name: 'FastAPI', icon: '⚡', category_id: 'backend' },
+        { id: '8', name: 'SQL', icon: '🗄️', category_id: 'backend' },
+        { id: '9', name: 'PostgreSQL', icon: '🐘', category_id: 'backend' },
+      ]
+    },
+    {
+      id: 'tools',
+      name: 'Tools & Technologies',
+      skills: [
+        { id: '10', name: 'Git', icon: '📝', category_id: 'tools' },
+        { id: '11', name: 'Docker', icon: '🐳', category_id: 'tools' },
+        { id: '12', name: 'AWS', icon: '☁️', category_id: 'tools' },
+      ]
+    }
   ];
 
-  const fetchData = async () => {
+  const fetchSkillsData = async () => {
     try {
+      // Fetch categories
       const { data: categoriesData, error: categoriesError } = await supabase
         .from('skill_categories')
-        .select('*');
+        .select('*')
+        .order('name');
 
+      // Fetch skills
       const { data: skillsData, error: skillsError } = await supabase
         .from('skills')
-        .select('*');
+        .select('*')
+        .order('name');
 
       if (!categoriesError && !skillsError && categoriesData && skillsData) {
-        setCategories(categoriesData);
-        
-        const skillsByCategory: { [categoryId: string]: Skill[] } = {};
-        skillsData.forEach((skill) => {
-          if (!skillsByCategory[skill.category_id]) {
-            skillsByCategory[skill.category_id] = [];
-          }
-          skillsByCategory[skill.category_id].push(skill);
-        });
-        setSkills(skillsByCategory);
+        // Group skills by category
+        const groupedCategories: SkillCategory[] = categoriesData.map(category => ({
+          ...category,
+          skills: skillsData.filter(skill => skill.category_id === category.id)
+        }));
+
+        setSkillCategories(groupedCategories);
       } else {
-        // Use fallback data
-        setCategories(fallbackCategories);
-        setSkills(fallbackData);
+        console.log('Using fallback skills data');
+        setSkillCategories(fallbackCategories);
       }
     } catch (error) {
       console.error('Error fetching skills data:', error);
-      setCategories(fallbackCategories);
-      setSkills(fallbackData);
+      setSkillCategories(fallbackCategories);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchData();
+    fetchSkillsData();
   }, []);
 
-  const addSkill = async (name: string, icon: string, categoryId: string) => {
+  const addSkill = async (categoryId: string, skillData: { name: string; icon: string }) => {
     try {
+      console.log('Adding skill:', { categoryId, skillData });
+      
       const { data, error } = await supabase
         .from('skills')
-        .insert([{ name, icon: icon || '🔧', category_id: categoryId }])
+        .insert({
+          category_id: categoryId,
+          name: skillData.name,
+          icon: skillData.icon || '🔧'
+        })
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error adding skill:', error);
+        throw error;
+      }
 
-      setSkills(prev => ({
-        ...prev,
-        [categoryId]: [...(prev[categoryId] || []), data]
-      }));
+      console.log('Skill added successfully:', data);
+      
+      // Update the local state immediately
+      setSkillCategories(prev => 
+        prev.map(category => 
+          category.id === categoryId 
+            ? { ...category, skills: [...category.skills, data] }
+            : category
+        )
+      );
 
       toast({
         title: "Success",
         description: "Skill added successfully",
       });
 
-      return true;
-    } catch (error) {
+      return data;
+    } catch (error: any) {
       console.error('Error adding skill:', error);
       toast({
         title: "Error",
-        description: "Failed to add skill",
+        description: error.message || "Failed to add skill",
         variant: "destructive",
       });
-      return false;
+      throw error;
     }
   };
 
-  const updateSkill = async (id: string, name: string, icon: string) => {
+  const updateSkill = async (skillId: string, skillData: { name: string; icon: string }) => {
     try {
       const { data, error } = await supabase
         .from('skills')
-        .update({ name, icon })
-        .eq('id', id)
+        .update({
+          name: skillData.name,
+          icon: skillData.icon
+        })
+        .eq('id', skillId)
         .select()
         .single();
 
       if (error) throw error;
 
-      setSkills(prev => {
-        const newSkills = { ...prev };
-        Object.keys(newSkills).forEach(categoryId => {
-          newSkills[categoryId] = newSkills[categoryId].map(skill =>
-            skill.id === id ? data : skill
-          );
-        });
-        return newSkills;
-      });
+      // Update the local state
+      setSkillCategories(prev => 
+        prev.map(category => ({
+          ...category,
+          skills: category.skills.map(skill => 
+            skill.id === skillId ? data : skill
+          )
+        }))
+      );
 
       toast({
         title: "Success",
         description: "Skill updated successfully",
       });
 
-      return true;
-    } catch (error) {
+      return data;
+    } catch (error: any) {
       console.error('Error updating skill:', error);
       toast({
         title: "Error",
         description: "Failed to update skill",
         variant: "destructive",
       });
-      return false;
+      throw error;
     }
   };
 
-  const deleteSkill = async (id: string) => {
+  const deleteSkill = async (skillId: string) => {
     try {
       const { error } = await supabase
         .from('skills')
         .delete()
-        .eq('id', id);
+        .eq('id', skillId);
 
       if (error) throw error;
 
-      setSkills(prev => {
-        const newSkills = { ...prev };
-        Object.keys(newSkills).forEach(categoryId => {
-          newSkills[categoryId] = newSkills[categoryId].filter(skill => skill.id !== id);
-        });
-        return newSkills;
-      });
+      // Update the local state
+      setSkillCategories(prev => 
+        prev.map(category => ({
+          ...category,
+          skills: category.skills.filter(skill => skill.id !== skillId)
+        }))
+      );
 
       toast({
         title: "Success",
@@ -197,7 +202,7 @@ export const useSkillsData = () => {
       });
 
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting skill:', error);
       toast({
         title: "Error",
@@ -209,12 +214,11 @@ export const useSkillsData = () => {
   };
 
   return {
-    categories,
-    skills,
+    skillCategories,
     loading,
     addSkill,
     updateSkill,
     deleteSkill,
-    refetch: fetchData
+    refetch: fetchSkillsData
   };
 };

@@ -11,36 +11,29 @@ export interface Experience {
   end_date?: string;
   current?: boolean;
   description: string;
+  created_at?: string;
 }
 
 export const useExperienceData = () => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fallbackExperiences = [
+  const fallbackExperiences: Experience[] = [
     {
-      id: 'fallback-1',
-      company: "Self-Initiated",
-      position: "Machine Learning & Data Science Developer",
-      start_date: "2024-01-01",
+      id: '1',
+      company: 'Tech Solutions Inc.',
+      position: 'Full Stack Developer',
+      start_date: '2023-01-01',
       current: true,
-      description: "Building end-to-end data-driven applications like WhatsApp Chat Analyzer, Movie Recommender System, and Insurance Premium Predictor using Python, Streamlit, and various ML libraries. Focused on data preprocessing, model building, deployment, and UI integration."
+      description: 'Developing web applications using React, TypeScript, and Node.js. Working on microservices architecture and cloud deployment strategies.',
     },
     {
-      id: 'fallback-2',
-      company: "AEIE Department, HIT",
-      position: "Academic Project Contributor",
-      start_date: "2023-08-01",
-      current: true,
-      description: "Learning and working on interdisciplinary academic projects blending electronics and AI, including sensor-based data acquisition systems and analysis using Python. Applied knowledge from instrumentation to real-world predictive modeling."
-    },
-    {
-      id: 'fallback-3',
-      company: "Self Employed",
-      position: "Tuition Teacher(Part-time)",
-      start_date: "2021-02-01",
-      current: true,
-      description: "Provided academic coaching to students from Class 5 to 12. Taught all subjects for Classes 5–8, and Physics, Chemistry, and Mathematics for Classes 9–12. Helped students achieve significant academic improvement, with one scoring 81% (Class 10) and another scoring 75% (Class 12)."
+      id: '2',
+      company: 'Digital Innovation Co.',
+      position: 'Frontend Developer',
+      start_date: '2022-01-01',
+      end_date: '2022-12-31',
+      description: 'Built responsive user interfaces using React and modern CSS frameworks. Collaborated with UX designers to implement pixel-perfect designs.',
     }
   ];
 
@@ -68,7 +61,7 @@ export const useExperienceData = () => {
     fetchExperiences();
   }, []);
 
-  const addExperience = async (experienceData: Omit<Experience, 'id'>) => {
+  const addExperience = async (experienceData: Omit<Experience, 'id' | 'created_at'>) => {
     try {
       const { data, error } = await supabase
         .from('experiences')
@@ -86,7 +79,7 @@ export const useExperienceData = () => {
       });
 
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error adding experience:', error);
       toast({
         title: "Error",
@@ -97,7 +90,7 @@ export const useExperienceData = () => {
     }
   };
 
-  const updateExperience = async (id: string, experienceData: Partial<Experience>) => {
+  const updateExperience = async (id: string, experienceData: Partial<Omit<Experience, 'id' | 'created_at'>>) => {
     try {
       const { data, error } = await supabase
         .from('experiences')
@@ -108,8 +101,8 @@ export const useExperienceData = () => {
 
       if (error) throw error;
 
-      setExperiences(prev => prev.map(exp => 
-        exp.id === id ? data : exp
+      setExperiences(prev => prev.map(experience => 
+        experience.id === id ? data : experience
       ));
 
       toast({
@@ -118,7 +111,7 @@ export const useExperienceData = () => {
       });
 
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating experience:', error);
       toast({
         title: "Error",
@@ -138,7 +131,7 @@ export const useExperienceData = () => {
 
       if (error) throw error;
 
-      setExperiences(prev => prev.filter(exp => exp.id !== id));
+      setExperiences(prev => prev.filter(experience => experience.id !== id));
 
       toast({
         title: "Success",
@@ -146,7 +139,7 @@ export const useExperienceData = () => {
       });
 
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting experience:', error);
       toast({
         title: "Error",
@@ -157,32 +150,12 @@ export const useExperienceData = () => {
     }
   };
 
-  const formatDuration = (startDate: string, endDate?: string, current?: boolean) => {
-    const start = new Date(startDate);
-    const startMonth = start.toLocaleDateString('en-US', { month: 'short' });
-    const startYear = start.getFullYear();
-    
-    if (current) {
-      return `${startMonth} ${startYear} - Present`;
-    }
-    
-    if (endDate) {
-      const end = new Date(endDate);
-      const endMonth = end.toLocaleDateString('en-US', { month: 'short' });
-      const endYear = end.getFullYear();
-      return `${startMonth} ${startYear} - ${endMonth} ${endYear}`;
-    }
-    
-    return `${startMonth} ${startYear}`;
-  };
-
   return {
     experiences,
     loading,
     addExperience,
     updateExperience,
     deleteExperience,
-    formatDuration,
     refetch: fetchExperiences
   };
 };
