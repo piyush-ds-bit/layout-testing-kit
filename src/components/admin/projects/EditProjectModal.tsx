@@ -2,53 +2,41 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
-import { useProjectsData } from '@/hooks/useProjectsData';
+import { Project } from '@/types/database';
 
-interface AdminProjectModalProps {
+interface EditProjectModalProps {
   isOpen: boolean;
   onClose: () => void;
+  project: Project;
+  onUpdate: (id: string, projectData: Partial<Omit<Project, 'id' | 'created_at'>>) => Promise<boolean>;
 }
 
-const AdminProjectModal: React.FC<AdminProjectModalProps> = ({ 
+const EditProjectModal: React.FC<EditProjectModalProps> = ({ 
   isOpen, 
-  onClose 
+  onClose, 
+  project,
+  onUpdate 
 }) => {
-  const { addProject } = useProjectsData();
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    image_url: '',
-    category: 'Deployed',
-    technologies: '',
-    github_url: '',
-    live_url: ''
+    title: project.title,
+    description: project.description,
+    category: project.category,
+    image_url: project.image_url || '',
+    github_url: project.github_url || '',
+    live_url: project.live_url || '',
+    technologies: Array.isArray(project.technologies) ? project.technologies.join(', ') : '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.title.trim() || !formData.description.trim()) {
-      return;
-    }
-
-    const projectData = {
+    const updateData = {
       ...formData,
       technologies: formData.technologies.split(',').map(tech => tech.trim()).filter(tech => tech)
     };
-    
-    const success = await addProject(projectData);
-    
+
+    const success = await onUpdate(project.id!, updateData);
     if (success) {
-      // Reset form
-      setFormData({
-        title: '',
-        description: '',
-        image_url: '',
-        category: 'Deployed',
-        technologies: '',
-        github_url: '',
-        live_url: ''
-      });
       onClose();
     }
   };
@@ -63,7 +51,7 @@ const AdminProjectModal: React.FC<AdminProjectModalProps> = ({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-portfolio-card-bg border border-portfolio-dark rounded-lg p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">Add New Project</h3>
+          <h3 className="text-lg font-semibold text-white">Edit Project</h3>
           <Button
             onClick={onClose}
             variant="ghost"
@@ -84,7 +72,6 @@ const AdminProjectModal: React.FC<AdminProjectModalProps> = ({
               value={formData.title}
               onChange={(e) => handleChange('title', e.target.value)}
               className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white placeholder-portfolio-gray-light focus:outline-none focus:ring-2 focus:ring-portfolio-accent"
-              placeholder="Enter project title"
               required
             />
           </div>
@@ -98,21 +85,7 @@ const AdminProjectModal: React.FC<AdminProjectModalProps> = ({
               onChange={(e) => handleChange('description', e.target.value)}
               rows={3}
               className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white placeholder-portfolio-gray-light focus:outline-none focus:ring-2 focus:ring-portfolio-accent resize-none"
-              placeholder="Describe your project..."
               required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-portfolio-gray-light mb-1">
-              Image URL
-            </label>
-            <input
-              type="text"
-              value={formData.image_url}
-              onChange={(e) => handleChange('image_url', e.target.value)}
-              className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white placeholder-portfolio-gray-light focus:outline-none focus:ring-2 focus:ring-portfolio-accent"
-              placeholder="Image URL or path"
             />
           </div>
 
@@ -128,6 +101,19 @@ const AdminProjectModal: React.FC<AdminProjectModalProps> = ({
               <option value="Deployed">Deployed</option>
               <option value="In Development">In Development</option>
             </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-portfolio-gray-light mb-1">
+              Image URL
+            </label>
+            <input
+              type="text"
+              value={formData.image_url}
+              onChange={(e) => handleChange('image_url', e.target.value)}
+              className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white placeholder-portfolio-gray-light focus:outline-none focus:ring-2 focus:ring-portfolio-accent"
+              placeholder="Image URL or path"
+            />
           </div>
 
           <div>
@@ -174,7 +160,7 @@ const AdminProjectModal: React.FC<AdminProjectModalProps> = ({
               type="submit"
               className="flex-1 bg-portfolio-accent hover:bg-portfolio-accent-dark text-white"
             >
-              Add Project
+              Update Project
             </Button>
             <Button
               type="button"
@@ -191,4 +177,4 @@ const AdminProjectModal: React.FC<AdminProjectModalProps> = ({
   );
 };
 
-export default AdminProjectModal;
+export default EditProjectModal;

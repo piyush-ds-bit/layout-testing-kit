@@ -2,25 +2,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { useSkillsData } from '@/hooks/useSkillsData';
 import SkillCategory from '@/components/skills/SkillCategory';
 
-const programming = [
-  
-  { name: 'Python', icon: 'python' },
-  { name: 'HTML/CSS', icon: 'html5' }
-];
-
-const librariesFrameworks = [
-  { name: 'Pandas', icon: 'pandas' },
-  { name: 'NumPy', icon: 'numpy' },
-  { name: 'TensorFlow', icon: 'tensorflow' }
-];
-
 const SkillsPreview: React.FC = () => {
+  const { skillCategories, skillsByCategory, loading } = useSkillsData();
+
   // Empty handler for preview - admin functionality not available on home page
   const handleAddSkill = () => {
     // No-op for preview
   };
+
+  if (loading) {
+    return <div className="text-white">Loading skills...</div>;
+  }
 
   return (
     <section id="skills" className="portfolio-section">
@@ -42,20 +37,16 @@ const SkillsPreview: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-          <SkillCategory 
-            title="Programming" 
-            icon="💻" 
-            skills={programming} 
-            categoryKey="programming"
-            onAddSkill={handleAddSkill}
-          />
-          <SkillCategory 
-            title="Libraries & Frameworks" 
-            icon="📚" 
-            skills={librariesFrameworks} 
-            categoryKey="libraries"
-            onAddSkill={handleAddSkill}
-          />
+          {skillCategories.slice(0, 2).map(category => (
+            <SkillCategory 
+              key={category.id}
+              title={category.name} 
+              icon="💻" 
+              skills={skillsByCategory[category.id!] || []} 
+              categoryKey={category.id!}
+              onAddSkill={handleAddSkill}
+            />
+          ))}
         </div>
       </div>
     </section>

@@ -1,57 +1,16 @@
 
 import React, { useState } from 'react';
-import ProjectCard from './ProjectCard';
+import { useProjectsData } from '@/hooks/useProjectsData';
 import { useAuth } from '@/context/AuthContext';
 import { useAdminEdit } from '@/context/AdminEditContext';
+import ProjectCard from './ProjectCard';
 import AdminAddButton from '@/components/admin/AdminAddButton';
 import AdminProjectModal from '@/components/admin/projects/AdminProjectModal';
-
-// Sample project data
-const projects = [
-  {
-    id: 1,
-    title: 'WhatsApp Buddy',
-    description: 'Developed a Streamlit-based WhatsApp chat analyzer with sentiment analysis, word clouds,user stats, and emoji insights using Pandas and Matplotlib/Seaborn.',
-    image: '/lovable-uploads/Whatsapp_3.png',
-    category: 'Deployed',
-    technologies: ['Python', 'Streamlit', 'Pandas&Seaborn'],
-    githubUrl: 'https://github.com/piyush-ds-bit/whatsapp_chat_analyzer',
-    liveUrl: '#',
-  },
-  {
-    id: 2,
-    title: 'Piyush Portfolio',
-    description: 'Developed a personal portfolio website using lovable.ai and Firebase with an admin panel forreal-time content updates, showcasing projects, skills, and contact information.',
-    image: '/lovable-uploads/portfolio_1.png',
-    category: 'Deployed',
-    technologies: ['lovable.ai', 'Supabase', 'SQLite'],
-    githubUrl: 'https://github.com/piyush-ds-bit/Portfolio-website',
-    liveUrl: '#',
-  },
-  {
-    id: 3,
-    title: 'MovieMate',
-    description: 'Built a content-based movie recommender using Bag-of-Words with a dataset of 5000+ movies.',
-    image: '/lovable-uploads/Moviemate_3.png',
-    category: 'Deployed',
-    technologies: ['Python', 'ScikitLearn', 'Streamlit'],
-    githubUrl: 'https://github.com/piyush-ds-bit/Movie-Recommender-System',
-    liveUrl: '#',
-  },
-  {
-    id: 4,
-    title: 'Patient Partner',
-    description: 'Developed an insurance premium prediction app using Streamlit frontend and FastAPI backend. It takes user inputs like age, gender, BMI, and smoking habits to predict premium cost.',
-    image: '/lovable-uploads/insurance_1.png',
-    category: 'In Development',
-    technologies: ['Python', 'FastAPI','Streamlit'],
-    githubUrl: '#',
-  }
-];
 
 const ProjectsSection: React.FC = () => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
+  const { projects, loading, updateProject, deleteProject } = useProjectsData();
   const [activeCategory, setActiveCategory] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   
@@ -68,6 +27,10 @@ const ProjectsSection: React.FC = () => {
   const handleAddProject = () => {
     setIsModalOpen(true);
   };
+
+  if (loading) {
+    return <div className="text-white">Loading projects...</div>;
+  }
   
   return (
     <section className="portfolio-section">
@@ -101,7 +64,21 @@ const ProjectsSection: React.FC = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map(project => (
-            <ProjectCard key={project.id} project={project} />
+            <ProjectCard 
+              key={project.id} 
+              project={{
+                id: parseInt(project.id!),
+                title: project.title,
+                description: project.description,
+                image: project.image_url || '/placeholder.svg',
+                category: project.category,
+                technologies: Array.isArray(project.technologies) ? project.technologies : [],
+                githubUrl: project.github_url,
+                liveUrl: project.live_url
+              }}
+              onEdit={async (projectData) => await updateProject(project.id!, projectData)}
+              onDelete={async () => await deleteProject(project.id!)}
+            />
           ))}
         </div>
         
