@@ -6,7 +6,7 @@ import ExperienceCard from '@/components/experience/ExperienceCard';
 import { useExperienceData } from '@/hooks/useExperienceData';
 
 const ExperiencePreview: React.FC = () => {
-  const { experiences, loading, formatDuration } = useExperienceData();
+  const { experiences, loading } = useExperienceData();
 
   if (loading) {
     return (
@@ -49,12 +49,7 @@ const ExperiencePreview: React.FC = () => {
               <div key={experience.id} className="relative">
                 <div className="absolute left-1/2 transform -translate-x-1/2 -top-3 w-6 h-6 rounded-full bg-[#0f1624] border-4 border-portfolio-accent"></div>
                 <ExperienceCard 
-                  id={experience.id}
-                  company={experience.company}
-                  position={experience.position}
-                  duration={formatDuration(experience.start_date, experience.end_date, experience.current)}
-                  description={experience.description}
-                  index={index}
+                  experience={experience}
                 />
               </div>
             ))}

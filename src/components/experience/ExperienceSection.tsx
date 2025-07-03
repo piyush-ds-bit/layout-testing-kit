@@ -12,7 +12,7 @@ const ExperienceSection: React.FC = () => {
   const { isEditMode } = useAdminEdit();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { experiences, loading, addExperience, updateExperience, deleteExperience, formatDuration } = useExperienceData();
+  const { experiences, loading, addExperience, updateExperience, deleteExperience } = useExperienceData();
 
   const handleAddExperience = () => {
     setIsModalOpen(true);
@@ -61,13 +61,8 @@ const ExperienceSection: React.FC = () => {
                 <div className="absolute left-1/2 transform -translate-x-1/2 -top-3 w-6 h-6 rounded-full bg-[#0f1624] border-4 border-portfolio-accent"></div>
                 
                 <ExperienceCard 
-                  id={experience.id}
-                  company={experience.company}
-                  position={experience.position}
-                  duration={formatDuration(experience.start_date, experience.end_date, experience.current)}
-                  description={experience.description}
-                  index={index}
-                  onEdit={(data) => updateExperience(experience.id, data)}
+                  experience={experience}
+                  onEdit={(id, data) => updateExperience(id, data)}
                   onDelete={() => deleteExperience(experience.id)}
                 />
               </div>

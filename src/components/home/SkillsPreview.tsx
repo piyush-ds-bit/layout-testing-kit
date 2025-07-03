@@ -6,7 +6,7 @@ import SkillCategory from '@/components/skills/SkillCategory';
 import { useSkillsData } from '@/hooks/useSkillsData';
 
 const SkillsPreview: React.FC = () => {
-  const { categories, skills, loading } = useSkillsData();
+  const { skillCategories, loading } = useSkillsData();
 
   // Empty handler for preview - admin functionality not available on home page
   const handleAddSkill = () => {
@@ -52,9 +52,9 @@ const SkillsPreview: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
           {previewCategories.map((category) => {
-            const categoryData = categories.find(c => c.name.toLowerCase().includes(category.key) || category.key.includes(c.name.toLowerCase()));
+            const categoryData = skillCategories.find(c => c.name.toLowerCase().includes(category.key) || category.key.includes(c.name.toLowerCase()));
             const categoryId = categoryData?.id || category.key;
-            const categorySkills = skills[categoryId] || [];
+            const categorySkills = categoryData?.skills || [];
 
             return (
               <SkillCategory 

@@ -13,7 +13,7 @@ const SkillsSection: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
 
-  const { categories, skills, loading, addSkill, updateSkill, deleteSkill } = useSkillsData();
+  const { skillCategories, loading, addSkill, updateSkill, deleteSkill } = useSkillsData();
 
   const handleAddSkill = (category: string) => {
     setSelectedCategory(category);
@@ -65,9 +65,9 @@ const SkillsSection: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
           {categoryConfig.map((category) => {
-            const categoryData = categories.find(c => c.name.toLowerCase().includes(category.key) || category.key.includes(c.name.toLowerCase()));
+            const categoryData = skillCategories.find(c => c.name.toLowerCase().includes(category.key) || category.key.includes(c.name.toLowerCase()));
             const categoryId = categoryData?.id || category.key;
-            const categorySkills = skills[categoryId] || [];
+            const categorySkills = categoryData?.skills || [];
 
             return (
               <div key={category.key} className="relative">
@@ -105,7 +105,7 @@ const SkillsSection: React.FC = () => {
           onClose={() => setIsModalOpen(false)}
           category={selectedCategory}
           onSubmit={async (skillData) => {
-            const success = await addSkill(skillData.name, skillData.icon, selectedCategory);
+            const success = await addSkill(selectedCategory, skillData);
             if (success) {
               setIsModalOpen(false);
             }

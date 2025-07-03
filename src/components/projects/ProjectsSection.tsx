@@ -76,7 +76,7 @@ const ProjectsSection: React.FC = () => {
             <ProjectCard 
               key={project.id} 
               project={project} 
-              onEdit={(projectData) => updateProject(project.id, projectData)}
+              onEdit={(id, projectData) => updateProject(id, projectData)}
               onDelete={() => deleteProject(project.id)}
             />
           ))}

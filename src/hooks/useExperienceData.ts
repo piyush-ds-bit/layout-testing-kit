@@ -37,6 +37,16 @@ export const useExperienceData = () => {
     }
   ];
 
+  const formatDuration = (startDate: string, endDate?: string, isCurrent?: boolean) => {
+    const start = new Date(startDate);
+    const end = isCurrent ? new Date() : (endDate ? new Date(endDate) : new Date());
+    
+    const startMonth = start.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+    const endMonth = isCurrent ? 'Present' : end.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+    
+    return `${startMonth} - ${endMonth}`;
+  };
+
   const fetchExperiences = async () => {
     try {
       const { data, error } = await supabase
@@ -156,6 +166,7 @@ export const useExperienceData = () => {
     addExperience,
     updateExperience,
     deleteExperience,
+    formatDuration,
     refetch: fetchExperiences
   };
 };
