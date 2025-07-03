@@ -1,58 +1,103 @@
 
 import React, { useState } from 'react';
-import { useSkillsData } from '@/hooks/useSkillsData';
+import SkillCategory from './SkillCategory';
 import { useAuth } from '@/context/AuthContext';
 import { useAdminEdit } from '@/context/AdminEditContext';
-import SkillCategory from './SkillCategory';
 import AdminAddButton from '@/components/admin/AdminAddButton';
 import AdminSkillModal from '@/components/admin/skills/AdminSkillModal';
+
+const programming = [
+  { name: 'Python',    icon: 'python' },
+  { name: 'Dart',      icon: 'dart' },
+  { name: 'HTML/CSS',  icon: 'html5' }
+];
+
+const librariesFrameworks = [
+  { name: 'Pandas',        icon: 'pandas' },
+  { name: 'NumPy',         icon: 'numpy' },
+  { name: 'Matplotlib',    icon: 'matplotlib' },
+  { name: 'Seaborn',       icon: 'seaborn' },
+  { name: 'Scikit‑learn',  icon: 'scikitlearn' },
+  { name: 'TensorFlow',    icon: 'tensorflow' }
+];
+
+const webTools = [
+  { name: 'Streamlit', icon: 'streamlit' },
+  { name: 'FastAPI',   icon: 'fastapi' },
+  { name: 'Pydantic',  icon: 'pydantic' },
+  { name: 'Flutter',   icon: 'flutter' },
+  { name: 'Docker',    icon: 'docker' },
+];
+
+const databases = [
+  { name: 'Supabase', icon: 'supabase' },
+];
+
+const Tools = [
+  { name: 'IntelliJ',          icon: 'intellijidea' },
+  { name: 'Jupyter Notebook',  icon: 'jupyter' },
+  { name: 'PyCharm',           icon: 'pycharm' },
+  { name: 'Google Colab',      icon: 'googlecolab' },
+  { name: 'Kaggle',            icon: 'kaggle' }
+];
+
+const otherSkills = [
+  { name: 'Problem Solving', icon: 'problemsolving' },
+];
 
 const SkillsSection: React.FC = () => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
-  const { skillCategories, skillsByCategory, loading } = useSkillsData();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
 
-  const handleAddSkill = (categoryId: string) => {
-    setSelectedCategory(categoryId);
+  const handleAddSkill = (category: string) => {
+    setSelectedCategory(category);
     setIsModalOpen(true);
   };
 
-  if (loading) {
-    return <div className="text-white">Loading skills...</div>;
-  }
+  const categories = [
+    { title: "Programming", icon: "💻", skills: programming, key: "programming" },
+    { title: "Libraries & Frameworks", icon: "📚", skills: librariesFrameworks, key: "libraries" },
+    { title: "Web & Tools", icon: "🌐", skills: webTools, key: "webtools" },
+    { title: "Databases", icon: "💾", skills: databases, key: "databases" },
+    { title: "Tools", icon: "🛠️", skills: Tools, key: "tools" },
+    { title: "Other", icon: "✨", skills: otherSkills, key: "other" }
+  ];
 
   return (
     <section className="portfolio-section">
-      <div 
-        className="max-w-4xl mx-auto relative bg-[#182437]/70 border border-[#4fd1c533] rounded-2xl shadow-2xl backdrop-blur-md p-8 mb-8 
+      <div
+        className="max-w-4xl mx-auto relative bg-[#182437]/70 border border-[#4fd1c533] rounded-2xl shadow-2xl backdrop-blur-md p-8
         transition-all duration-300"
         style={{
           boxShadow: '0 6px 32px 0 rgba(76,201,240,0.14), 0 2px 8px rgba(10,20,30,0.18), 0 1.5px 36px 0 rgba(0,0,0,0.13)'
         }}
       >
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="portfolio-heading flex-1">Technical Skills</h2>
+        <div className="flex items-center justify-between mb-10">
+          <h2 className="text-3xl font-bold text-white text-center flex-1">
+            Skills
+          </h2>
           {isAuthorized && isEditMode && (
             <AdminAddButton
-              onAdd={() => setIsModalOpen(true)}
-              label="Add Category"
+              onAdd={() => handleAddSkill('')}
+              label="Add Skill Category"
               className="ml-4"
             />
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
-          {skillCategories.map(category => (
-            <SkillCategory 
-              key={category.id}
-              title={category.name} 
-              icon="💻" 
-              skills={skillsByCategory[category.id!] || []} 
-              categoryKey={category.id!}
-              onAddSkill={handleAddSkill}
-            />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+          {categories.map((category) => (
+            <div key={category.key} className="relative">
+              <SkillCategory 
+                title={category.title} 
+                icon={category.icon} 
+                skills={category.skills}
+                categoryKey={category.key}
+                onAddSkill={() => handleAddSkill(category.key)}
+              />
+            </div>
           ))}
         </div>
       </div>

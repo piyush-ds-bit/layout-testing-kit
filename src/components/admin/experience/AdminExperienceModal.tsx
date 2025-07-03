@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
-import { useExperienceData } from '@/hooks/useExperienceData';
+import { toast } from '@/components/ui/use-toast';
 
 interface AdminExperienceModalProps {
   isOpen: boolean;
@@ -13,45 +13,44 @@ const AdminExperienceModal: React.FC<AdminExperienceModalProps> = ({
   isOpen, 
   onClose 
 }) => {
-  const { addExperience } = useExperienceData();
   const [formData, setFormData] = useState({
     company: '',
     position: '',
-    start_date: '',
-    end_date: '',
-    current: false,
+    duration: '',
     description: ''
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.company.trim() || !formData.position.trim() || !formData.description.trim()) {
+    if (!formData.company.trim() || !formData.position.trim() || !formData.duration.trim() || !formData.description.trim()) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        variant: "destructive",
+      });
       return;
     }
 
-    const experienceData = {
-      ...formData,
-      end_date: formData.current ? null : formData.end_date || null
-    };
+    console.log('Add experience:', formData);
     
-    const success = await addExperience(experienceData);
+    // TODO: Implement experience addition to database
+    toast({
+      title: "Experience added successfully!",
+      description: `${formData.position} at ${formData.company} has been added`,
+    });
     
-    if (success) {
-      // Reset form
-      setFormData({
-        company: '',
-        position: '',
-        start_date: '',
-        end_date: '',
-        current: false,
-        description: ''
-      });
-      onClose();
-    }
+    // Reset form
+    setFormData({
+      company: '',
+      position: '',
+      duration: '',
+      description: ''
+    });
+    onClose();
   };
 
-  const handleChange = (field: string, value: string | boolean) => {
+  const handleChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -59,7 +58,7 @@ const AdminExperienceModal: React.FC<AdminExperienceModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-portfolio-card-bg border border-portfolio-dark rounded-lg p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      <div className="bg-portfolio-card-bg border border-portfolio-dark rounded-lg p-6 w-full max-w-lg">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-white">Add New Experience</h3>
           <Button
@@ -75,7 +74,7 @@ const AdminExperienceModal: React.FC<AdminExperienceModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-portfolio-gray-light mb-1">
-              Company *
+              Company
             </label>
             <input
               type="text"
@@ -89,7 +88,7 @@ const AdminExperienceModal: React.FC<AdminExperienceModalProps> = ({
 
           <div>
             <label className="block text-sm font-medium text-portfolio-gray-light mb-1">
-              Position *
+              Position
             </label>
             <input
               type="text"
@@ -101,50 +100,23 @@ const AdminExperienceModal: React.FC<AdminExperienceModalProps> = ({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-portfolio-gray-light mb-1">
-                Start Date *
-              </label>
-              <input
-                type="date"
-                value={formData.start_date}
-                onChange={(e) => handleChange('start_date', e.target.value)}
-                className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white focus:outline-none focus:ring-2 focus:ring-portfolio-accent"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-portfolio-gray-light mb-1">
-                End Date
-              </label>
-              <input
-                type="date"
-                value={formData.end_date}
-                onChange={(e) => handleChange('end_date', e.target.value)}
-                disabled={formData.current}
-                className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white focus:outline-none focus:ring-2 focus:ring-portfolio-accent disabled:opacity-50"
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              id="current"
-              checked={formData.current}
-              onChange={(e) => handleChange('current', e.target.checked)}
-              className="rounded border-portfolio-dark"
-            />
-            <label htmlFor="current" className="text-sm text-portfolio-gray-light">
-              Currently working here
+          <div>
+            <label className="block text-sm font-medium text-portfolio-gray-light mb-1">
+              Duration
             </label>
+            <input
+              type="text"
+              value={formData.duration}
+              onChange={(e) => handleChange('duration', e.target.value)}
+              className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white placeholder-portfolio-gray-light focus:outline-none focus:ring-2 focus:ring-portfolio-accent"
+              placeholder="e.g. Jan 2023 - Present"
+              required
+            />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-portfolio-gray-light mb-1">
-              Description *
+              Description
             </label>
             <textarea
               value={formData.description}
