@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useAdminEdit } from '@/context/AdminEditContext';
@@ -16,8 +15,6 @@ interface SkillCategoryProps {
   skills: Skill[];
   categoryKey: string;
   onAddSkill: () => void;
-  onEditSkill?: (skill: Skill) => void;
-  onDeleteSkill?: (skill: Skill) => void;
 }
 
 const SkillCategory: React.FC<SkillCategoryProps> = ({ 
@@ -25,25 +22,19 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({
   icon, 
   skills, 
   categoryKey, 
-  onAddSkill,
-  onEditSkill,
-  onDeleteSkill
+  onAddSkill 
 }) => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
 
   const handleEditSkill = (skill: Skill) => {
     console.log('Edit skill:', skill);
-    if (onEditSkill) {
-      onEditSkill(skill);
-    }
+    // TODO: Open edit modal
   };
 
   const handleDeleteSkill = (skill: Skill) => {
     console.log('Delete skill:', skill);
-    if (onDeleteSkill) {
-      onDeleteSkill(skill);
-    }
+    // TODO: Implement delete with confirmation
   };
 
   const getIcon = (iconName: string) => {
@@ -58,7 +49,7 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({
       case 'numpy': return '➗';
       case 'matplotlib': return '📊';
       case 'seaborn': return '🌊';
-      case 'scikitlearn': return '🧠';
+      case 'scikit-learn': return '🧠';
       case 'tensorflow': return '🔶';
 
       // Web & Tools
@@ -72,10 +63,10 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({
       case 'supabase': return '🔋';
 
       // Tools
-      case 'intellijidea': return '🧠';
+      case 'intellij': return '🧠';
       case 'jupyter': return '📓';
       case 'pycharm': return '🧪';
-      case 'googlecolab': return '🤖';
+      case 'google-colab': return '🤖';
       case 'kaggle': return '🏅';
 
       // Other

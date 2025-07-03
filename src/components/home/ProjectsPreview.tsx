@@ -3,26 +3,40 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import ProjectCard from '@/components/projects/ProjectCard';
-import { useProjectsData } from '@/hooks/useProjectsData';
+
+const featuredProjects = [
+  {
+    id: 1,
+    title: 'WhatsApp Buddy',
+    description: 'Developed a Streamlit-based WhatsApp chat analyzer with sentiment analysis, word clouds, user stats, and emoji insights using Pandas and Matplotlib/Seaborn.',
+    image: '/lovable-uploads/Whatsapp_3.png',
+    category: 'Deployed',
+    technologies: ['Python', 'Streamlit', 'Pandas&Seaborn'],
+    githubUrl: 'https://github.com/piyush-ds-bit/whatsapp_chat_analyzer',
+    liveUrl: '#',
+  },
+  {
+    id: 2,
+    title: 'Piyush Portfolio',
+    description: 'Developed a personal portfolio website using lovable.ai and Firebase with an admin panel for real-time content updates, showcasing projects, skills, and contact information.',
+    image: '/lovable-uploads/portfolio_1.png',
+    category: 'Deployed',
+    technologies: ['lovable.ai', 'Supabase', 'SQLite'],
+    githubUrl: 'https://github.com/piyush-ds-bit/Portfolio-website',
+    liveUrl: '#',
+  },
+  {
+    id: 3,
+    title: 'MovieMate',
+    description: 'Built a content-based movie recommender using Bag-of-Words with a dataset of 5000+ movies.',
+    image: '/lovable-uploads/Moviemate_3.png',
+    category: 'In Development',
+    technologies: ['Python', 'ScikitLearn', 'Streamlit'],
+    githubUrl: 'https://github.com/piyush-ds-bit/Movie-Recommender-System',
+  }
+];
 
 const ProjectsPreview: React.FC = () => {
-  const { projects, loading } = useProjectsData();
-
-  if (loading) {
-    return (
-      <section id="projects" className="portfolio-section">
-        <div className="portfolio-container">
-          <div className="flex items-center justify-center">
-            <div className="text-white">Loading projects...</div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // Show first 3 projects for preview
-  const featuredProjects = projects.slice(0, 3);
-
   return (
     <section id="projects" className="portfolio-section">
       <div className="portfolio-container">
