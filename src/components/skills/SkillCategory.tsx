@@ -5,8 +5,10 @@ import AdminActionButtons from '@/components/admin/AdminActionButtons';
 import AdminAddButton from '@/components/admin/AdminAddButton';
 
 interface Skill {
+  id: string;
   name: string;
-  icon: string;
+  icon?: string;
+  category_id: string;
 }
 
 interface SkillCategoryProps {
@@ -15,6 +17,8 @@ interface SkillCategoryProps {
   skills: Skill[];
   categoryKey: string;
   onAddSkill: () => void;
+  onEditSkill?: (skill: Skill) => void;
+  onDeleteSkill?: (skill: Skill) => void;
 }
 
 const SkillCategory: React.FC<SkillCategoryProps> = ({ 
@@ -22,19 +26,19 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({
   icon, 
   skills, 
   categoryKey, 
-  onAddSkill 
+  onAddSkill,
+  onEditSkill,
+  onDeleteSkill 
 }) => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
 
   const handleEditSkill = (skill: Skill) => {
-    console.log('Edit skill:', skill);
-    // TODO: Open edit modal
+    onEditSkill?.(skill);
   };
 
   const handleDeleteSkill = (skill: Skill) => {
-    console.log('Delete skill:', skill);
-    // TODO: Implement delete with confirmation
+    onDeleteSkill?.(skill);
   };
 
   const getIcon = (iconName: string) => {
@@ -94,12 +98,12 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        {skills.map((skill, index) => (
+        {skills.map((skill) => (
           <div
-            key={index}
+            key={skill.id}
             className="group relative flex items-center gap-2 py-2 px-4 rounded-full bg-[#1e2738] border border-[#2d3748] transition-colors hover:bg-[#2a3448]"
           >
-            <span className="text-xl">{getIcon(skill.icon)}</span>
+            <span className="text-xl">{getIcon(skill.icon || '')}</span>
             <span className="text-gray-200 text-sm flex-1">{skill.name}</span>
 
             {isAuthorized && isEditMode && (

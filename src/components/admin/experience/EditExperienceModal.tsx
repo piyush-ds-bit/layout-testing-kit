@@ -1,59 +1,50 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
-import { toast } from '@/components/ui/use-toast';
-
 import { Experience } from '@/hooks/useExperienceData';
 
-interface AdminExperienceModalProps {
+interface EditExperienceModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddExperience: (experienceData: Omit<Experience, 'id' | 'created_at'>) => Promise<any>;
+  experience: Experience;
+  onUpdate: (id: string, updates: Partial<Experience>) => Promise<void>;
 }
 
-const AdminExperienceModal: React.FC<AdminExperienceModalProps> = ({ 
-  isOpen, 
+const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
+  isOpen,
   onClose,
-  onAddExperience 
+  experience,
+  onUpdate
 }) => {
   const [formData, setFormData] = useState({
-    company: '',
-    position: '',
-    start_date: '',
-    end_date: '',
-    current: false,
-    description: ''
+    company: experience.company,
+    position: experience.position,
+    start_date: experience.start_date,
+    end_date: experience.end_date || '',
+    current: experience.current,
+    description: experience.description
   });
+
+  useEffect(() => {
+    setFormData({
+      company: experience.company,
+      position: experience.position,
+      start_date: experience.start_date,
+      end_date: experience.end_date || '',
+      current: experience.current,
+      description: experience.description
+    });
+  }, [experience]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.company.trim() || !formData.position.trim() || !formData.start_date.trim() || !formData.description.trim()) {
-      toast({
-        title: "Error",
-        description: "Please fill in all required fields",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const experienceData = {
+    const updates = {
       ...formData,
-      end_date: formData.current ? undefined : formData.end_date || undefined
+      end_date: formData.current ? null : formData.end_date || null
     };
-
-    await onAddExperience(experienceData);
     
-    // Reset form
-    setFormData({
-      company: '',
-      position: '',
-      start_date: '',
-      end_date: '',
-      current: false,
-      description: ''
-    });
+    await onUpdate(experience.id, updates);
     onClose();
   };
 
@@ -67,7 +58,7 @@ const AdminExperienceModal: React.FC<AdminExperienceModalProps> = ({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-portfolio-card-bg border border-portfolio-dark rounded-lg p-6 w-full max-w-lg">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">Add New Experience</h3>
+          <h3 className="text-lg font-semibold text-white">Edit Experience</h3>
           <Button
             onClick={onClose}
             variant="ghost"
@@ -88,7 +79,6 @@ const AdminExperienceModal: React.FC<AdminExperienceModalProps> = ({
               value={formData.company}
               onChange={(e) => handleChange('company', e.target.value)}
               className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white placeholder-portfolio-gray-light focus:outline-none focus:ring-2 focus:ring-portfolio-accent"
-              placeholder="Company name"
               required
             />
           </div>
@@ -102,7 +92,6 @@ const AdminExperienceModal: React.FC<AdminExperienceModalProps> = ({
               value={formData.position}
               onChange={(e) => handleChange('position', e.target.value)}
               className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white placeholder-portfolio-gray-light focus:outline-none focus:ring-2 focus:ring-portfolio-accent"
-              placeholder="Job title"
               required
             />
           </div>
@@ -157,7 +146,6 @@ const AdminExperienceModal: React.FC<AdminExperienceModalProps> = ({
               onChange={(e) => handleChange('description', e.target.value)}
               rows={4}
               className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white placeholder-portfolio-gray-light focus:outline-none focus:ring-2 focus:ring-portfolio-accent resize-none"
-              placeholder="Describe your role and achievements..."
               required
             />
           </div>
@@ -167,7 +155,7 @@ const AdminExperienceModal: React.FC<AdminExperienceModalProps> = ({
               type="submit"
               className="flex-1 bg-portfolio-accent hover:bg-portfolio-accent-dark text-white"
             >
-              Add Experience
+              Update Experience
             </Button>
             <Button
               type="button"
@@ -184,4 +172,4 @@ const AdminExperienceModal: React.FC<AdminExperienceModalProps> = ({
   );
 };
 
-export default AdminExperienceModal;
+export default EditExperienceModal;

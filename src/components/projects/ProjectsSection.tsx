@@ -5,55 +5,23 @@ import { useAuth } from '@/context/AuthContext';
 import { useAdminEdit } from '@/context/AdminEditContext';
 import AdminAddButton from '@/components/admin/AdminAddButton';
 import AdminProjectModal from '@/components/admin/projects/AdminProjectModal';
-
-// Sample project data
-const projects = [
-  {
-    id: 1,
-    title: 'WhatsApp Buddy',
-    description: 'Developed a Streamlit-based WhatsApp chat analyzer with sentiment analysis, word clouds,user stats, and emoji insights using Pandas and Matplotlib/Seaborn.',
-    image: '/lovable-uploads/Whatsapp_3.png',
-    category: 'Deployed',
-    technologies: ['Python', 'Streamlit', 'Pandas&Seaborn'],
-    githubUrl: 'https://github.com/piyush-ds-bit/whatsapp_chat_analyzer',
-    liveUrl: '#',
-  },
-  {
-    id: 2,
-    title: 'Piyush Portfolio',
-    description: 'Developed a personal portfolio website using lovable.ai and Firebase with an admin panel forreal-time content updates, showcasing projects, skills, and contact information.',
-    image: '/lovable-uploads/portfolio_1.png',
-    category: 'Deployed',
-    technologies: ['lovable.ai', 'Supabase', 'SQLite'],
-    githubUrl: 'https://github.com/piyush-ds-bit/Portfolio-website',
-    liveUrl: '#',
-  },
-  {
-    id: 3,
-    title: 'MovieMate',
-    description: 'Built a content-based movie recommender using Bag-of-Words with a dataset of 5000+ movies.',
-    image: '/lovable-uploads/Moviemate_3.png',
-    category: 'Deployed',
-    technologies: ['Python', 'ScikitLearn', 'Streamlit'],
-    githubUrl: 'https://github.com/piyush-ds-bit/Movie-Recommender-System',
-    liveUrl: '#',
-  },
-  {
-    id: 4,
-    title: 'Patient Partner',
-    description: 'Developed an insurance premium prediction app using Streamlit frontend and FastAPI backend. It takes user inputs like age, gender, BMI, and smoking habits to predict premium cost.',
-    image: '/lovable-uploads/insurance_1.png',
-    category: 'In Development',
-    technologies: ['Python', 'FastAPI','Streamlit'],
-    githubUrl: '#',
-  }
-];
+import EditProjectModal from '@/components/admin/projects/EditProjectModal';
+import { useProjectsData, Project } from '@/hooks/useProjectsData';
 
 const ProjectsSection: React.FC = () => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
   const [activeCategory, setActiveCategory] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
+  
+  const {
+    projects,
+    loading,
+    addProject,
+    updateProject,
+    deleteProject
+  } = useProjectsData();
   
   const filteredProjects = activeCategory === 'all' 
     ? projects 

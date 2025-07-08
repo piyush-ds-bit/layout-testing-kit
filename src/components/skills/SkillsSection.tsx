@@ -5,65 +5,61 @@ import { useAuth } from '@/context/AuthContext';
 import { useAdminEdit } from '@/context/AdminEditContext';
 import AdminAddButton from '@/components/admin/AdminAddButton';
 import AdminSkillModal from '@/components/admin/skills/AdminSkillModal';
-
-const programming = [
-  { name: 'Python',    icon: 'python' },
-  { name: 'Dart',      icon: 'dart' },
-  { name: 'HTML/CSS',  icon: 'html5' }
-];
-
-const librariesFrameworks = [
-  { name: 'Pandas',        icon: 'pandas' },
-  { name: 'NumPy',         icon: 'numpy' },
-  { name: 'Matplotlib',    icon: 'matplotlib' },
-  { name: 'Seaborn',       icon: 'seaborn' },
-  { name: 'Scikit‑learn',  icon: 'scikitlearn' },
-  { name: 'TensorFlow',    icon: 'tensorflow' }
-];
-
-const webTools = [
-  { name: 'Streamlit', icon: 'streamlit' },
-  { name: 'FastAPI',   icon: 'fastapi' },
-  { name: 'Pydantic',  icon: 'pydantic' },
-  { name: 'Flutter',   icon: 'flutter' },
-  { name: 'Docker',    icon: 'docker' },
-];
-
-const databases = [
-  { name: 'Supabase', icon: 'supabase' },
-];
-
-const Tools = [
-  { name: 'IntelliJ',          icon: 'intellijidea' },
-  { name: 'Jupyter Notebook',  icon: 'jupyter' },
-  { name: 'PyCharm',           icon: 'pycharm' },
-  { name: 'Google Colab',      icon: 'googlecolab' },
-  { name: 'Kaggle',            icon: 'kaggle' }
-];
-
-const otherSkills = [
-  { name: 'Problem Solving', icon: 'problemsolving' },
-];
+import EditSkillModal from '@/components/admin/skills/EditSkillModal';
+import { useSkillsData, SkillWithCategory } from '@/hooks/useSkillsData';
 
 const SkillsSection: React.FC = () => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [editingSkill, setEditingSkill] = useState<SkillWithCategory | null>(null);
+  
+  const {
+    skills,
+    categories,
+    loading,
+    addSkill,
+    updateSkill,
+    deleteSkill,
+    addCategory
+  } = useSkillsData();
 
   const handleAddSkill = (category: string) => {
     setSelectedCategory(category);
     setIsModalOpen(true);
   };
 
-  const categories = [
-    { title: "Programming", icon: "💻", skills: programming, key: "programming" },
-    { title: "Libraries & Frameworks", icon: "📚", skills: librariesFrameworks, key: "libraries" },
-    { title: "Web & Tools", icon: "🌐", skills: webTools, key: "webtools" },
-    { title: "Databases", icon: "💾", skills: databases, key: "databases" },
-    { title: "Tools", icon: "🛠️", skills: Tools, key: "tools" },
-    { title: "Other", icon: "✨", skills: otherSkills, key: "other" }
-  ];
+  const handleEditSkill = (skill: SkillWithCategory) => {
+    setEditingSkill(skill);
+  };
+
+  const handleDeleteSkill = async (skill: SkillWithCategory) => {
+    if (confirm(`Are you sure you want to delete "${skill.name}"?`)) {
+      await deleteSkill(skill.id);
+    }
+  };
+
+  const handleUpdateSkill = async (id: string, updates: { name: string; icon?: string }) => {
+    await updateSkill(id, updates);
+    setEditingSkill(null);
+  };
+
+  if (loading) {
+    return (
+      <section className="portfolio-section">
+        <div className="max-w-4xl mx-auto text-center text-white">
+          Loading skills...
+        </div>
+      </section>
+    );
+  }
+
+  // Group skills by category
+  const skillsByCategory = categories.map(category => ({
+    ...category,
+    skills: skills.filter(skill => skill.category_id === category.id)
+  }));
 
   return (
     <section className="portfolio-section">
@@ -88,14 +84,16 @@ const SkillsSection: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-          {categories.map((category) => (
-            <div key={category.key} className="relative">
+          {skillsByCategory.map((category) => (
+            <div key={category.id} className="relative">
               <SkillCategory 
-                title={category.title} 
-                icon={category.icon} 
+                title={category.name} 
+                icon="🔹" 
                 skills={category.skills}
-                categoryKey={category.key}
-                onAddSkill={() => handleAddSkill(category.key)}
+                categoryKey={category.id}
+                onAddSkill={() => handleAddSkill(category.id)}
+                onEditSkill={handleEditSkill}
+                onDeleteSkill={handleDeleteSkill}
               />
             </div>
           ))}
@@ -107,6 +105,17 @@ const SkillsSection: React.FC = () => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           category={selectedCategory}
+          onAddSkill={addSkill}
+          categories={categories}
+        />
+      )}
+      
+      {editingSkill && (
+        <EditSkillModal
+          isOpen={!!editingSkill}
+          onClose={() => setEditingSkill(null)}
+          skill={editingSkill}
+          onUpdate={handleUpdateSkill}
         />
       )}
     </section>

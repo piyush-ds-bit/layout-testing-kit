@@ -4,39 +4,41 @@ import { useAdminEdit } from '@/context/AdminEditContext';
 import AdminActionButtons from '@/components/admin/AdminActionButtons';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
+import { Experience } from '@/hooks/useExperienceData';
+
 interface ExperienceCardProps {
-  company: string;
-  position: string;
+  experience: Experience;
   duration: string;
-  description: string;
   index: number;
+  onEdit?: (experience: Experience) => void;
+  onDelete?: (experience: Experience) => void;
 }
 
 const ExperienceCard: React.FC<ExperienceCardProps> = ({
-  company,
-  position,
+  experience,
   duration,
-  description,
-  index
+  index,
+  onEdit,
+  onDelete
 }) => {
   const { isAuthorized } = useAuth();
   const { isEditMode } = useAdminEdit();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleEdit = () => {
-    console.log('Edit experience:', { company, position, duration, description });
+    onEdit?.(experience);
   };
 
   const handleDelete = () => {
-    console.log('Delete experience:', { company, position });
+    onDelete?.(experience);
   };
 
   const toggleExpanded = () => setIsExpanded(prev => !prev);
 
   // Shorten text for collapsed view
   const maxPreviewLength = 120;
-  const isLongText = description.length > maxPreviewLength;
-  const previewText = isLongText ? description.slice(0, maxPreviewLength) + '...' : description;
+  const isLongText = experience.description.length > maxPreviewLength;
+  const previewText = isLongText ? experience.description.slice(0, maxPreviewLength) + '...' : experience.description;
 
   return (
     <div className={`group relative portfolio-card max-w-md mx-auto transition-all duration-300 ${
@@ -52,13 +54,13 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
       )}
 
       <div className="mb-4">
-        <h3 className="text-xl font-semibold text-white mb-1">{position}</h3>
-        <h4 className="text-portfolio-accent font-medium mb-1">{company}</h4>
+        <h3 className="text-xl font-semibold text-white mb-1">{experience.position}</h3>
+        <h4 className="text-portfolio-accent font-medium mb-1">{experience.company}</h4>
         <p className="text-portfolio-gray-light text-sm">{duration}</p>
       </div>
 
       <div className="text-portfolio-gray-light leading-relaxed transition-all duration-300 ease-in-out">
-        {isExpanded ? description : previewText}
+        {isExpanded ? experience.description : previewText}
       </div>
 
       {isLongText && (

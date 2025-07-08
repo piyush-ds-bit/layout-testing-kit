@@ -1,54 +1,36 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
-import { toast } from '@/components/ui/use-toast';
+import { SkillWithCategory } from '@/hooks/useSkillsData';
 
-interface AdminSkillModalProps {
+interface EditSkillModalProps {
   isOpen: boolean;
   onClose: () => void;
-  category: string;
-  onAddSkill: (name: string, icon: string, categoryId: string) => Promise<any>;
-  categories: Array<{ id: string; name: string }>;
+  skill: SkillWithCategory;
+  onUpdate: (id: string, updates: { name: string; icon?: string }) => Promise<void>;
 }
 
-const AdminSkillModal: React.FC<AdminSkillModalProps> = ({ 
-  isOpen, 
-  onClose, 
-  category,
-  onAddSkill,
-  categories 
+const EditSkillModal: React.FC<EditSkillModalProps> = ({
+  isOpen,
+  onClose,
+  skill,
+  onUpdate
 }) => {
-  const [skillName, setSkillName] = useState('');
-  const [skillIcon, setSkillIcon] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(category);
+  const [formData, setFormData] = useState({
+    name: skill.name,
+    icon: skill.icon || ''
+  });
+
+  useEffect(() => {
+    setFormData({
+      name: skill.name,
+      icon: skill.icon || ''
+    });
+  }, [skill]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!skillName.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter a skill name",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!selectedCategory) {
-      toast({
-        title: "Error",
-        description: "Please select a category",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    await onAddSkill(skillName, skillIcon, selectedCategory);
-    
-    // Reset form
-    setSkillName('');
-    setSkillIcon('');
+    await onUpdate(skill.id, formData);
     onClose();
   };
 
@@ -58,7 +40,7 @@ const AdminSkillModal: React.FC<AdminSkillModalProps> = ({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-portfolio-card-bg border border-portfolio-dark rounded-lg p-6 w-full max-w-md">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">Add New Skill</h3>
+          <h3 className="text-lg font-semibold text-white">Edit Skill</h3>
           <Button
             onClick={onClose}
             variant="ghost"
@@ -76,8 +58,8 @@ const AdminSkillModal: React.FC<AdminSkillModalProps> = ({
             </label>
             <input
               type="text"
-              value={skillName}
-              onChange={(e) => setSkillName(e.target.value)}
+              value={formData.name}
+              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
               className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white placeholder-portfolio-gray-light focus:outline-none focus:ring-2 focus:ring-portfolio-accent"
               placeholder="e.g. React"
               required
@@ -86,31 +68,14 @@ const AdminSkillModal: React.FC<AdminSkillModalProps> = ({
 
           <div>
             <label className="block text-sm font-medium text-portfolio-gray-light mb-1">
-              Category
-            </label>
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white focus:outline-none focus:ring-2 focus:ring-portfolio-accent"
-              required
-            >
-              <option value="">Select a category</option>
-              {categories.map(cat => (
-                <option key={cat.id} value={cat.id}>{cat.name}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-portfolio-gray-light mb-1">
               Icon
             </label>
             <input
               type="text"
-              value={skillIcon}
-              onChange={(e) => setSkillIcon(e.target.value)}
+              value={formData.icon}
+              onChange={(e) => setFormData(prev => ({ ...prev, icon: e.target.value }))}
               className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white placeholder-portfolio-gray-light focus:outline-none focus:ring-2 focus:ring-portfolio-accent"
-              placeholder="e.g. ⚛️ or 'react'"
+              placeholder="e.g. react or ⚛️"
             />
           </div>
 
@@ -119,7 +84,7 @@ const AdminSkillModal: React.FC<AdminSkillModalProps> = ({
               type="submit"
               className="flex-1 bg-portfolio-accent hover:bg-portfolio-accent-dark text-white"
             >
-              Add Skill
+              Update Skill
             </Button>
             <Button
               type="button"
@@ -136,4 +101,4 @@ const AdminSkillModal: React.FC<AdminSkillModalProps> = ({
   );
 };
 
-export default AdminSkillModal;
+export default EditSkillModal;

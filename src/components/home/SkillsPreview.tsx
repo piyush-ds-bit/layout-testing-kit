@@ -2,25 +2,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import SkillCategory from '@/components/skills/SkillCategory';
-
-const programming = [
-  
-  { name: 'Python', icon: 'python' },
-  { name: 'HTML/CSS', icon: 'html5' }
-];
-
-const librariesFrameworks = [
-  { name: 'Pandas', icon: 'pandas' },
-  { name: 'NumPy', icon: 'numpy' },
-  { name: 'TensorFlow', icon: 'tensorflow' }
-];
+import { useSkillsData } from '@/hooks/useSkillsData';
 
 const SkillsPreview: React.FC = () => {
-  // Empty handler for preview - admin functionality not available on home page
-  const handleAddSkill = () => {
-    // No-op for preview
-  };
+  const { skills, categories, loading } = useSkillsData();
+
+  if (loading) {
+    return (
+      <section id="skills" className="portfolio-section">
+        <div className="max-w-4xl mx-auto text-center text-white">
+          Loading skills...
+        </div>
+      </section>
+    );
+  }
+
+  // Get first two categories with their skills for preview
+  const previewCategories = categories.slice(0, 2).map(category => ({
+    ...category,
+    skills: skills.filter(skill => skill.category_id === category.id)
+  }));
 
   return (
     <section id="skills" className="portfolio-section">
@@ -42,20 +43,28 @@ const SkillsPreview: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-          <SkillCategory 
-            title="Programming" 
-            icon="💻" 
-            skills={programming} 
-            categoryKey="programming"
-            onAddSkill={handleAddSkill}
-          />
-          <SkillCategory 
-            title="Libraries & Frameworks" 
-            icon="📚" 
-            skills={librariesFrameworks} 
-            categoryKey="libraries"
-            onAddSkill={handleAddSkill}
-          />
+          {previewCategories.map((category) => (
+            <div key={category.id} className="portfolio-card-hover p-6 bg-[#1a202c] rounded-lg shadow-md">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center">
+                  <span className="text-3xl mr-3 text-blue-400">🔹</span>
+                  <h3 className="text-2xl font-semibold text-white">{category.name}</h3>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                {category.skills.slice(0, 4).map((skill) => (
+                  <div
+                    key={skill.id}
+                    className="flex items-center gap-2 py-2 px-4 rounded-full bg-[#1e2738] border border-[#2d3748]"
+                  >
+                    <span className="text-xl">🔹</span>
+                    <span className="text-gray-200 text-sm flex-1">{skill.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
