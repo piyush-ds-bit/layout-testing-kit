@@ -7,7 +7,7 @@ interface EditProjectModalProps {
   isOpen: boolean;
   onClose: () => void;
   project: Project;
-  onUpdate: (id: string, updates: Partial<Project>) => Promise<void>;
+  onUpdate: (id: string, updates: Partial<Project>) => Promise<Project | undefined>;
 }
 
 const EditProjectModal: React.FC<EditProjectModalProps> = ({
@@ -46,8 +46,10 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({
       technologies: formData.technologies.split(',').map(tech => tech.trim()).filter(tech => tech)
     };
     
-    await onUpdate(project.id, updates);
-    onClose();
+    const result = await onUpdate(project.id, updates);
+    if (result) {
+      onClose();
+    }
   };
 
   const handleChange = (field: string, value: string) => {

@@ -36,6 +36,16 @@ const ProjectsSection: React.FC = () => {
   const handleAddProject = () => {
     setIsModalOpen(true);
   };
+
+  const handleEditProject = (project: Project) => {
+    setEditingProject(project);
+  };
+
+  const handleDeleteProject = async (id: string) => {
+    if (window.confirm('Are you sure you want to delete this project?')) {
+      await deleteProject(id);
+    }
+  };
   
   return (
     <section className="portfolio-section">
@@ -69,7 +79,12 @@ const ProjectsSection: React.FC = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map(project => (
-            <ProjectCard key={project.id} project={project} />
+            <ProjectCard 
+              key={project.id} 
+              project={project}
+              onEdit={handleEditProject}
+              onDelete={handleDeleteProject}
+            />
           ))}
         </div>
         
@@ -89,6 +104,16 @@ const ProjectsSection: React.FC = () => {
         <AdminProjectModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
+          onAdd={addProject}
+        />
+      )}
+
+      {editingProject && (
+        <EditProjectModal
+          isOpen={!!editingProject}
+          onClose={() => setEditingProject(null)}
+          project={editingProject}
+          onUpdate={updateProject}
         />
       )}
     </section>

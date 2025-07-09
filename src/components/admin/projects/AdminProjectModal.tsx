@@ -3,27 +3,30 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
+import { Project } from '@/hooks/useProjectsData';
 
 interface AdminProjectModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onAdd: (projectData: Omit<Project, 'id' | 'created_at'>) => Promise<Project | undefined>;
 }
 
 const AdminProjectModal: React.FC<AdminProjectModalProps> = ({ 
   isOpen, 
-  onClose 
+  onClose,
+  onAdd
 }) => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    image: '',
+    image_url: '',
     category: 'Deployed',
     technologies: '',
-    githubUrl: '',
-    liveUrl: ''
+    github_url: '',
+    live_url: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.title.trim() || !formData.description.trim()) {
@@ -40,25 +43,21 @@ const AdminProjectModal: React.FC<AdminProjectModalProps> = ({
       technologies: formData.technologies.split(',').map(tech => tech.trim()).filter(tech => tech)
     };
     
-    console.log('Add project:', projectData);
+    const result = await onAdd(projectData);
     
-    // TODO: Implement project addition to database
-    toast({
-      title: "Project added successfully!",
-      description: `${formData.title} has been added to your portfolio`,
-    });
-    
-    // Reset form
-    setFormData({
-      title: '',
-      description: '',
-      image: '',
-      category: 'Deployed',
-      technologies: '',
-      githubUrl: '',
-      liveUrl: ''
-    });
-    onClose();
+    if (result) {
+      // Reset form
+      setFormData({
+        title: '',
+        description: '',
+        image_url: '',
+        category: 'Deployed',
+        technologies: '',
+        github_url: '',
+        live_url: ''
+      });
+      onClose();
+    }
   };
 
   const handleChange = (field: string, value: string) => {
@@ -117,8 +116,8 @@ const AdminProjectModal: React.FC<AdminProjectModalProps> = ({
             </label>
             <input
               type="text"
-              value={formData.image}
-              onChange={(e) => handleChange('image', e.target.value)}
+              value={formData.image_url}
+              onChange={(e) => handleChange('image_url', e.target.value)}
               className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white placeholder-portfolio-gray-light focus:outline-none focus:ring-2 focus:ring-portfolio-accent"
               placeholder="Image URL or path"
             />
@@ -157,8 +156,8 @@ const AdminProjectModal: React.FC<AdminProjectModalProps> = ({
             </label>
             <input
               type="url"
-              value={formData.githubUrl}
-              onChange={(e) => handleChange('githubUrl', e.target.value)}
+              value={formData.github_url}
+              onChange={(e) => handleChange('github_url', e.target.value)}
               className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white placeholder-portfolio-gray-light focus:outline-none focus:ring-2 focus:ring-portfolio-accent"
               placeholder="https://github.com/username/repo"
             />
@@ -170,8 +169,8 @@ const AdminProjectModal: React.FC<AdminProjectModalProps> = ({
             </label>
             <input
               type="url"
-              value={formData.liveUrl}
-              onChange={(e) => handleChange('liveUrl', e.target.value)}
+              value={formData.live_url}
+              onChange={(e) => handleChange('live_url', e.target.value)}
               className="w-full px-3 py-2 bg-portfolio-darker border border-portfolio-dark rounded-md text-white placeholder-portfolio-gray-light focus:outline-none focus:ring-2 focus:ring-portfolio-accent"
               placeholder="https://your-project.com"
             />
