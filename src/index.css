@@ -214,7 +214,7 @@
     animation: slideUp 0.6s ease-out forwards;
   }
   
-  /* Mobile-specific styles (Modern Material Design) */
+  /* Mobile-specific styles (Android-inspired UI) */
   @media (max-width: 768px) {
     .portfolio-card {
       @apply rounded-2xl shadow-lg p-5 mb-4;
@@ -235,7 +235,7 @@
     }
 
     .portfolio-nav-button {
-      @apply rounded-2xl py-4 px-4 text-base flex flex-col items-center justify-center gap-1 min-h-[80px] bg-portfolio-card-bg/60 border border-portfolio-border/50 backdrop-blur-sm hover:bg-portfolio-card-bg/80 hover:border-portfolio-accent/30 transition-all duration-300 hover:scale-105 hover:shadow-lg;
+      @apply rounded-2xl py-4 text-base;
     }
 
     .social-icon-container {
@@ -259,73 +259,34 @@
 
     /* Mobile spacing optimization */
     .portfolio-section {
-      @apply py-8 px-4;
+      @apply py-10;
     }
 
     .portfolio-heading {
       @apply text-2xl font-bold mb-6;
     }
 
-    /* Enhanced bottom navigation with blur */
+    /* Android-style bottom navigation */
     .mobile-bottom-nav {
-      @apply fixed bottom-0 left-0 right-0 bg-portfolio-card-bg/80 backdrop-blur-md border-t border-portfolio-border/50 py-3 px-2 flex justify-around shadow-lg;
+      @apply fixed bottom-0 left-0 right-0 bg-portfolio-card-bg border-t border-portfolio-border py-3 px-2 flex justify-around;
       z-index: 40;
     }
 
     .mobile-bottom-nav-item {
-      @apply flex flex-col items-center text-gray-400 transition-all duration-200 hover:text-portfolio-accent;
+      @apply flex flex-col items-center text-gray-400;
     }
 
     .mobile-bottom-nav-item.active {
       @apply text-portfolio-accent;
-      position: relative;
-    }
-
-    .mobile-bottom-nav-item.active::after {
-      content: '';
-      position: absolute;
-      top: -3px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 20px;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, hsl(var(--primary)), transparent);
-      border-radius: 2px;
-      animation: glow 2s ease-in-out infinite alternate;
     }
 
     .mobile-bottom-nav-item-icon {
-      @apply mb-1 text-lg transition-transform duration-200;
-    }
-
-    .mobile-bottom-nav-item.active .mobile-bottom-nav-item-icon {
-      transform: scale(1.1);
+      @apply mb-1 text-lg;
     }
 
     .mobile-bottom-nav-item-label {
-      @apply text-xs font-medium;
+      @apply text-xs;
     }
-
-    /* Header title responsive scaling */
-    .portfolio-container h1 {
-      @apply leading-tight;
-    }
-
-    /* Better spacing for hero section */
-    #hero {
-      @apply px-4;
-    }
-
-    /* Improved card spacing */
-    .portfolio-card + .portfolio-card {
-      @apply mt-4;
-    }
-  }
-
-  /* Glow animation for active nav items */
-  @keyframes glow {
-    0% { opacity: 0.5; box-shadow: 0 0 5px hsl(var(--primary)); }
-    100% { opacity: 1; box-shadow: 0 0 10px hsl(var(--primary)), 0 0 15px hsl(var(--primary)); }
   }
 
   /* 3D float & glow hover effect */
