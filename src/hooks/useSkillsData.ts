@@ -31,7 +31,7 @@ export const useSkillsData = () => {
       const { data, error } = await supabase
         .from('skill_categories')
         .select('*')
-        .order('created_at', { ascending: true });
+        .order('created_at', { ascending: false });
       
       if (error) throw error;
       setCategories(data || []);
