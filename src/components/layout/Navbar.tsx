@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Home, Menu, X, User, Code, Briefcase, Github, MessageSquare, BookOpen, Mail } from "lucide-react";
 import LogoutConfirmationDialog from "@/components/auth/LogoutConfirmationDialog";
 import EditModeToggle from "@/components/admin/EditModeToggle";
+import MobileLoginButton from "@/components/mobile/MobileLoginButton";
+import MobileEditButton from "@/components/mobile/MobileEditButton";
 
 const navItems = [
   { label: "Home", path: "/", icon: Home, sectionId: "hero" },
@@ -66,13 +68,17 @@ const Navbar: React.FC = () => {
       <header className="sticky top-0 z-50 w-full bg-portfolio-darkest/80 backdrop-blur-md border-b border-portfolio-dark">
         <div className="portfolio-container py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
+            <div className="flex items-center gap-3">
+              <MobileEditButton />
               <Link to="/" className="flex items-center space-x-2 text-white hover:text-portfolio-accent transition-colors">
                 <Home className="w-5 h-5" />
                 <span className="text-xl font-semibold">Portfolio</span>
               </Link>
               <EditModeToggle />
             </div>
+
+            <div className="flex items-center gap-3">
+              <MobileLoginButton />
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-2">
@@ -131,14 +137,15 @@ const Navbar: React.FC = () => {
               )}
             </nav>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={toggleMenu}
-              className="md:hidden p-2 text-white hover:text-portfolio-accent transition-colors"
-              aria-label="Toggle Menu"
-            >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+              {/* Mobile Menu Button */}
+              <button
+                onClick={toggleMenu}
+                className="md:hidden p-2 text-white hover:text-portfolio-accent transition-colors"
+                aria-label="Toggle Menu"
+              >
+                {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
           </div>
         </div>
 
