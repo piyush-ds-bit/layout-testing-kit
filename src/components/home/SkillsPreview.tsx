@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { useSkillsData } from '@/hooks/useSkillsData';
+import { getCategoryIcon, getSkillIcon } from '@/utils/iconUtils';
 
 const SkillsPreview: React.FC = () => {
   const { skills, categories, loading } = useSkillsData();
@@ -47,7 +48,7 @@ const SkillsPreview: React.FC = () => {
             <div key={category.id} className="portfolio-card-hover p-6 bg-[#1a202c] rounded-lg shadow-md">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center">
-                  <span className="text-3xl mr-3 text-blue-400">🔹</span>
+                  <span className="text-3xl mr-3 text-blue-400">{getCategoryIcon(category.name)}</span>
                   <h3 className="text-2xl font-semibold text-white">{category.name}</h3>
                 </div>
               </div>
@@ -58,7 +59,7 @@ const SkillsPreview: React.FC = () => {
                     key={skill.id}
                     className="flex items-center gap-2 py-2 px-4 rounded-full bg-[#1e2738] border border-[#2d3748]"
                   >
-                    <span className="text-xl">🔹</span>
+                    <span className="text-xl">{getSkillIcon(skill.icon || '', category.name)}</span>
                     <span className="text-gray-200 text-sm flex-1">{skill.name}</span>
                   </div>
                 ))}

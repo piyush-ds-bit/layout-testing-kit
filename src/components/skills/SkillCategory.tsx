@@ -3,6 +3,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useAdminEdit } from '@/context/AdminEditContext';
 import AdminActionButtons from '@/components/admin/AdminActionButtons';
 import AdminAddButton from '@/components/admin/AdminAddButton';
+import { getSkillIcon } from '@/utils/iconUtils';
 
 interface Skill {
   id: string;
@@ -41,45 +42,6 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({
     onDeleteSkill?.(skill);
   };
 
-  const getIcon = (iconName: string) => {
-    switch (iconName.toLowerCase()) {
-      // Programming
-      case 'python': return '🐍';
-      case 'dart': return '🎯';
-      case 'html5': return '🌐';
-
-      // Libraries & Frameworks
-      case 'pandas': return '🐼';
-      case 'numpy': return '➗';
-      case 'matplotlib': return '📊';
-      case 'seaborn': return '🌊';
-      case 'scikit-learn': return '🧠';
-      case 'tensorflow': return '🔶';
-
-      // Web & Tools
-      case 'streamlit': return '📈';
-      case 'fastapi': return '🚀';
-      case 'pydantic': return '🛡️';
-      case 'flutter': return '📱';
-      case 'docker': return '🐳';
-
-      // Databases
-      case 'supabase': return '🔋';
-
-      // Tools
-      case 'intellij': return '🧠';
-      case 'jupyter': return '📓';
-      case 'pycharm': return '🧪';
-      case 'google-colab': return '🤖';
-      case 'kaggle': return '🏅';
-
-      // Other
-      case 'problemsolving': return '🧩';
-
-      // Fallback
-      default: return '🔹';
-    }
-  };
 
   return (
     <div className="portfolio-card-hover p-6 bg-[#1a202c] rounded-lg shadow-md">
@@ -103,7 +65,7 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({
             key={skill.id}
             className="group relative flex items-center gap-2 py-2 px-4 rounded-full bg-[#1e2738] border border-[#2d3748] transition-colors hover:bg-[#2a3448]"
           >
-            <span className="text-xl">{getIcon(skill.icon || '')}</span>
+            <span className="text-xl">{getSkillIcon(skill.icon || '', title)}</span>
             <span className="text-gray-200 text-sm flex-1">{skill.name}</span>
 
             {isAuthorized && isEditMode && (

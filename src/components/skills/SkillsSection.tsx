@@ -7,6 +7,7 @@ import AdminAddButton from '@/components/admin/AdminAddButton';
 import AdminSkillModal from '@/components/admin/skills/AdminSkillModal';
 import EditSkillModal from '@/components/admin/skills/EditSkillModal';
 import { useSkillsData, SkillWithCategory } from '@/hooks/useSkillsData';
+import { getCategoryIcon } from '@/utils/iconUtils';
 
 const SkillsSection: React.FC = () => {
   const { isAuthorized } = useAuth();
@@ -88,7 +89,7 @@ const SkillsSection: React.FC = () => {
             <div key={category.id} className="relative">
               <SkillCategory 
                 title={category.name} 
-                icon="🔹" 
+                icon={getCategoryIcon(category.name)} 
                 skills={category.skills}
                 categoryKey={category.id}
                 onAddSkill={() => handleAddSkill(category.id)}
