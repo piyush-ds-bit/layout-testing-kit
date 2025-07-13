@@ -61,7 +61,7 @@ const BlogCTA: React.FC<BlogCTAProps> = ({ variant = 'preview', className = '' }
                         <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
                       )}
                     </h3>
-                    <p className="text-sm text-portfolio-gray-light mt-1 hidden md:block">Share your story</p>
+                    <p className="hidden md:block text-sm text-portfolio-gray-light mt-1 hidden md:block">Share your story</p>
                   </div>
               
                   {/* Optional tooltip */}
