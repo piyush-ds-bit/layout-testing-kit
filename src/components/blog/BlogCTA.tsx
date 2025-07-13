@@ -68,7 +68,7 @@ const BlogCTA: React.FC<BlogCTAProps> = ({ variant = 'preview', className = '' }
     <div className={`relative ${className}`}>
       <Link to="/blog" onClick={handleBlogClick}>
         <Button 
-          className="relative overflow-hidden bg-gradient-to-r from-purple-600/10 to-blue-600/10 border border-purple-500/30 text-purple-300 hover:bg-gradient-to-r hover:from-purple-600/20 hover:to-blue-600/20 hover:border-purple-400/50 transition-all duration-300 hover:scale-105 rounded-xl group"
+          className="relative overflow-visible bg-gradient-to-r from-purple-600/10 to-blue-600/10 border border-purple-500/30 text-purple-300 hover:bg-gradient-to-r hover:from-purple-600/20 hover:to-blue-600/20 hover:border-purple-400/50 transition-all duration-300 hover:scale-105 rounded-xl group"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-blue-400 opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
           <div className="relative flex items-center gap-2">
