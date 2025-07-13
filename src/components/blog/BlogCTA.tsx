@@ -33,25 +33,25 @@ const BlogCTA: React.FC<BlogCTAProps> = ({ variant = 'preview', className = '' }
 
   if (variant === 'hero') {
     return (
-      <div className={`relative ${className}`}>
+      <div className={`relative w-full h-full ${className}`}>
         <TooltipProvider>
           <Tooltip open={showTooltip} onOpenChange={setShowTooltip}>
             <TooltipTrigger asChild>
-              <Link to="/blog" onClick={handleBlogClick}>
-                <Button 
-                  className="relative overflow-hidden bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 rounded-xl px-6 py-3 transition-all duration-300 hover:scale-105 hover:shadow-lg group"
-                  onMouseEnter={() => setShowTooltip(true)}
-                  onMouseLeave={() => setShowTooltip(false)}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-blue-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse" />
-                  <div className="relative flex items-center gap-2">
-                    <PenTool className="w-4 h-4" />
-                    <span>Blog</span>
-                    {isFirstVisit && (
-                      <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
-                    )}
+              <Link to="/blog" onClick={handleBlogClick} className="block w-full h-full">
+                <div className="w-full h-full flex flex-col items-center justify-center text-center space-y-2 group">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 flex items-center justify-center group-hover:from-purple-500/30 group-hover:to-blue-500/30 transition-all duration-300">
+                    <PenTool className="w-5 h-5 md:w-6 md:h-6 text-purple-400" />
                   </div>
-                </Button>
+                  <div>
+                    <h3 className="text-sm md:text-lg font-medium text-white flex items-center gap-1 justify-center">
+                      Blog
+                      {isFirstVisit && (
+                        <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-yellow-300 animate-pulse" />
+                      )}
+                    </h3>
+                    <p className="text-xs md:text-sm text-portfolio-gray-light mt-1 hidden md:block">Share your story</p>
+                  </div>
+                </div>
               </Link>
             </TooltipTrigger>
             <TooltipContent className="bg-portfolio-card-bg border-portfolio-border text-white">
@@ -64,7 +64,7 @@ const BlogCTA: React.FC<BlogCTAProps> = ({ variant = 'preview', className = '' }
         {isFirstVisit && (
           <Badge 
             variant="secondary" 
-            className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-black text-xs animate-pulse"
+            className="absolute -top-1 -right-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-black text-xs animate-pulse"
           >
             New!
           </Badge>

@@ -3,6 +3,9 @@ import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import RoamingBug from '@/components/bug/RoamingBug';
+import MobileLoginButton from '@/components/mobile/MobileLoginButton';
+import MobileEditButton from '@/components/mobile/MobileEditButton';
+import ScrollToTopButton from '@/components/mobile/ScrollToTopButton';
 import { useVisitorTracking } from '@/hooks/useVisitorTracking';
 
 interface LayoutProps {
@@ -21,6 +24,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </main>
       <Footer />
       <RoamingBug />
+      <MobileLoginButton />
+      <MobileEditButton />
+      <ScrollToTopButton />
     </div>
   );
 };
