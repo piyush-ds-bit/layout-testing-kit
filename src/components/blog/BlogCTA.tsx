@@ -5,6 +5,9 @@ import { PenTool, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import * as TooltipPrimitive from '@radix-ui/react-tooltip';
+
+
 
 interface BlogCTAProps {
   variant?: 'hero' | 'preview';
@@ -46,10 +49,12 @@ const BlogCTA: React.FC<BlogCTAProps> = ({ variant = 'preview', className = '' }
                 </div>
               </Link>
             </TooltipTrigger>
-            <TooltipContent className="bg-portfolio-card-bg border-portfolio-border text-white">
-              <p className="font-medium">Share Your Story!</p>
-              <p className="text-sm text-gray-300">Join our community by writing your first blog post</p>
-            </TooltipContent>
+            <TooltipPrimitive.Portal>
+              <TooltipContent className="bg-portfolio-card-bg border-portfolio-border text-white">
+                <p className="font-medium">Share Your Story!</p>
+                <p className="text-sm text-gray-300">Join our community by writing your first blog post</p>
+              </TooltipContent>
+            </TooltipPrimitive.Portal>
           </Tooltip>
         </TooltipProvider>
         
