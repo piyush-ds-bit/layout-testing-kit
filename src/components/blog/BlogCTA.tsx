@@ -16,18 +16,12 @@ const BlogCTA: React.FC<BlogCTAProps> = ({ variant = 'preview', className = '' }
   const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
-    const hasVisitedBlog = localStorage.getItem('blog-visited');
-    if (!hasVisitedBlog) {
-      setIsFirstVisit(true);
-      // Auto-show tooltip for first-time visitors after 3 seconds
-      const timer = setTimeout(() => setShowTooltip(true), 3000);
-      return () => clearTimeout(timer);
-    }
+    // Auto-show tooltip for first-time visitors after 3 seconds
+    const timer = setTimeout(() => setShowTooltip(true), 3000);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleBlogClick = () => {
-    localStorage.setItem('blog-visited', 'true');
-    setIsFirstVisit(false);
     setShowTooltip(false);
   };
 
@@ -45,9 +39,7 @@ const BlogCTA: React.FC<BlogCTAProps> = ({ variant = 'preview', className = '' }
                   <div>
                     <h3 className="text-sm md:text-lg font-medium text-white flex items-center gap-1 justify-center">
                       Blog
-                      {isFirstVisit && (
-                        <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-yellow-300 animate-pulse" />
-                      )}
+                      <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-yellow-300 animate-pulse" />
                     </h3>
                     <p className="text-xs md:text-sm text-portfolio-gray-light mt-1 hidden md:block">Share your story</p>
                   </div>
@@ -82,21 +74,17 @@ const BlogCTA: React.FC<BlogCTAProps> = ({ variant = 'preview', className = '' }
           <div className="relative flex items-center gap-2">
             <PenTool className="w-4 h-4" />
             <span>Share Your Story</span>
-            {isFirstVisit && (
-              <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
-            )}
+            <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
           </div>
         </Button>
       </Link>
       
-      {isFirstVisit && (
-        <Badge 
+      <Badge 
           variant="secondary" 
           className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-black text-xs animate-pulse"
-        >
-          New!
-        </Badge>
-      )}
+      >
+        New!
+      </Badge>
     </div>
   );
 };
