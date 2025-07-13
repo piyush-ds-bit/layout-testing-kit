@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { FileText, Code, Briefcase, Github, MessageSquare, PenTool } from 'lucide-react';
+import { FileText, Code, Briefcase, Github, MessageSquare, PenTool, Youtube } from 'lucide-react';
 import AnimatedGreeting from './AnimatedGreeting';
 import BlogCTA from '@/components/blog/BlogCTA';
 
@@ -11,7 +11,7 @@ const Hero: React.FC = () => {
     { to: "/skills", label: "Skills", icon: Code, description: "Technical expertise" },
     { to: "/experience", label: "Experience", icon: Briefcase, description: "Professional journey" },
     { to: "/github", label: "GitHub", icon: Github, description: "Open source contributions" },
-    { to: "/projects", label: "Projects", icon: Code, description: "Portfolio showcase" },
+    { to: "/projects", label: "Projects", icon: Youtube, description: "Portfolio showcase" },
     { to: "/connect", label: "Connect", icon: MessageSquare, description: "Get in touch" }
   ];
 
