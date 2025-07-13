@@ -61,14 +61,13 @@ const BlogCTA: React.FC<BlogCTAProps> = ({ variant = 'preview', className = '' }
           </Tooltip>
         </TooltipProvider>
         
-        {isFirstVisit && (
-          <Badge 
+        
+        <Badge 
             variant="secondary" 
             className="absolute -top-1 -right-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-black text-xs animate-pulse"
           >
             New!
-          </Badge>
-        )}
+        </Badge>
       </div>
     );
   }
