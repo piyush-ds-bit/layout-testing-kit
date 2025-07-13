@@ -54,7 +54,7 @@ export const useSkillsData = () => {
           *,
           category:skill_categories(*)
         `)
-        .order('name');
+        .order('created_at', { ascending: false });
       
       if (error) throw error;
       setSkills(data || []);
