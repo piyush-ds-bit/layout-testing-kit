@@ -44,12 +44,12 @@ const Hero: React.FC = () => {
           </div>
           
           {/* Modern Mobile Navigation Cards */}
-          <div className="mt-12 md:mt-16 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 w-full max-w-2xl">
+          <div className="mt-12 md:mt-16 grid grid-cols-2 md:grid-cols-3 gap-2.5 md:gap-3 w-full max-w-2xl">
             {navigationCards.map((card, index) => (
               <Link 
                 key={card.to} 
                 to={card.to} 
-                className="group relative overflow-hidden bg-portfolio-card-bg/70 hover:bg-portfolio-card-bg border border-portfolio-border hover:border-portfolio-accent/50 rounded-2xl p-4 md:p-5 transition-all duration-300 hover:scale-105 hover:shadow-xl backdrop-blur-sm"
+                className="group relative overflow-hidden bg-portfolio-card-bg/70 hover:bg-portfolio-card-bg border border-portfolio-border hover:border-portfolio-accent/50 rounded-2xl p-3 md:p-4 transition-all duration-300 hover:scale-105 hover:shadow-xl backdrop-blur-sm"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="flex flex-col items-center text-center space-y-2">
