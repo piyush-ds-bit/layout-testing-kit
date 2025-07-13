@@ -38,38 +38,19 @@ const BlogCTA: React.FC<BlogCTAProps> = ({ variant = 'preview', className = '' }
           <Tooltip open={showTooltip} onOpenChange={setShowTooltip}>
             <TooltipTrigger asChild>
               <Link to="/blog" onClick={handleBlogClick} className="block w-full h-full">
-                <div
-                  className="w-full h-full flex flex-col items-center justify-center text-center space-y-2 group 
-                             bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl p-4 transition-all duration-300 
-                             hover:scale-105 hover:shadow-lg relative overflow-hidden"
-                  onMouseEnter={() => setShowTooltip(true)}
-                  onMouseLeave={() => setShowTooltip(false)}
-                >
-                  {/* Background pulse overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-blue-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse pointer-events-none" />
-              
-                  {/* Icon circle */}
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500/30 to-blue-500/30 flex items-center justify-center transition-all duration-300">
-                    <PenTool className="w-6 h-6 text-purple-300" />
+                <div className="w-full h-full flex flex-col items-center justify-center text-center space-y-2 group">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 flex items-center justify-center group-hover:from-purple-500/30 group-hover:to-blue-500/30 transition-all duration-300">
+                    <PenTool className="w-5 h-5 md:w-6 md:h-6 text-purple-400" />
                   </div>
-              
-                  {/* Label and sparkles */}
                   <div>
-                    <h3 className="text-lg font-medium text-white flex items-center gap-1 justify-center">
+                    <h3 className="text-sm md:text-lg font-medium text-white flex items-center gap-1 justify-center">
                       Blog
                       {isFirstVisit && (
-                        <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
+                        <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-yellow-300 animate-pulse" />
                       )}
                     </h3>
-                    <p className="hidden md:block text-sm text-portfolio-gray-light mt-1 hidden md:block">Share your story</p>
+                    <p className="text-xs md:text-sm text-portfolio-gray-light mt-1 hidden md:block">Share your story</p>
                   </div>
-              
-                  {/* Optional tooltip */}
-                  {showTooltip && (
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full bg-gray-800 text-white text-xs px-2 py-1 rounded shadow-lg">
-                      Visit the Blog Section
-                    </div>
-                  )}
                 </div>
               </Link>
             </TooltipTrigger>
