@@ -10,7 +10,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Edit, Trash2, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
+import BlogShareButton from './BlogShareButton';
 
 interface BlogCardProps {
   post: BlogPost;
@@ -89,8 +90,13 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
                 </div>
               </div>
             </div>
-            {(canEdit || canDelete) && (
-              <div className="flex gap-2">
+            <div className="flex gap-2">
+              {/* Share button - visible to everyone */}
+              <BlogShareButton post={post} />
+              
+              {/* Edit and Delete buttons - only for authorized users */}
+              {(canEdit || canDelete) && (
+                <div className="flex gap-2">
                 {/* Only show Edit if author (even if admin) */}
                 {canEdit && (
                   <Dialog open={isEditing} onOpenChange={setIsEditing}>
@@ -140,8 +146,9 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 )}
-              </div>
-            )}
+                </div>
+              )}
+            </div>
           </div>
         </CardHeader>
         <CardContent>
