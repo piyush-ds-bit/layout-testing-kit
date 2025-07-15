@@ -108,14 +108,6 @@ const SocialShareModal: React.FC<SocialShareModalProps> = ({
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle className="text-white text-lg">Share Blog Post</DialogTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClose}
-              className="text-portfolio-gray-light hover:text-white"
-            >
-              <X className="w-4 h-4" />
-            </Button>
           </div>
         </DialogHeader>
         
