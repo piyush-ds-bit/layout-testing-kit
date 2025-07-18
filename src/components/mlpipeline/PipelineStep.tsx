@@ -42,7 +42,7 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, isMobile }) => {
       style={{
         minWidth: isMobile ? 240 : 136,
         maxWidth: isMobile ? 320 : 175,
-        height: isMobile ? 180 : (isFlipped && !isMobile ? "auto" : 300),
+        height: isMobile ? 180 : (isFlipped && !isMobile ? "auto" : 160),
         minHeight: isMobile ? 180 : 160,
         perspective: "1000px",
       }}
