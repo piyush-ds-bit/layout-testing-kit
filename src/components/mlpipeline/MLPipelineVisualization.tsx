@@ -18,7 +18,7 @@ const MLPipelineVisualization: React.FC = () => {
         <MobileCarousel steps={mlPipelineSteps} />
         <DesktopPyramid steps={mlPipelineSteps} />
         <div className="text-xs text-center text-gray-500 mt-7 select-none">
-          Tap/click a step to see the tools and details.
+          Hover (desktop) or tap (mobile) a step to flip and see tools and details.
         </div>
       </div>
       <style>
