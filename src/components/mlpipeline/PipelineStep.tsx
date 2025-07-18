@@ -36,13 +36,14 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, isMobile }) => {
   return (
     <div
       className={`
-        flip-card-container relative
+        flip-card-container relative transition-all duration-700 ease-in-out
         ${isMobile ? "w-full min-w-[240px] max-w-[320px] mx-auto" : ""}
       `}
       style={{
         minWidth: isMobile ? 240 : 136,
         maxWidth: isMobile ? 320 : 175,
-        height: isMobile ? 180 : 160,
+        height: isMobile ? 180 : (isFlipped && !isMobile ? "auto" : 160),
+        minHeight: isMobile ? 180 : 160,
         perspective: "1000px",
       }}
       onClick={handleInteraction}
