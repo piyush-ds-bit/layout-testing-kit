@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import PipelineStep from "./PipelineStep";
@@ -9,6 +9,8 @@ interface MobileCarouselProps {
 }
 
 const MobileCarousel: React.FC<MobileCarouselProps> = ({ steps }) => {
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
   return (
     <div className="block md:hidden w-full">
       <Carousel className="relative w-full">
@@ -17,6 +19,8 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({ steps }) => {
             <CarouselItem key={step.label} className="flex items-center justify-center px-2 py-4">
               <PipelineStep
                 step={step}
+                expanded={expandedIndex === idx}
+                onClick={() => setExpandedIndex(expandedIndex === idx ? null : idx)}
                 isMobile={true}
               />
             </CarouselItem>
