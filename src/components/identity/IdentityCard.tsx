@@ -90,20 +90,23 @@ const IdentityCard: React.FC<IdentityCardProps> = ({ isDragging, setIsDragging }
 
         {/* Profile Section */}
         <div className="flex items-center space-x-4 mb-6">
-          {/* Profile Image */}
-          <div className="relative">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-portfolio-accent to-purple-600 p-0.5">
-              <div className="w-full h-full rounded-full bg-slate-800 flex items-center justify-center text-white font-bold text-xl">
-                PS
-              </div>
-            </div>
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-slate-800" />
+        {/* Profile Image */}
+        <div className="relative">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-portfolio-accent to-purple-600 p-0.5">
+            <img
+              src="/profile_image.jpeg"  // <-- replace with your actual image path (public folder or URL)
+              alt="Profile"
+              className="w-full h-full rounded-full object-cover"
+            />
           </div>
+          <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-slate-800" />
+        </div>
+
           
           {/* Basic Info */}
           <div className="flex-1">
             <h3 className="text-xl font-bold text-white mb-1">Piyush Singh</h3>
-            <p className="text-sm text-gray-300">Full-Stack Developer</p>
+            <p className="text-sm text-gray-300">Data Scientist</p>
             <p className="text-xs text-portfolio-accent">Portfolio Owner</p>
           </div>
         </div>
