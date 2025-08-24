@@ -474,3 +474,13 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Card Flip Animation Support */
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* Preserve 3D transform style for card containers */
+.preserve-3d {
+  transform-style: preserve-3d;
+}
