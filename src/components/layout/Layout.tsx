@@ -1,10 +1,12 @@
+
 import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import RoamingBug from '@/components/bug/RoamingBug';
+import MobileLoginButton from '@/components/mobile/MobileLoginButton';
+import MobileEditButton from '@/components/mobile/MobileEditButton';
 import ScrollToTopButton from '@/components/mobile/ScrollToTopButton';
 import { useVisitorTracking } from '@/hooks/useVisitorTracking';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -13,7 +15,6 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   // Use the visitor tracking hook
   useVisitorTracking();
-  const isMobile = useIsMobile();
   
   return (
     <div className="flex flex-col min-h-screen">
@@ -23,7 +24,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </main>
       <Footer />
       <RoamingBug />
-      {!isMobile && <ScrollToTopButton />}
+      <MobileLoginButton />
+      <MobileEditButton />
+      <ScrollToTopButton />
     </div>
   );
 };
