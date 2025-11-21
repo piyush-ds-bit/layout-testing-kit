@@ -25,6 +25,16 @@ const MLPipelineVisualization: React.FC = () => {
           </h2>
           <div className="flex items-center gap-3">
             <button
+              onClick={animation.toggleSound}
+              className={`hidden md:flex items-center gap-2 px-3 py-2 rounded-md transition-colors text-sm ${
+                animation.soundEnabled
+                  ? "bg-portfolio-accent/20 hover:bg-portfolio-accent/30 text-portfolio-accent"
+                  : "bg-gray-700/50 hover:bg-gray-700/70 text-gray-400"
+              }`}
+            >
+              {animation.soundEnabled ? "🔊" : "🔇"} Sound
+            </button>
+            <button
               onClick={() => setShowMetrics(!showMetrics)}
               className="hidden md:flex items-center gap-2 px-3 py-2 rounded-md bg-portfolio-accent/20 hover:bg-portfolio-accent/30 transition-colors text-sm text-portfolio-accent"
             >
@@ -61,6 +71,7 @@ const MLPipelineVisualization: React.FC = () => {
               steps={mlPipelineSteps}
               stepStatuses={animation.stepStatuses}
               currentStep={animation.currentStep}
+              isTransitioning={animation.isTransitioning}
             />
 
             <div className="text-xs text-center text-gray-500 mt-7 select-none">
