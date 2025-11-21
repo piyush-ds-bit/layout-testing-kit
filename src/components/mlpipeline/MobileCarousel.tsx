@@ -3,12 +3,15 @@ import React, { useState } from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import PipelineStep from "./PipelineStep";
+import { PipelineStepStatus } from "@/hooks/usePipelineAnimation";
 
 interface MobileCarouselProps {
   steps: any[];
+  stepStatuses?: PipelineStepStatus[];
+  currentStep?: number;
 }
 
-const MobileCarousel: React.FC<MobileCarouselProps> = ({ steps }) => {
+const MobileCarousel: React.FC<MobileCarouselProps> = ({ steps, stepStatuses = [], currentStep = -1 }) => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   return (
@@ -22,6 +25,7 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({ steps }) => {
                 expanded={expandedIndex === idx}
                 onClick={() => setExpandedIndex(expandedIndex === idx ? null : idx)}
                 isMobile={true}
+                status={stepStatuses[idx]}
               />
             </CarouselItem>
           ))}

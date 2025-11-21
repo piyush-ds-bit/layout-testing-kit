@@ -2,12 +2,16 @@
 import React, { useState } from "react";
 import { Wrench, Settings } from "lucide-react";
 import { motion } from "framer-motion";
+import { PipelineStepStatus } from "@/hooks/usePipelineAnimation";
+import ProcessingOverlay from "./ProcessingOverlay";
+import PipelineTooltip from "./PipelineTooltip";
 
 interface PipelineStepProps {
   step: any;
   expanded: boolean;
   onClick: () => void;
   isMobile: boolean;
+  status?: PipelineStepStatus;
 }
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -15,8 +19,17 @@ const iconMap: Record<string, React.ReactNode> = {
   settings: <Settings className="inline w-6 h-6 text-portfolio-accent" />,
 };
 
-const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, isMobile }) => {
+const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, isMobile, status = "idle" }) => {
   const [isFlipped, setIsFlipped] = useState(false);
+
+  const getStatusBorderColor = () => {
+    switch (status) {
+      case "receiving": return "border-blue-500 shadow-[0_0_16px_4px_#3b82f7cc]";
+      case "processing": return "border-yellow-500 shadow-[0_0_16px_4px_#eab308cc]";
+      case "complete": return "border-green-500 shadow-[0_0_16px_4px_#22c55ecc]";
+      default: return "border-portfolio-accent";
+    }
+  };
 
   // For mobile, use the existing tap-to-expand behavior
   if (isMobile) {
@@ -25,7 +38,7 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
         className={`
           portfolio-card-hover flex flex-col items-center justify-center
           py-6 px-3 mb-2
-          bg-[#182437]/80 border-2 border-portfolio-accent
+          bg-[#182437]/80 border-2 ${getStatusBorderColor()}
           transition-all duration-300 relative
           ${expanded ? "z-20" : ""}
           w-full min-w-[240px] max-w-[320px] mx-auto
@@ -46,8 +59,11 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
         }}>
           {iconMap[step.icon] ?? step.icon}
         </div>
-        <div className="text-sm font-semibold text-white text-center drop-shadow mb-1">
-          {step.label}
+        <div className="flex items-center gap-2 mb-1">
+          <div className="text-sm font-semibold text-white text-center drop-shadow">
+            {step.label}
+          </div>
+          <PipelineTooltip stepLabel={step.label} description={step.description} />
         </div>
         <div className="w-1 h-1 bg-portfolio-accent rounded-full mb-1" />
         {expanded && (
@@ -65,6 +81,7 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
             </div>
           </div>
         )}
+        <ProcessingOverlay status={status} stepLabel={step.label} />
       </button>
     );
   }
@@ -102,12 +119,12 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
             backfaceVisibility: "hidden",
           }}
         >
-          <button
+          <div
             className={`
               portfolio-card-hover flex flex-col items-center justify-center
               w-full h-full py-7 px-4
-              bg-[#182437]/80 border-2 border-portfolio-accent
-              transition-all duration-300
+              bg-[#182437]/80 border-2 ${getStatusBorderColor()}
+              transition-all duration-300 relative
             `}
           >
             <div className={`text-4xl mb-3 select-none pulse`} style={{
@@ -115,11 +132,15 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
             }}>
               {iconMap[step.icon] ?? step.icon}
             </div>
-            <div className="text-lg font-semibold text-white text-center drop-shadow mb-2">
-              {step.label}
+            <div className="flex items-center gap-2 mb-2">
+              <div className="text-lg font-semibold text-white text-center drop-shadow">
+                {step.label}
+              </div>
+              <PipelineTooltip stepLabel={step.label} description={step.description} />
             </div>
             <div className="w-1 h-1 bg-portfolio-accent rounded-full" />
-          </button>
+            <ProcessingOverlay status={status} stepLabel={step.label} />
+          </div>
         </motion.div>
 
         {/* Back side */}
