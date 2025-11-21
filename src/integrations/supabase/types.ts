@@ -47,6 +47,60 @@ export type Database = {
         }
         Relationships: []
       }
+      chatbot_analytics: {
+        Row: {
+          created_at: string
+          id: string
+          metadata: Json | null
+          question_type: string | null
+          session_id: string
+          visitor_action: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          question_type?: string | null
+          session_id: string
+          visitor_action?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          question_type?: string | null
+          session_id?: string
+          visitor_action?: string | null
+        }
+        Relationships: []
+      }
+      chatbot_conversations: {
+        Row: {
+          assistant_response: string
+          context_used: Json | null
+          created_at: string
+          id: string
+          session_id: string
+          user_message: string
+        }
+        Insert: {
+          assistant_response: string
+          context_used?: Json | null
+          created_at?: string
+          id?: string
+          session_id: string
+          user_message: string
+        }
+        Update: {
+          assistant_response?: string
+          context_used?: Json | null
+          created_at?: string
+          id?: string
+          session_id?: string
+          user_message?: string
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           attachment_url: string | null
