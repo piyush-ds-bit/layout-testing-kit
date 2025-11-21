@@ -9,14 +9,22 @@ interface DesktopPyramidProps {
   steps: any[];
   stepStatuses?: PipelineStepStatus[];
   currentStep?: number;
+  isTransitioning?: boolean;
 }
 
-const DesktopPyramid: React.FC<DesktopPyramidProps> = ({ steps, stepStatuses = [], currentStep = -1 }) => {
+const DesktopPyramid: React.FC<DesktopPyramidProps> = ({ 
+  steps, 
+  stepStatuses = [], 
+  currentStep = -1,
+  isTransitioning = false
+}) => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
-  const isStepActive = (stepIndex: number) => {
-    return stepIndex === currentStep || stepStatuses[stepIndex] === "processing" || 
-           stepStatuses[stepIndex] === "receiving" || stepStatuses[stepIndex] === "complete";
+  // Arrow should only be active when transitioning FROM the current completed step
+  const isArrowActive = (fromStepIndex: number) => {
+    return isTransitioning && 
+           stepStatuses[fromStepIndex] === "complete" && 
+           fromStepIndex === currentStep;
   };
 
   // Pyramid rows for desktop layout
@@ -50,7 +58,7 @@ const DesktopPyramid: React.FC<DesktopPyramidProps> = ({ steps, stepStatuses = [
             {renderNode(step, idx)}
             {idx < row1.length - 1 && (
               <AnimatedArrowRight 
-                isActive={isStepActive(idx)} 
+                isActive={isArrowActive(idx)} 
                 particleType={getParticleType(idx)} 
               />
             )}
@@ -59,7 +67,7 @@ const DesktopPyramid: React.FC<DesktopPyramidProps> = ({ steps, stepStatuses = [
       </div>
       {/* Down arrow to row 2 */}
       <div className="flex justify-center mb-2 md:mb-6">
-        <AnimatedArrowDown isActive={isStepActive(3)} particleType="processed" />
+        <AnimatedArrowDown isActive={isArrowActive(3)} particleType="processed" />
       </div>
       {/* Row 2 - 3 steps */}
       <div className="flex flex-row justify-center items-start gap-4 mb-2 md:mb-6">
@@ -68,7 +76,7 @@ const DesktopPyramid: React.FC<DesktopPyramidProps> = ({ steps, stepStatuses = [
             {renderNode(step, idx + 4)}
             {idx < row2.length - 1 && (
               <AnimatedArrowRight 
-                isActive={isStepActive(idx + 4)} 
+                isActive={isArrowActive(idx + 4)} 
                 particleType={getParticleType(idx + 4)} 
               />
             )}
@@ -77,7 +85,7 @@ const DesktopPyramid: React.FC<DesktopPyramidProps> = ({ steps, stepStatuses = [
       </div>
       {/* Down arrow to row 3 */}
       <div className="flex justify-center mb-2 md:mb-6">
-        <AnimatedArrowDown isActive={isStepActive(6)} particleType="predictions" />
+        <AnimatedArrowDown isActive={isArrowActive(6)} particleType="predictions" />
       </div>
       {/* Row 3 - 2 steps */}
       <div className="flex flex-row justify-center items-start gap-4 mb-2 md:mb-6">
@@ -86,7 +94,7 @@ const DesktopPyramid: React.FC<DesktopPyramidProps> = ({ steps, stepStatuses = [
             {renderNode(step, idx + 7)}
             {idx < row3.length - 1 && (
               <AnimatedArrowRight 
-                isActive={isStepActive(idx + 7)} 
+                isActive={isArrowActive(idx + 7)} 
                 particleType="predictions" 
               />
             )}

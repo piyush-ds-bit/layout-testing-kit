@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from "react";
+import { soundEffects } from "@/utils/soundEffects";
 
 export type AnimationSpeed = 0.5 | 1 | 2 | 4;
 
@@ -20,11 +21,14 @@ export interface UsePipelineAnimationReturn {
   loop: boolean;
   metrics: PipelineMetrics;
   stepStatuses: PipelineStepStatus[];
+  isTransitioning: boolean;
+  soundEnabled: boolean;
   play: () => void;
   pause: () => void;
   stop: () => void;
   setSpeed: (speed: AnimationSpeed) => void;
   toggleLoop: () => void;
+  toggleSound: () => void;
   reset: () => void;
 }
 
@@ -38,6 +42,8 @@ export const usePipelineAnimation = (): UsePipelineAnimationReturn => {
   const [progress, setProgress] = useState(0);
   const [speed, setSpeedState] = useState<AnimationSpeed>(1);
   const [loop, setLoop] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
   const [stepStatuses, setStepStatuses] = useState<PipelineStepStatus[]>(
     Array(TOTAL_STEPS).fill("idle")
   );
@@ -51,6 +57,11 @@ export const usePipelineAnimation = (): UsePipelineAnimationReturn => {
   const startTimeRef = useRef<number>(0);
   const animationFrameRef = useRef<number>();
 
+  // Sync sound effects with state
+  useEffect(() => {
+    soundEffects.setEnabled(soundEnabled);
+  }, [soundEnabled]);
+
   const updateStepStatus = useCallback((step: number, status: PipelineStepStatus) => {
     setStepStatuses((prev) => {
       const newStatuses = [...prev];
@@ -63,14 +74,17 @@ export const usePipelineAnimation = (): UsePipelineAnimationReturn => {
     async (step: number) => {
       // Receiving state
       updateStepStatus(step, "receiving");
-      await new Promise((resolve) => setTimeout(resolve, 300 / speed));
+      soundEffects.playReceive();
+      await new Promise((resolve) => setTimeout(resolve, 400 / speed));
 
       // Processing state
       updateStepStatus(step, "processing");
-      await new Promise((resolve) => setTimeout(resolve, (BASE_STEP_DURATION * 0.7) / speed));
+      soundEffects.playProcess();
+      await new Promise((resolve) => setTimeout(resolve, (BASE_STEP_DURATION * 0.6) / speed));
 
       // Complete state
       updateStepStatus(step, "complete");
+      soundEffects.playComplete();
       
       // Update metrics
       setMetrics((prev) => ({
@@ -79,10 +93,14 @@ export const usePipelineAnimation = (): UsePipelineAnimationReturn => {
         currentStep: step,
       }));
 
-      await new Promise((resolve) => setTimeout(resolve, 300 / speed));
+      await new Promise((resolve) => setTimeout(resolve, 400 / speed));
 
-      // Reset to idle after a moment
+      // Transition to next step (data flowing)
       if (step < TOTAL_STEPS - 1) {
+        setIsTransitioning(true);
+        soundEffects.playFlow();
+        await new Promise((resolve) => setTimeout(resolve, 800 / speed));
+        setIsTransitioning(false);
         updateStepStatus(step, "idle");
       }
     },
@@ -102,9 +120,12 @@ export const usePipelineAnimation = (): UsePipelineAnimationReturn => {
 
     // Animation complete
     if (loop && isPlaying) {
+      soundEffects.playSuccess();
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       reset();
       setTimeout(() => animate(), 500);
     } else {
+      soundEffects.playSuccess();
       setIsPlaying(false);
       setProgress(100);
     }
@@ -169,6 +190,10 @@ export const usePipelineAnimation = (): UsePipelineAnimationReturn => {
     setLoop((prev) => !prev);
   }, []);
 
+  const toggleSound = useCallback(() => {
+    setSoundEnabled((prev) => !prev);
+  }, []);
+
   return {
     isPlaying,
     isPaused,
@@ -178,11 +203,14 @@ export const usePipelineAnimation = (): UsePipelineAnimationReturn => {
     loop,
     metrics,
     stepStatuses,
+    isTransitioning,
+    soundEnabled,
     play,
     pause,
     stop,
     setSpeed,
     toggleLoop,
+    toggleSound,
     reset,
   };
 };
