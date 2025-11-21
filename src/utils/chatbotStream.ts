@@ -12,11 +12,12 @@ export const streamChatResponse = async (
 ): Promise<void> => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chatbot`,
+      `https://pfwqlxgrwcphsnpkevot.supabase.co/functions/v1/chatbot`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBmd3FseGdyd2NwaHNucGtldm90Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDczMzYyNDUsImV4cCI6MjA2MjkxMjI0NX0.8TTzZFxJK2xzCAxCrj93IFpufubgF8N2p5jHH7ohWWw',
         },
         body: JSON.stringify({
           message,
