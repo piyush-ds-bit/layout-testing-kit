@@ -1,68 +1,144 @@
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 220 20% 97%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 0 0% 96%;
+    --foreground: 0 0% 9%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 9%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 89%;
+    --popover-foreground: 0 0% 9%;
 
-    --primary: 271 81% 56%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 161 93% 30%;
+    --primary-foreground: 151 80% 95%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0% 32%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 63%;
+    --muted-foreground: 0 0% 9%;
 
-    --accent: 271 81% 56%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 166 76% 96%;
+    --accent-foreground: 173 80% 40%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 85% 97%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 271 81% 56%;
+    --border: 0 0% 83%;
+    --input: 0 0% 83%;
+    --ring: 161 93% 30%;
 
     --radius: 0.75rem;
+
+    --chart-1: 158 64% 51%;
+
+    --chart-2: 141 69% 58%;
+
+    --chart-3: 172 66% 50%;
+
+    --chart-4: 82 77% 55%;
+
+    --chart-5: 0 0% 45%;
+
+    --sidebar: 0 0% 98%;
+
+    --sidebar-foreground: 0 0% 9%;
+
+    --sidebar-primary: 161 93% 30%;
+
+    --sidebar-primary-foreground: 151 80% 95%;
+
+    --sidebar-accent: 0 0% 32%;
+
+    --sidebar-accent-foreground: 0 0% 98%;
+
+    --sidebar-border: 0 0% 83%;
+
+    --sidebar-ring: 161 93% 30%;
+
+    --font-sans: 'Work Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+
+    --font-serif: 'Lora', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+
+    --font-mono: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+
+    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+
+    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+
+    --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+
+    --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+
+    --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+
+    --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
+
+    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+
+    --tracking-normal: 0em;
+
+    --spacing: 0.25rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 9%;
+    --foreground: 0 0% 98%;
 
-    --card: 217.2 32.6% 17.5%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 14%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 25%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 271 81% 56%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 158 64% 51%;
+    --primary-foreground: 165 91% 9%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 45%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 0% 45%;
+    --muted-foreground: 0 0% 98%;
 
-    --accent: 271 81% 56%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 178 84% 10%;
+    --accent-foreground: 172 66% 50%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 85% 97%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 271 81% 56%;
+    --border: 0 0% 32%;
+    --input: 0 0% 32%;
+    --ring: 158 64% 51%;
+    --chart-1: 156 71% 66%;
+    --chart-2: 141 76% 73%;
+    --chart-3: 170 76% 64%;
+    --chart-4: 81 84% 67%;
+    --chart-5: 0 0% 45%;
+    --sidebar: 0 0% 14%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 158 64% 51%;
+    --sidebar-primary-foreground: 165 91% 9%;
+    --sidebar-accent: 172 66% 50%;
+    --sidebar-accent-foreground: 178 84% 10%;
+    --sidebar-border: 0 0% 32%;
+    --sidebar-ring: 158 64% 51%;
+    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+    --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+    --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+    --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+    --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
+    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
   }
 }
 
@@ -70,16 +146,16 @@
   * {
     @apply border-border;
   }
-  
+
   html {
     @apply scroll-smooth;
   }
-  
+
   body {
     @apply bg-portfolio-darker text-foreground dark transition-all duration-300;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold text-white;
   }
@@ -89,15 +165,15 @@
   .portfolio-container {
     @apply container max-w-6xl mx-auto px-4 sm:px-6;
   }
-  
+
   .portfolio-section {
     @apply py-16 md:py-24;
   }
-  
+
   .portfolio-heading {
     @apply text-3xl md:text-4xl font-bold text-white mb-8 text-center;
   }
-  
+
   .portfolio-card {
     @apply relative transition-all duration-300 p-6 rounded-xl border border-portfolio-border;
     background: rgba(24, 36, 55, 0.65);
@@ -106,7 +182,7 @@
     border: 1.5px solid rgba(168, 85, 247, 0.21);
     z-index: 1;
   }
-  
+
   .portfolio-card:hover {
     @apply shadow-lg;
     transform: translateY(-7px) scale(1.035);
@@ -114,7 +190,7 @@
     box-shadow: 0 12px 48px 0 rgba(168, 85, 247, 0.30), 0 8px 32px 0 rgba(10,20,30,0.22);
     background: rgba(24, 36, 55, 0.80);
   }
-  
+
   .portfolio-card::before {
     --glass-gradient: linear-gradient(
       135deg,
@@ -129,41 +205,41 @@
     pointer-events: none;
     z-index: 0;
   }
-  
+
   .portfolio-card > * {
     position: relative;
     z-index: 1;
   }
-  
+
   .portfolio-button {
     @apply bg-portfolio-accent text-white font-medium px-5 py-2.5 rounded-lg 
     hover:bg-portfolio-accent-dark transition-all duration-300 inline-flex items-center justify-center;
   }
-  
+
   .portfolio-button-outline {
     @apply bg-transparent text-portfolio-accent border border-portfolio-accent font-medium px-5 py-2.5 rounded-lg 
     hover:bg-portfolio-accent hover:text-white transition-all duration-300 inline-flex items-center justify-center;
   }
-  
+
   .portfolio-input {
     @apply bg-portfolio-card-bg border border-portfolio-border text-white rounded-lg px-4 py-3 w-full
     focus:outline-none focus:ring-2 focus:ring-portfolio-accent focus:border-transparent;
   }
-  
+
   .portfolio-navbar-item {
     @apply px-3 py-2 text-sm font-medium rounded-lg transition-colors
     hover:text-portfolio-accent;
   }
-  
+
   .portfolio-navbar-item.active {
     @apply text-portfolio-accent bg-portfolio-card-bg;
   }
-  
+
   .portfolio-nav-button {
     @apply bg-portfolio-card-bg hover:bg-portfolio-card-bg-alt text-white text-lg font-medium py-5 px-4 rounded-xl border border-portfolio-border
     transition-all duration-300 flex items-center justify-center hover:border-portfolio-accent/50;
   }
-  
+
   .portfolio-nav-button-override {
     @apply bg-portfolio-card-bg hover:bg-portfolio-card-bg-alt text-white text-lg font-medium py-5 px-4 rounded-xl border border-portfolio-border
     transition-all duration-300 flex items-center justify-center hover:border-portfolio-accent/50;
@@ -173,12 +249,12 @@
     align-items: center;
     justify-content: center;
   }
-  
+
   .skill-tag {
     @apply bg-portfolio-card-bg border border-portfolio-border px-4 py-2 rounded-lg flex items-center gap-2 text-gray-300
     hover:border-portfolio-accent transition-all duration-200;
   }
-  
+
   .social-icon-container {
     @apply w-16 h-16 rounded-full bg-portfolio-card-bg border border-portfolio-border flex items-center justify-center
     hover:border-portfolio-accent transition-all duration-300;
@@ -189,31 +265,31 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  
+
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
-  
+
   /* Animation Keyframes */
   @keyframes fadeIn {
     0% { opacity: 0; }
     100% { opacity: 1; }
   }
-  
+
   @keyframes slideUp {
     0% { transform: translateY(20px); opacity: 0; }
     100% { transform: translateY(0); opacity: 1; }
   }
-  
+
   /* Animation Classes */
   .animate-fade-in {
     animation: fadeIn 0.6s ease-out forwards;
   }
-  
+
   .animate-slide-up {
     animation: slideUp 0.6s ease-out forwards;
   }
-  
+
   /* Mobile-specific styles (Modern Material Design Inspired) */
   @media (max-width: 768px) {
     .portfolio-card {
@@ -483,4 +559,13 @@
 /* Preserve 3D transform style for card containers */
 .preserve-3d {
   transform-style: preserve-3d;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
