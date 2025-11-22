@@ -5,6 +5,7 @@ import { ArrowRight, Loader2 } from 'lucide-react';
 import { useBlogPosts } from '@/hooks/useBlogPosts';
 import BlogCard from '@/components/blog/BlogCard';
 import BlogCTA from '@/components/blog/BlogCTA';
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '@/components/ui/carousel';
 
 const BlogPreview: React.FC = () => {
   const { data: posts, isLoading } = useBlogPosts();
@@ -60,11 +61,36 @@ const BlogPreview: React.FC = () => {
             <Loader2 className="w-8 h-8 animate-spin text-portfolio-accent" />
           </div>
         ) : posts && posts.length > 0 ? (
-          <div className="space-y-6 max-w-4xl mx-auto">
-            {posts.slice(0, 3).map((post) => (
-              <BlogCard key={post.id} post={post} />
-            ))}
-          </div>
+          <>
+            {/* Mobile: Horizontal Carousel */}
+            <div className="block md:hidden">
+              <Carousel 
+                opts={{ 
+                  loop: true, 
+                  align: "start",
+                  skipSnaps: false 
+                }}
+                className="w-full"
+              >
+                <CarouselContent className="-ml-4">
+                  {posts.slice(0, 3).map((post) => (
+                    <CarouselItem key={post.id} className="pl-4 basis-full">
+                      <BlogCard post={post} />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="left-2 bg-portfolio-dark/80 border-portfolio-accent text-portfolio-accent" />
+                <CarouselNext className="right-2 bg-portfolio-dark/80 border-portfolio-accent text-portfolio-accent" />
+              </Carousel>
+            </div>
+
+            {/* Desktop: Vertical Stack */}
+            <div className="hidden md:block space-y-6 max-w-4xl mx-auto">
+              {posts.slice(0, 3).map((post) => (
+                <BlogCard key={post.id} post={post} />
+              ))}
+            </div>
+          </>
         ) : (
           <div className="text-center py-12">
             <div className="mb-6">

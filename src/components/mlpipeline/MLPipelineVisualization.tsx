@@ -81,8 +81,8 @@ const MLPipelineVisualization: React.FC = () => {
               isTransitioning={animation.isTransitioning}
             />
 
-            <div className="text-xs text-center text-gray-500 mt-7 select-none">
-              Click play to watch data flow through the pipeline, or hover/tap steps for details.
+            <div className="hidden md:block text-xs text-center text-gray-500 mt-7 select-none">
+              Click play to watch data flow through the pipeline, or hover steps for details.
             </div>
           </div>
 
