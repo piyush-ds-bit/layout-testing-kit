@@ -31,7 +31,7 @@ const PipelineControls: React.FC<PipelineControlsProps> = ({
   }} animate={{
     opacity: 1,
     y: 0
-  }} className="gap-3 p-4 rounded-lg bg-[#182437]/90 border border-portfolio-accent/30 backdrop-blur-sm flex-row flex items-center justify-end">
+  }} className="gap-3 p-3 rounded-lg bg-[#182437]/90 border border-portfolio-accent/30 backdrop-blur-sm flex-row flex items-center justify-center max-w-fit mx-auto">
       {/* Play/Pause Button */}
       <button onClick={isPlaying && !isPaused ? onPause : onPlay} className="p-2 rounded-md bg-portfolio-accent/20 hover:bg-portfolio-accent/30 transition-colors" aria-label={isPlaying && !isPaused ? "Pause" : "Play"}>
         {isPlaying && !isPaused ? <Pause className="w-5 h-5 text-portfolio-accent" /> : <Play className="w-5 h-5 text-portfolio-accent" />}
