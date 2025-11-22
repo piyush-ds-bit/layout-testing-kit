@@ -22,11 +22,20 @@ const CarouselWrapper: React.FC<MobileCarouselProps> = ({ steps, stepStatuses = 
     }
   }, [currentStep, api, steps.length]);
 
+  // Fallback if no steps
+  if (!steps || steps.length === 0) {
+    return (
+      <div className="flex items-center justify-center min-h-[350px] text-gray-400">
+        <p>No pipeline steps available</p>
+      </div>
+    );
+  }
+
   return (
     <>
-      <CarouselContent className="flex items-stretch">
+      <CarouselContent className="flex items-stretch min-h-[350px]">
           {steps.map((step, idx) => (
-            <CarouselItem key={step.label} className="flex items-center justify-center px-2 py-4">
+            <CarouselItem key={step.label} className="flex items-center justify-center px-2 py-4 min-h-[350px]">
               <PipelineStep
                 step={step}
                 expanded={expandedIndex === idx}
@@ -56,8 +65,8 @@ const CarouselWrapper: React.FC<MobileCarouselProps> = ({ steps, stepStatuses = 
 
 const MobileCarousel: React.FC<MobileCarouselProps> = (props) => {
   return (
-    <div className="block md:hidden w-full">
-      <Carousel className="relative w-full">
+    <div className="block md:hidden w-full min-h-[400px]">
+      <Carousel className="relative w-full min-h-[380px]">
         <CarouselWrapper {...props} />
       </Carousel>
     </div>

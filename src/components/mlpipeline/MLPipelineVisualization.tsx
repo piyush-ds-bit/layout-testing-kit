@@ -12,9 +12,16 @@ const MLPipelineVisualization: React.FC = () => {
   const animation = usePipelineAnimation();
   const [showMetrics, setShowMetrics] = useState(false);
 
+  // Debug logs
+  console.log('ML Pipeline Steps:', mlPipelineSteps);
+  console.log('Animation State:', { 
+    currentStep: animation.currentStep, 
+    stepStatuses: animation.stepStatuses 
+  });
+
   return (
     <section
-      className="portfolio-section py-8 md:py-12"
+      className="portfolio-section py-6 md:py-12"
       style={{ position: "relative", zIndex: 3 }}
       id="ml-pipeline"
     >
