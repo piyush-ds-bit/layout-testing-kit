@@ -16,7 +16,7 @@ const MLPipelineVisualization: React.FC = () => {
     currentStep: animation.currentStep,
     stepStatuses: animation.stepStatuses
   });
-  return <section className="portfolio-section py-6 md:py-12" style={{
+  return <section className="portfolio-section pt-6 md:pt-12 pb-2 md:pb-12" style={{
     position: "relative",
     zIndex: 3
   }} id="ml-pipeline">

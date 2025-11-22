@@ -58,7 +58,7 @@ const MobileCarousel: React.FC<MobileCarouselProps> = props => {
           </Carousel>
         </div>
       </div>
-      <p className="text-xs text-center text-gray-400 mt-4 px-4">
+      <p className="text-xs text-center text-gray-400 mt-2 px-4">
         Tap/click a step to see the tools and details.
       </p>
     </div>;
