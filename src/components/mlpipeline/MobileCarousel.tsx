@@ -33,9 +33,9 @@ const CarouselWrapper: React.FC<MobileCarouselProps> = ({ steps, stepStatuses = 
 
   return (
     <>
-      <CarouselContent className="flex items-stretch min-h-[350px] -ml-2">
+      <CarouselContent className="items-stretch min-h-[350px]">
           {steps.map((step, idx) => (
-            <CarouselItem key={step.label} className="flex items-center justify-center pl-2 pr-2 py-6 min-h-[350px] basis-full">
+            <CarouselItem key={step.label} className="flex items-center justify-center py-6 min-h-[350px]">
               <PipelineStep
                 step={step}
                 expanded={expandedIndex === idx}
@@ -65,12 +65,11 @@ const CarouselWrapper: React.FC<MobileCarouselProps> = ({ steps, stepStatuses = 
 
 const MobileCarousel: React.FC<MobileCarouselProps> = (props) => {
   return (
-    <div className="block md:hidden w-full min-h-[400px] overflow-hidden px-4">
+    <div className="block md:hidden w-full min-h-[400px] overflow-hidden">
       <div 
-        className="relative w-full min-h-[380px] max-w-full mx-auto rounded-3xl"
+        className="relative w-full min-h-[380px] max-w-full mx-auto p-1 rounded-3xl"
         style={{
           background: 'linear-gradient(135deg, hsl(var(--portfolio-accent)), hsl(270, 80%, 60%))',
-          padding: '2px'
         }}
       >
         <div className="bg-portfolio-dark rounded-3xl overflow-hidden">
