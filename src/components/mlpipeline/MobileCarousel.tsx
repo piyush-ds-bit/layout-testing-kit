@@ -1,6 +1,6 @@
 
-import React, { useState } from "react";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import React, { useState, useEffect } from "react";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, useCarousel } from "@/components/ui/carousel";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import PipelineStep from "./PipelineStep";
 import { PipelineStepStatus } from "@/hooks/usePipelineAnimation";
@@ -11,13 +11,20 @@ interface MobileCarouselProps {
   currentStep?: number;
 }
 
-const MobileCarousel: React.FC<MobileCarouselProps> = ({ steps, stepStatuses = [], currentStep = -1 }) => {
+const CarouselWrapper: React.FC<MobileCarouselProps> = ({ steps, stepStatuses = [], currentStep = -1 }) => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const { api } = useCarousel();
+
+  // Auto-scroll to current step when animation is playing
+  useEffect(() => {
+    if (api && currentStep >= 0 && currentStep < steps.length) {
+      api.scrollTo(currentStep);
+    }
+  }, [currentStep, api, steps.length]);
 
   return (
-    <div className="block md:hidden w-full">
-      <Carousel className="relative w-full">
-        <CarouselContent className="flex items-stretch">
+    <>
+      <CarouselContent className="flex items-stretch">
           {steps.map((step, idx) => (
             <CarouselItem key={step.label} className="flex items-center justify-center px-2 py-4">
               <PipelineStep
@@ -43,6 +50,15 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({ steps, stepStatuses = [
         >
           <ArrowRight />
         </CarouselNext>
+      </>
+  );
+};
+
+const MobileCarousel: React.FC<MobileCarouselProps> = (props) => {
+  return (
+    <div className="block md:hidden w-full">
+      <Carousel className="relative w-full">
+        <CarouselWrapper {...props} />
       </Carousel>
     </div>
   );
