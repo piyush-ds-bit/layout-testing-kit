@@ -118,35 +118,79 @@ Remember: You represent Piyush's brand. Be helpful, knowledgeable, and leave vis
         const reader = aiResponse.body?.getReader();
         const decoder = new TextDecoder();
         let fullResponse = '';
+        let controllerClosed = false;
+        let buffer = '';
 
         if (!reader) {
           controller.close();
           return;
         }
 
+        // Safe enqueue wrapper to prevent enqueuing on closed stream
+        const safeEnqueue = (data: string) => {
+          if (!controllerClosed) {
+            try {
+              controller.enqueue(data);
+            } catch (e) {
+              console.error('Enqueue failed:', e);
+              controllerClosed = true;
+            }
+          }
+        };
+
+        // Safe close wrapper
+        const closeStream = () => {
+          if (!controllerClosed) {
+            controllerClosed = true;
+            controller.close();
+          }
+        };
+
+        console.log('Starting chatbot stream...');
+
         try {
           while (true) {
             const { done, value } = await reader.read();
-            if (done) break;
+            if (done) {
+              console.log('Stream finished normally');
+              break;
+            }
 
-            const chunk = decoder.decode(value);
-            const lines = chunk.split('\n').filter(line => line.trim() !== '');
+            // Decode and add to buffer
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            
+            // Keep last incomplete line in buffer
+            buffer = lines.pop() || '';
 
             for (const line of lines) {
-              if (line.startsWith('data: ')) {
-                const data = line.slice(6);
+              const trimmedLine = line.trim();
+              
+              // Skip empty lines and comments
+              if (!trimmedLine || trimmedLine.startsWith(':')) continue;
+              
+              if (trimmedLine.startsWith('data: ')) {
+                const data = trimmedLine.slice(6).trim();
                 
                 if (data === '[DONE]') {
-                  // Save conversation to database
-                  await supabase.from('chatbot_conversations').insert({
-                    session_id: sessionId,
-                    user_message: message,
-                    assistant_response: fullResponse,
-                    context_used: { contextLength: context.length },
-                  });
+                  console.log('Received [DONE], saving conversation...');
                   
-                  controller.enqueue(`data: ${JSON.stringify({ type: 'done', content: '' })}\n\n`);
-                  break;
+                  // Save conversation to database
+                  try {
+                    await supabase.from('chatbot_conversations').insert({
+                      session_id: sessionId,
+                      user_message: message,
+                      assistant_response: fullResponse,
+                      context_used: { contextLength: context.length },
+                    });
+                    console.log('Conversation saved successfully');
+                  } catch (dbError) {
+                    console.error('Failed to save conversation:', dbError);
+                  }
+                  
+                  safeEnqueue(`data: ${JSON.stringify({ type: 'done', content: '' })}\n\n`);
+                  closeStream();
+                  return;
                 }
 
                 try {
@@ -155,19 +199,42 @@ Remember: You represent Piyush's brand. Be helpful, knowledgeable, and leave vis
                   
                   if (content) {
                     fullResponse += content;
-                    controller.enqueue(`data: ${JSON.stringify({ type: 'delta', content })}\n\n`);
+                    safeEnqueue(`data: ${JSON.stringify({ type: 'delta', content })}\n\n`);
                   }
                 } catch (e) {
-                  console.error('Parse error:', e);
+                  // Incomplete JSON chunk - will be completed in next iteration
+                  console.log('Skipping incomplete JSON chunk');
                 }
               }
             }
           }
+
+          // Process any remaining buffer
+          if (buffer.trim()) {
+            console.log('Processing remaining buffer...');
+            const trimmedLine = buffer.trim();
+            if (trimmedLine.startsWith('data: ')) {
+              const data = trimmedLine.slice(6).trim();
+              if (data !== '[DONE]') {
+                try {
+                  const parsed = JSON.parse(data);
+                  const content = parsed.choices?.[0]?.delta?.content || '';
+                  if (content) {
+                    fullResponse += content;
+                    safeEnqueue(`data: ${JSON.stringify({ type: 'delta', content })}\n\n`);
+                  }
+                } catch (e) {
+                  console.log('Could not parse final buffer chunk');
+                }
+              }
+            }
+          }
+
         } catch (error) {
           console.error('Stream error:', error);
-          controller.enqueue(`data: ${JSON.stringify({ type: 'error', content: 'Stream interrupted' })}\n\n`);
+          safeEnqueue(`data: ${JSON.stringify({ type: 'error', content: 'Stream interrupted' })}\n\n`);
         } finally {
-          controller.close();
+          closeStream();
         }
       },
     });
