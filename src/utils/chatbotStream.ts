@@ -27,14 +27,21 @@ export const streamChatResponse = async (
     );
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const statusMessages: Record<number, string> = {
+        429: 'Too many requests. Please wait a moment and try again.',
+        500: 'Server error. Please try again in a moment.',
+        503: 'Service temporarily unavailable. Please try again later.',
+      };
+      
+      const errorMsg = statusMessages[response.status] || `Connection error (${response.status}). Please try again.`;
+      throw new Error(errorMsg);
     }
 
     const reader = response.body?.getReader();
     const decoder = new TextDecoder();
 
     if (!reader) {
-      throw new Error('No reader available');
+      throw new Error('Unable to establish connection. Please refresh and try again.');
     }
 
     let buffer = '';
@@ -68,20 +75,24 @@ export const streamChatResponse = async (
             if (parsed.type === 'delta') {
               onDelta(parsed.content);
             } else if (parsed.type === 'error') {
-              onError(parsed.content);
+              onError(parsed.content || 'An error occurred. Please try again.');
               return;
             } else if (parsed.type === 'done') {
               onDone();
               return;
             }
           } catch (e) {
-            console.error('Failed to parse SSE data:', e);
+            // Silently skip incomplete JSON chunks
+            console.log('Skipping incomplete chunk');
           }
         }
       }
     }
   } catch (error) {
     console.error('Stream error:', error);
-    onError(error instanceof Error ? error.message : 'Unknown error occurred');
+    const errorMessage = error instanceof Error 
+      ? error.message 
+      : 'Connection lost. Please check your internet and try again.';
+    onError(errorMessage);
   }
 };
