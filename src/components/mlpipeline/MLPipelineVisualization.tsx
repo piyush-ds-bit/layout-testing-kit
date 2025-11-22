@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import MobileCarousel from "./MobileCarousel";
 import DesktopPyramid from "./DesktopPyramid";
@@ -6,30 +7,44 @@ import PipelineMetrics from "./PipelineMetrics";
 import { mlPipelineSteps } from "@/data/mlPipelineSteps";
 import { usePipelineAnimation } from "@/hooks/usePipelineAnimation";
 import { BarChart3 } from "lucide-react";
+
 const MLPipelineVisualization: React.FC = () => {
   const animation = usePipelineAnimation();
   const [showMetrics, setShowMetrics] = useState(false);
 
   // Debug logs
   console.log('ML Pipeline Steps:', mlPipelineSteps);
-  console.log('Animation State:', {
-    currentStep: animation.currentStep,
-    stepStatuses: animation.stepStatuses
+  console.log('Animation State:', { 
+    currentStep: animation.currentStep, 
+    stepStatuses: animation.stepStatuses 
   });
-  return <section className="portfolio-section pt-6 md:pt-12 pb-2 md:pb-12" style={{
-    position: "relative",
-    zIndex: 3
-  }} id="ml-pipeline">
+
+  return (
+    <section
+      className="portfolio-section py-6 md:py-12"
+      style={{ position: "relative", zIndex: 3 }}
+      id="ml-pipeline"
+    >
       <div className="portfolio-container">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-7 md:mb-10">
           <h2 className="portfolio-heading">
             ML Pipeline Visualization
           </h2>
           <div className="flex items-center gap-3">
-            <button onClick={animation.toggleSound} className={`hidden md:flex items-center gap-2 px-3 py-2 rounded-md transition-colors text-sm ${animation.soundEnabled ? "bg-portfolio-accent/20 hover:bg-portfolio-accent/30 text-portfolio-accent" : "bg-gray-700/50 hover:bg-gray-700/70 text-gray-400"}`}>
+            <button
+              onClick={animation.toggleSound}
+              className={`hidden md:flex items-center gap-2 px-3 py-2 rounded-md transition-colors text-sm ${
+                animation.soundEnabled
+                  ? "bg-portfolio-accent/20 hover:bg-portfolio-accent/30 text-portfolio-accent"
+                  : "bg-gray-700/50 hover:bg-gray-700/70 text-gray-400"
+              }`}
+            >
               {animation.soundEnabled ? "🔊" : "🔇"} Sound
             </button>
-            <button onClick={() => setShowMetrics(!showMetrics)} className="hidden md:flex items-center gap-2 px-3 py-2 rounded-md bg-portfolio-accent/20 hover:bg-portfolio-accent/30 transition-colors text-sm text-portfolio-accent">
+            <button
+              onClick={() => setShowMetrics(!showMetrics)}
+              className="hidden md:flex items-center gap-2 px-3 py-2 rounded-md bg-portfolio-accent/20 hover:bg-portfolio-accent/30 transition-colors text-sm text-portfolio-accent"
+            >
               <BarChart3 className="w-4 h-4" />
               {showMetrics ? "Hide" : "Show"} Metrics
             </button>
@@ -37,15 +52,34 @@ const MLPipelineVisualization: React.FC = () => {
         </div>
 
         <div className="flex gap-6">
-          <div className="w-full max-w-[430px]">
+          <div className="flex-1">
             {/* Control Panel */}
-            <div className="justify-center mb-6 gap-0 flex flex-col">
-              <PipelineControls isPlaying={animation.isPlaying} isPaused={animation.isPaused} loop={animation.loop} speed={animation.speed} onPlay={animation.play} onPause={animation.pause} onStop={animation.stop} onToggleLoop={animation.toggleLoop} onSpeedChange={animation.setSpeed} />
+            <div className="flex justify-center mb-6">
+              <PipelineControls
+                isPlaying={animation.isPlaying}
+                isPaused={animation.isPaused}
+                loop={animation.loop}
+                speed={animation.speed}
+                onPlay={animation.play}
+                onPause={animation.pause}
+                onStop={animation.stop}
+                onToggleLoop={animation.toggleLoop}
+                onSpeedChange={animation.setSpeed}
+              />
             </div>
 
             {/* Pipeline Visualizations */}
-            <MobileCarousel steps={mlPipelineSteps} stepStatuses={animation.stepStatuses} currentStep={animation.currentStep} />
-            <DesktopPyramid steps={mlPipelineSteps} stepStatuses={animation.stepStatuses} currentStep={animation.currentStep} isTransitioning={animation.isTransitioning} />
+            <MobileCarousel 
+              steps={mlPipelineSteps} 
+              stepStatuses={animation.stepStatuses}
+              currentStep={animation.currentStep}
+            />
+            <DesktopPyramid 
+              steps={mlPipelineSteps}
+              stepStatuses={animation.stepStatuses}
+              currentStep={animation.currentStep}
+              isTransitioning={animation.isTransitioning}
+            />
 
             <div className="hidden md:block text-xs text-center text-gray-500 mt-7 select-none">
               Click play to watch data flow through the pipeline, or hover steps for details.
@@ -68,6 +102,8 @@ const MLPipelineVisualization: React.FC = () => {
           }
         `}
       </style>
-    </section>;
+    </section>
+  );
 };
+
 export default MLPipelineVisualization;

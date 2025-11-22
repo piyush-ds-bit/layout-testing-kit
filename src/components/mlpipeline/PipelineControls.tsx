@@ -86,7 +86,7 @@ const PipelineControls: React.FC<PipelineControlsProps> = ({
       {/* Loop Toggle */}
       <button
         onClick={onToggleLoop}
-        className={`p-2 rounded-md transition-colors -ml-2 ${
+        className={`p-2 rounded-md transition-colors ${
           loop
             ? "bg-portfolio-accent/30 text-portfolio-accent"
             : "bg-portfolio-accent/20 text-gray-400 hover:bg-portfolio-accent/30"

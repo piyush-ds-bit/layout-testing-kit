@@ -36,12 +36,12 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
     return (
       <button
         className={`
-          portfolio-card-hover flex flex-col items-start justify-center
+          portfolio-card-hover flex flex-col items-center justify-center
           py-6 px-3 mb-2
           bg-[#182437]/80 border-2 ${getStatusBorderColor()}
           transition-all duration-300 relative
           ${expanded ? "z-20" : ""}
-          w-full min-w-[240px] max-w-[320px]
+          w-full min-w-[240px] max-w-[320px] mx-auto
         `}
         style={{
           minWidth: 240,
@@ -60,15 +60,15 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
           {iconMap[step.icon] ?? step.icon}
         </div>
         <div className="flex items-center gap-2 mb-1">
-          <div className="text-sm font-semibold text-white text-left drop-shadow">
+          <div className="text-sm font-semibold text-white text-center drop-shadow">
             {step.label}
           </div>
           <PipelineTooltip stepLabel={step.label} description={step.description} />
         </div>
         <div className="w-1 h-1 bg-portfolio-accent rounded-full mb-1" />
         {expanded && (
-          <div className="animate-fade-in mt-2 mb-0 px-1 w-full">
-            <div className="text-portfolio-accent font-medium mb-1 text-xs text-left">
+          <div className="animate-fade-in mt-2 mb-0 px-1">
+            <div className="text-portfolio-accent font-medium mb-1 text-xs text-center">
               Tools:
             </div>
             <ul className="space-y-1 text-gray-300 text-xs text-left list-disc list-inside">
@@ -76,7 +76,7 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
                 <li key={i} className="pl-2">{tool}</li>
               )}
             </ul>
-            <div className="mt-2 text-gray-400 text-[11px] text-left">
+            <div className="mt-2 text-gray-400 text-[11px] text-center">
               {step.description}
             </div>
           </div>
