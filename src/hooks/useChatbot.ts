@@ -98,6 +98,11 @@ export const useChatbot = () => {
       },
       () => {
         setIsTyping(false);
+        setMessages(prev => prev.map(m =>
+          m.id === assistantMessageId && !m.content.trim()
+            ? { ...m, content: "Hmm, I couldn't generate a reply that time. Please try asking again or rephrasing your question." }
+            : m
+        ));
       },
       (errorMsg) => {
         setError(errorMsg);

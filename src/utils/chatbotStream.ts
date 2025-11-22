@@ -28,6 +28,7 @@ export const streamChatResponse = async (
 
     if (!response.ok) {
       const statusMessages: Record<number, string> = {
+        402: 'Lovable AI credits exhausted. Please add credits in workspace settings.',
         429: 'Too many requests. Please wait a moment and try again.',
         500: 'Server error. Please try again in a moment.',
         503: 'Service temporarily unavailable. Please try again later.',
@@ -46,48 +47,73 @@ export const streamChatResponse = async (
 
     let buffer = '';
 
-    while (true) {
+    let streamDone = false;
+
+    while (!streamDone) {
       const { done, value } = await reader.read();
-      
-      if (done) {
-        onDone();
-        break;
-      }
+      if (done) break;
 
       buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      
-      // Keep the last incomplete line in the buffer
-      buffer = lines.pop() || '';
 
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          const data = line.slice(6);
-          
-          if (data === '[DONE]') {
+      let newlineIndex: number;
+      while ((newlineIndex = buffer.indexOf('\n')) !== -1) {
+        let line = buffer.slice(0, newlineIndex);
+        buffer = buffer.slice(newlineIndex + 1);
+
+        if (line.endsWith('\r')) line = line.slice(0, -1);
+        if (!line.trim() || line.startsWith(':')) continue;
+        if (!line.startsWith('data: ')) continue;
+
+        console.debug('[chatbot SSE line]', line);
+
+        const jsonStr = line.slice(6).trim();
+
+        if (jsonStr === '[DONE]') {
+          streamDone = true;
+          break;
+        }
+
+        try {
+          const parsed: StreamMessage = JSON.parse(jsonStr);
+          console.debug('[chatbot SSE parsed]', parsed);
+
+          if (parsed.type === 'delta' && parsed.content) {
+            onDelta(parsed.content);
+          } else if (parsed.type === 'error') {
+            onError(parsed.content || 'An error occurred. Please try again.');
+            streamDone = true;
+            break;
+          } else if (parsed.type === 'done') {
             onDone();
-            return;
+            streamDone = true;
+            break;
           }
-
-          try {
-            const parsed: StreamMessage = JSON.parse(data);
-            
-            if (parsed.type === 'delta') {
-              onDelta(parsed.content);
-            } else if (parsed.type === 'error') {
-              onError(parsed.content || 'An error occurred. Please try again.');
-              return;
-            } else if (parsed.type === 'done') {
-              onDone();
-              return;
-            }
-          } catch (e) {
-            // Silently skip incomplete JSON chunks
-            console.log('Skipping incomplete chunk');
-          }
+        } catch {
+          // JSON may be split across chunks: re-buffer and wait for more data
+          buffer = 'data: ' + jsonStr + '\n' + buffer;
+          break;
         }
       }
     }
+
+    // Final flush in case remaining buffered lines arrived without trailing newline
+    if (!streamDone && buffer.trim()) {
+      for (let raw of buffer.split('\n')) {
+        if (!raw.trim() || raw.startsWith(':') || !raw.startsWith('data: ')) continue;
+        const jsonStr = raw.slice(6).trim();
+        if (jsonStr === '[DONE]') continue;
+        try {
+          const parsed: StreamMessage = JSON.parse(jsonStr);
+          if (parsed.type === 'delta' && parsed.content) {
+            onDelta(parsed.content);
+          }
+        } catch {
+          // ignore partial leftovers
+        }
+      }
+    }
+
+    onDone();
   } catch (error) {
     console.error('Stream error:', error);
     const errorMessage = error instanceof Error 
