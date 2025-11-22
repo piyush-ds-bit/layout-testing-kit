@@ -37,7 +37,7 @@ const MLPipelineVisualization: React.FC = () => {
         </div>
 
         <div className="flex gap-6">
-          <div className="flex-1">
+          <div className="w-full max-w-[430px]">
             {/* Control Panel */}
             <div className="justify-center mb-6 gap-0 flex flex-col">
               <PipelineControls isPlaying={animation.isPlaying} isPaused={animation.isPaused} loop={animation.loop} speed={animation.speed} onPlay={animation.play} onPause={animation.pause} onStop={animation.stop} onToggleLoop={animation.toggleLoop} onSpeedChange={animation.setSpeed} />
