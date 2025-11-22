@@ -174,7 +174,7 @@ const Navbar: React.FC = () => {
               )
             ))}
             
-            {user ? (
+            {user && (
               <div className="flex flex-col space-y-2 pt-2">
                 <span className="text-portfolio-gray-light">
                   Hi, {user.user_metadata?.name || user.email?.split('@')[0] || 'User'}
@@ -196,12 +196,6 @@ const Navbar: React.FC = () => {
                   </Button>
                 </LogoutConfirmationDialog>
               </div>
-            ) : (
-              <Link to="/login" onClick={() => setIsOpen(false)}>
-                <Button variant="outline" className="w-full border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
-                  Login
-                </Button>
-              </Link>
             )}
           </div>
         </div>
