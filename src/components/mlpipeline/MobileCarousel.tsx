@@ -33,17 +33,9 @@ const CarouselWrapper: React.FC<MobileCarouselProps> = ({
   }
   return <>
       <CarouselContent className="flex items-stretch min-h-[350px] -ml-4">
-          {steps.map((step, idx) => (
-            <CarouselItem key={idx} className="pl-4 pr-4 py-6 basis-full md:basis-4/5">
-              <PipelineStep
-                step={step}
-                expanded={expandedIndex === idx}
-                onClick={() => setExpandedIndex(expandedIndex === idx ? null : idx)}
-                isMobile={true}
-                status={stepStatuses[idx]}
-              />
-            </CarouselItem>
-          ))}
+          {steps.map((step, idx) => <CarouselItem key={idx} className="pl-4 pr-4 py-6 basis-full md:basis-4/5">
+              <PipelineStep step={step} expanded={expandedIndex === idx} onClick={() => setExpandedIndex(expandedIndex === idx ? null : idx)} isMobile={true} status={stepStatuses[idx]} className="text-left" />
+            </CarouselItem>)}
         </CarouselContent>
         {/* Arrows */}
         <CarouselPrevious className="left-1 top-1/2 -translate-y-1/2 z-10 bg-portfolio-dark/80 border-portfolio-accent text-portfolio-accent" aria-label="Previous Step">
