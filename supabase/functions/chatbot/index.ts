@@ -194,13 +194,12 @@ Be friendly, concise, and helpful. Guide visitors through the website when appro
 
             // Safe enqueue wrapper to prevent enqueuing on closed stream
             const safeEnqueue = (data: string) => {
-              if (!controllerClosed) {
-                try {
-                  controller.enqueue(data);
-                } catch (e) {
-                  console.error('Enqueue failed:', e);
-                  controllerClosed = true;
-                }
+              if (controllerClosed) return;
+              try {
+                controller.enqueue(data);
+              } catch (e) {
+                // Stream may already be closed - mark as closed and skip logging to avoid noisy errors
+                controllerClosed = true;
               }
             };
 
