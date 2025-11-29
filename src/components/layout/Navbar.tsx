@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Home, Menu, X, User, Code, Briefcase, Github, MessageSquare, BookOpen, Mail } from "lucide-react";
 import LogoutConfirmationDialog from "@/components/auth/LogoutConfirmationDialog";
 import EditModeToggle from "@/components/admin/EditModeToggle";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 const navItems = [{
   label: "Home",
   path: "/",
@@ -83,18 +82,15 @@ const Navbar: React.FC = () => {
     return location.pathname === item.path;
   };
   return <>
-      <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border">
+      <header className="sticky top-0 z-50 w-full bg-portfolio-darkest/80 backdrop-blur-md border-b border-portfolio-dark">
         <div className="portfolio-container py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link to="/" className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors">
+            <div className="flex items-center">
+              <Link to="/" className="flex items-center space-x-2 text-white hover:text-portfolio-accent transition-colors">
                 <Home className="w-5 h-5" />
                 <span className="text-xl font-semibold">Portfolio</span>
               </Link>
               <EditModeToggle />
-              <div className="hidden md:block">
-                <ThemeToggle />
-              </div>
             </div>
 
             {/* Desktop Navigation */}
@@ -106,39 +102,36 @@ const Navbar: React.FC = () => {
                   </button>)}
               
               {user ? <div className="flex items-center ml-4 space-x-3">
-                  <span className="text-muted-foreground">
+                  <span className="text-portfolio-gray-light">
                     Hi, {user.user_metadata?.name || user.email?.split('@')[0] || 'User'}
                   </span>
                   {isAuthorized && <Link to="/contact-messages">
-                      <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                      <Button variant="outline" className="border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
                         <Mail className="w-4 h-4 mr-2" />
                         Messages
                       </Button>
                     </Link>}
                   <LogoutConfirmationDialog onLogout={signOut}>
-                    <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                    <Button variant="outline" className="border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
                       Logout
                     </Button>
                   </LogoutConfirmationDialog>
                 </div> : <Link to="/login" className="ml-4">
-                  <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                  <Button variant="outline" className="border-portfolio-accent text-portfolio-accent hover:bg-portfolio-accent hover:text-white">
                     Login
                   </Button>
                 </Link>}
             </nav>
 
             {/* Mobile Menu Button */}
-            <div className="md:hidden flex items-center gap-2">
-              <ThemeToggle />
-              <button onClick={toggleMenu} className="p-2 text-foreground hover:text-primary transition-colors" aria-label="Toggle Menu">
-                {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-            </div>
+            <button onClick={toggleMenu} className="md:hidden p-2 text-white hover:text-portfolio-accent transition-colors" aria-label="Toggle Menu">
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
 
         {/* Mobile Navigation Dropdown */}
-        <div className={`md:hidden fixed top-[62px] left-0 right-0 bg-background border-b border-border transform ${isOpen ? "translate-y-0" : "-translate-y-full"} transition-transform duration-300 ease-in-out`}>
+        <div className={`md:hidden fixed top-[62px] left-0 right-0 bg-portfolio-darkest border-b border-portfolio-dark transform ${isOpen ? "translate-y-0" : "-translate-y-full"} transition-transform duration-300 ease-in-out`}>
           
         </div>
       </header>
