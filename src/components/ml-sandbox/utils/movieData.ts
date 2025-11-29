@@ -51,37 +51,37 @@ export const movies: Movie[] = [
   { 
     id: 8,
     title: "Stree",
-    tags: ["horror", "comedy", "folklore", "small-town"],
+    tags: ["horror", "comedy", "folklore", "small-town", "hindi"],
     poster: "🧟‍♀️"
   },
   { 
     id: 9,
     title: "Bhool Bhulaiyaa",
-    tags: ["horror", "comedy", "psychological", "classic"],
+    tags: ["horror", "comedy", "psychological", "classic", "funny"],
     poster: "👻"
   },
   { 
     id: 10,
     title: "Go Goa Gone",
-    tags: ["horror", "comedy", "zombie", "adventure"],
+    tags: ["horror", "comedy", "zombie", "adventure", "quest"],
     poster: "🧟"
   },
   { 
     id: 11,
     title: "Shaun of the Dead",
-    tags: ["horror", "comedy", "zombie", "parody"],
+    tags: ["horror", "comedy", "zombie", "parody", "shaun"],
     poster: "🪓"
   },
   { 
     id: 12,
     title: "Ghostbusters",
-    tags: ["horror", "comedy", "supernatural", "team"],
+    tags: ["horror", "comedy", "supernatural", "team", "vfx"],
     poster: "👻"
   },
   { 
     id: 13,
     title: "Scary Movie",
-    tags: ["horror", "comedy", "parody", "fun"],
+    tags: ["horror", "comedy", "parody", "fun", "scary"],
     poster: "😱"
   },
   { 
