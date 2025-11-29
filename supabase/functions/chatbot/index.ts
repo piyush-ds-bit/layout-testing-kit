@@ -11,6 +11,72 @@ interface Message {
   content: string;
 }
 
+// Custom training data - exact answers for tagged questions about Piyush
+const trainingData = [
+  {
+    tag: "introduction",
+    keywords: ["who is piyush", "tell me about piyush", "introduction", "owner of this website", "piyush kumar singh", "who are you", "about piyush", "detailed introduction"],
+    answer: "Hello! My name is Piyush Kumar Singh, and I am currently pursuing my B.Tech in Applied Electronics and Instrumentation Engineering (AEIE) at Haldia Institute of Technology, batch 2023–2027.\n\nI come from a strong technical background, and over the years, I've developed a deep interest in Data Science, Machine Learning, and full-stack application development. This passion has shaped the entire direction of my career.\n\nFrom early college days, I've been fascinated by how data solves real-world problems. I learned Python, Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, TensorFlow, and gradually moved from analysis to building ML models and deploying them as apps.\n\nI see myself as a passionate learner who loves experimenting, exploring tools, and converting ideas into working solutions."
+  },
+  {
+    tag: "skills",
+    keywords: ["skills", "tech stack", "programming languages", "what does he know", "technologies", "tools", "expertise", "technical skills"],
+    answer: "Piyush is skilled in Python, Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, TensorFlow, Streamlit, FastAPI, Flutter, Docker, Supabase, HTML/CSS basics, DSA using Python, ML model development, deployment, problem-solving, and data analysis."
+  },
+  {
+    tag: "projects",
+    keywords: ["projects", "ml projects", "applications", "work", "built", "developed", "portfolio projects", "what has he built"],
+    answer: "Piyush has built:\n1. WhatsApp Buddy – Chat Analyzer (Streamlit + NLP insights)\n2. MovieMate – Movie Recommender System (content-based, poster fetching)\n3. Insurance Premium Predictor (ML model + FastAPI + Streamlit)\n4. Portfolio Website (Lovable.ai + Supabase + Admin Panel)\n5. Autonomous Obstacle-Avoiding Cleaning Car (ultrasonic sensor + autopilot cleaning)"
+  },
+  {
+    tag: "achievements",
+    keywords: ["achievements", "events", "certifications", "awards", "accomplishments", "recognition", "participated"],
+    answer: "Achievements include:\n- Delivered PPT presentation at Jadavpur University (ISA event)\n- Appeared for TiHAN IIT Hyderabad × Masai AI & Drone Qualifier Exam\n- Participated in ML hackathons and coding competitions\n- Deployed multiple ML applications in early college years"
+  },
+  {
+    tag: "mini_project",
+    keywords: ["mini project", "2nd year project", "hardware project", "cleaning car", "autonomous car", "obstacle avoiding"],
+    answer: "He worked on an Autonomous Obstacle-Avoiding Cleaning Car using ultrasonic sensors to navigate and automatically mop floors. He handled circuit integration and logic development as part of a 6-member team."
+  },
+  {
+    tag: "goals",
+    keywords: ["career goal", "goal", "ambition", "future plans", "what does he want", "become", "aspirations"],
+    answer: "Piyush's long-term goal is to become a Machine Learning Engineer or Data Scientist and build impactful AI systems. He is also open to pursuing M.Tech/MS in AI/ML."
+  },
+  {
+    tag: "personality",
+    keywords: ["personality", "as a person", "motivates", "inspiration", "character", "nature", "what drives him"],
+    answer: "Piyush is a disciplined, self-motivated learner. His inspiration comes from the Bhagavad Gita, ancient scriptures, and Vedic teachings, which help him stay grounded and focused."
+  },
+  {
+    tag: "exam_events",
+    keywords: ["exam", "events participated", "competitions", "contests", "tiHAN", "jadavpur", "hackathons"],
+    answer: "He presented at Jadavpur University, appeared for TiHAN IIT Hyderabad × Masai AI & Drone Exam, and participated in multiple hackathons and coding contests."
+  },
+  {
+    tag: "dsa_practice",
+    keywords: ["dsa", "data structures", "algorithms", "leetcode", "coding practice", "competitive programming", "problem solving practice"],
+    answer: "Yes, Piyush practices DSA regularly using Python. He uses LeetCode, Kaggle, and GitHub to improve his coding and problem-solving skills."
+  }
+];
+
+// Match user message against training tags
+function matchTrainingTags(userMessage: string) {
+  const lowerMessage = userMessage.toLowerCase();
+  const matchedTags = [];
+
+  for (const tag of trainingData) {
+    const hasKeywordMatch = tag.keywords.some(keyword => 
+      lowerMessage.includes(keyword.toLowerCase())
+    );
+    if (hasKeywordMatch) {
+      matchedTags.push(tag);
+    }
+  }
+
+  return matchedTags;
+}
+
 serve(async (req) => {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
@@ -37,6 +103,9 @@ serve(async (req) => {
       supabase.from('blog_posts').select('title, content, tag, author_name').order('created_at', { ascending: false }).limit(5),
     ]);
 
+    // Check for training data matches FIRST
+    const matchedTags = matchTrainingTags(message);
+    
     // Build context based on user message
     const context = buildContext(
       message,
@@ -46,41 +115,74 @@ serve(async (req) => {
       blogRes.data || []
     );
 
-    // System prompt
-    const systemPrompt = `You are Piyush Kumar Singh's friendly AI assistant on his portfolio website. Your role is to help visitors learn about Piyush, his projects, skills, and experience.
+    // System prompt with training data integration
+    const systemPrompt = `You are Piyush Kumar Singh's personal AI assistant on his portfolio website. You are knowledgeable, professional, and helpful.
 
-About Piyush:
-- Name: Piyush Kumar Singh
-- Education: B.Tech in Applied Electronics and Instrumentation Engineering at Haldia Institute of Technology (Batch 2023-2027)
-- Passion: Data Science, Machine Learning, and Full-Stack Development
-- Skills: Python, Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, TensorFlow, Docker, FastAPI, Flutter, Streamlit
-- Philosophy: Inspired by Bhagavad Gita and Vedic teachings. Values learning, discipline, and self-motivation.
-- Goal: Becoming a skilled ML Engineer or Data Scientist working on large-scale AI solutions
+🎯 CRITICAL INSTRUCTIONS FOR PERSONAL QUESTIONS:
 
-Key Projects:
-1. WhatsApp Buddy - Chat analyzer with sentiment analysis (Python, Streamlit, NLP)
-2. MovieMate - Movie recommender using Bag-of-Words and cosine similarity
-3. Insurance Premium Predictor - ML model with FastAPI and Streamlit
-4. Personal Portfolio - Built with Lovable.ai and Supabase, includes admin panel
+${matchedTags.length > 0 ? `
+⚠️ EXACT ANSWER MODE ACTIVATED ⚠️
 
-Personality:
-- Friendly, conversational, and enthusiastic
-- Knowledgeable about Piyush's work and background
-- Helpful in guiding visitors through the website
-- Professional but approachable
+The user's question matches these training tags. You MUST use the exact answers provided below:
 
-Guidelines:
-- Keep responses concise and friendly (2-4 paragraphs max)
-- Use "Piyush" or "he/his" when referring to him
-- Provide specific details from the context when available
-- Guide visitors to relevant sections of the website when appropriate
-- If asked about contact, mention the Connect section on the website
-- For navigation requests, provide clear directions
+${matchedTags.map(tag => `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📌 TAG: ${tag.tag.toUpperCase()}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Current Context:
+EXACT ANSWER TO USE:
+${tag.answer}
+
+`).join('\n')}
+
+🔒 RULES FOR USING TRAINING DATA:
+1. Use the EXACT answer provided above (you may rephrase slightly for natural conversation flow)
+2. DO NOT add information not in the training answer
+3. DO NOT make up or assume additional details beyond what's stated
+4. Keep the facts EXACTLY as stated in the training data
+5. You may combine multiple tag answers if the question covers multiple topics
+6. Maintain a friendly, conversational tone while using exact facts
+` : ''}
+
+📚 FOR ALL PERSONAL QUESTIONS ABOUT PIYUSH:
+- Use ONLY the training data answers when tags match (priority #1)
+- Use the portfolio context data below for additional technical details (priority #2)
+- NEVER hallucinate or invent information not in training data or context
+- If you don't have exact information, say so politely and suggest where they might find it
+
+💬 FOR GENERAL/TECHNICAL QUESTIONS (not about Piyush personally):
+- Respond normally as a helpful AI assistant
+- Use your general knowledge appropriately
+- Still be helpful and friendly
+
+📋 AVAILABLE TRAINING DATA TOPICS:
+${trainingData.map(t => `- ${t.tag}: "${t.keywords.slice(0, 3).join('", "')}..."`).join('\n')}
+
+📊 CURRENT PORTFOLIO CONTEXT:
 ${context}
 
-Remember: You represent Piyush's brand. Be helpful, knowledgeable, and leave visitors with a positive impression!`;
+🎭 PERSONALITY & TONE:
+- Be friendly, professional, and conversational
+- Show enthusiasm when discussing Piyush's work and achievements
+- Keep responses concise but informative (2-4 sentences for simple questions, more for complex)
+- Use natural language and avoid being overly formal or robotic
+
+✨ CAPABILITIES:
+1. Answer questions about Piyush using EXACT training data answers
+2. Provide technical details from portfolio context
+3. Help visitors navigate the website
+4. Suggest relevant projects or information
+5. Direct users to appropriate sections (Connect, Projects, etc.)
+
+⚠️ IMPORTANT GUIDELINES:
+- Training data answers take ABSOLUTE PRIORITY for personal questions
+- Never make up information not in training data or context
+- If you don't have information, say so politely
+- For contact requests, direct them to the Connect section
+- Be honest about limitations - you're an AI assistant, not Piyush himself
+- Maintain consistency - same question should get same factual answer
+
+Remember: Accuracy is paramount. Use training data EXACTLY as provided. You represent Piyush's professional brand!`;
 
     // Prepare messages for AI
     const messages: Message[] = [
