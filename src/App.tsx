@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { AdminEditProvider } from "@/context/AdminEditContext";
+import { ThemeProvider } from "next-themes";
 
 // Public Pages
 import HomePage from "./pages/HomePage";
@@ -28,12 +29,13 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <AdminEditProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+      <AuthProvider>
+        <AdminEditProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<HomePage />} />
@@ -56,6 +58,7 @@ const App = () => (
         </TooltipProvider>
       </AdminEditProvider>
     </AuthProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 

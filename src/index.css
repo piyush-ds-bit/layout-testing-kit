@@ -4,10 +4,10 @@
 
 @layer base {
   :root {
-    --background: 220 20% 97%;
+    --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
-    --card: 0 0% 100%;
+    --card: 0 0% 98%;
     --card-foreground: 222.2 84% 4.9%;
 
     --popover: 0 0% 100%;
@@ -33,13 +33,18 @@
     --ring: 271 81% 56%;
 
     --radius: 0.75rem;
+    
+    /* Light mode glassmorphism */
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(168, 85, 247, 0.2);
+    --glass-shadow: 0 8px 32px 0 rgba(168, 85, 247, 0.15);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 15 23% 6%;
     --foreground: 210 40% 98%;
 
-    --card: 217.2 32.6% 17.5%;
+    --card: 217 33% 17%;
     --card-foreground: 210 40% 98%;
 
     --popover: 222.2 84% 4.9%;
@@ -48,10 +53,10 @@
     --primary: 271 81% 56%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 217 33% 17%;
     --muted-foreground: 215 20.2% 65.1%;
 
     --accent: 271 81% 56%;
@@ -60,9 +65,14 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
     --ring: 271 81% 56%;
+    
+    /* Dark mode glassmorphism */
+    --glass-bg: rgba(24, 36, 55, 0.65);
+    --glass-border: rgba(168, 85, 247, 0.21);
+    --glass-shadow: 0 6px 32px 0 rgba(168, 85, 247, 0.12);
   }
 }
 
@@ -76,12 +86,12 @@
   }
   
   body {
-    @apply bg-portfolio-darker text-foreground dark transition-all duration-300;
+    @apply bg-background text-foreground transition-all duration-300;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold text-white;
+    @apply font-semibold text-foreground;
   }
 }
 
@@ -95,24 +105,22 @@
   }
   
   .portfolio-heading {
-    @apply text-3xl md:text-4xl font-bold text-white mb-8 text-center;
+    @apply text-3xl md:text-4xl font-bold text-foreground mb-8 text-center;
   }
   
   .portfolio-card {
-    @apply relative transition-all duration-300 p-6 rounded-xl border border-portfolio-border;
-    background: rgba(24, 36, 55, 0.65);
+    @apply relative transition-all duration-300 p-6 rounded-xl border bg-card text-card-foreground;
+    background: var(--glass-bg);
     backdrop-filter: blur(16px) saturate(150%);
-    box-shadow: 0 6px 32px 0 rgba(168, 85, 247, 0.12), 0 2px 8px rgba(10,20,30,0.25), 0 1.5px 36px 0 rgba(0,0,0,0.09);
-    border: 1.5px solid rgba(168, 85, 247, 0.21);
+    box-shadow: var(--glass-shadow);
+    border: 1.5px solid var(--glass-border);
     z-index: 1;
   }
   
   .portfolio-card:hover {
-    @apply shadow-lg;
+    @apply shadow-lg border-primary;
     transform: translateY(-7px) scale(1.035);
-    border-color: #a855f7;
-    box-shadow: 0 12px 48px 0 rgba(168, 85, 247, 0.30), 0 8px 32px 0 rgba(10,20,30,0.22);
-    background: rgba(24, 36, 55, 0.80);
+    box-shadow: 0 12px 48px 0 rgba(168, 85, 247, 0.30);
   }
   
   .portfolio-card::before {
@@ -136,32 +144,32 @@
   }
   
   .portfolio-button {
-    @apply bg-portfolio-accent text-white font-medium px-5 py-2.5 rounded-lg 
-    hover:bg-portfolio-accent-dark transition-all duration-300 inline-flex items-center justify-center;
+    @apply bg-primary text-primary-foreground font-medium px-5 py-2.5 rounded-lg 
+    hover:bg-primary/90 transition-all duration-300 inline-flex items-center justify-center;
   }
   
   .portfolio-button-outline {
-    @apply bg-transparent text-portfolio-accent border border-portfolio-accent font-medium px-5 py-2.5 rounded-lg 
-    hover:bg-portfolio-accent hover:text-white transition-all duration-300 inline-flex items-center justify-center;
+    @apply bg-transparent text-primary border border-primary font-medium px-5 py-2.5 rounded-lg 
+    hover:bg-primary hover:text-primary-foreground transition-all duration-300 inline-flex items-center justify-center;
   }
   
   .portfolio-input {
-    @apply bg-portfolio-card-bg border border-portfolio-border text-white rounded-lg px-4 py-3 w-full
-    focus:outline-none focus:ring-2 focus:ring-portfolio-accent focus:border-transparent;
+    @apply bg-card border border-input text-foreground rounded-lg px-4 py-3 w-full
+    focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent;
   }
   
   .portfolio-navbar-item {
-    @apply px-3 py-2 text-sm font-medium rounded-lg transition-colors
-    hover:text-portfolio-accent;
+    @apply px-3 py-2 text-sm font-medium rounded-lg transition-colors text-muted-foreground
+    hover:text-primary;
   }
   
   .portfolio-navbar-item.active {
-    @apply text-portfolio-accent bg-portfolio-card-bg;
+    @apply text-primary bg-secondary;
   }
   
   .portfolio-nav-button {
-    @apply bg-portfolio-card-bg hover:bg-portfolio-card-bg-alt text-white text-lg font-medium py-5 px-4 rounded-xl border border-portfolio-border
-    transition-all duration-300 flex items-center justify-center hover:border-portfolio-accent/50;
+    @apply bg-card hover:bg-secondary text-foreground text-lg font-medium py-5 px-4 rounded-xl border border-border
+    transition-all duration-300 flex items-center justify-center hover:border-primary/50;
   }
   
   .portfolio-nav-button-override {
@@ -175,13 +183,13 @@
   }
   
   .skill-tag {
-    @apply bg-portfolio-card-bg border border-portfolio-border px-4 py-2 rounded-lg flex items-center gap-2 text-gray-300
-    hover:border-portfolio-accent transition-all duration-200;
+    @apply bg-card border border-border px-4 py-2 rounded-lg flex items-center gap-2 text-foreground
+    hover:border-primary transition-all duration-200;
   }
   
   .social-icon-container {
-    @apply w-16 h-16 rounded-full bg-portfolio-card-bg border border-portfolio-border flex items-center justify-center
-    hover:border-portfolio-accent transition-all duration-300;
+    @apply w-16 h-16 rounded-full bg-card border border-border flex items-center justify-center
+    hover:border-primary transition-all duration-300;
   }
 
   /* Hide scrollbar */
