@@ -30,13 +30,13 @@ const Hero: React.FC = () => {
             </h1>
           </noscript>
           
-          <h2 className="mt-4 text-lg md:text-2xl text-portfolio-gray-light max-w-2xl mx-auto px-4">
+          <h2 className="mt-4 text-lg md:text-2xl text-portfolio-light-text-muted dark:text-portfolio-gray-light max-w-2xl mx-auto px-4">
             Data Scientist · AI & ML Enthusiast · Python & Streamlit Developer
           </h2>
           
           <div className="mt-8 md:mt-10">
             <Link to="/resume">
-              <Button size="lg" className="bg-portfolio-card-bg-alt hover:bg-portfolio-card-bg text-white border border-portfolio-border rounded-full px-6 py-4 md:px-8 md:py-6 flex items-center gap-2 transition-colors duration-300">
+              <Button size="lg" className="bg-white dark:bg-portfolio-card-bg-alt hover:bg-portfolio-light-darker dark:hover:bg-portfolio-card-bg text-portfolio-light-text dark:text-white border border-portfolio-light-border dark:border-portfolio-border rounded-full px-6 py-4 md:px-8 md:py-6 flex items-center gap-2 transition-colors duration-300">
                 <FileText className="w-4 h-4 md:w-5 md:h-5" />
                 <span className="text-base md:text-lg">View Resume</span>
               </Button>
@@ -49,7 +49,7 @@ const Hero: React.FC = () => {
               <Link 
                 key={card.to} 
                 to={card.to} 
-                className="group relative overflow-hidden bg-portfolio-card-bg/70 hover:bg-portfolio-card-bg border border-portfolio-border hover:border-portfolio-accent/50 rounded-2xl p-2 md:p-3 transition-all duration-300 hover:scale-105 hover:shadow-xl backdrop-blur-sm"
+                className="group relative overflow-hidden bg-white/70 dark:bg-portfolio-card-bg/70 hover:bg-white/90 dark:hover:bg-portfolio-card-bg border border-portfolio-light-border dark:border-portfolio-border hover:border-portfolio-accent/50 rounded-2xl p-2 md:p-3 transition-all duration-300 hover:scale-105 hover:shadow-xl backdrop-blur-sm"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="flex flex-col items-center text-center space-y-2">
@@ -57,8 +57,8 @@ const Hero: React.FC = () => {
                     <card.icon className="w-5 h-5 md:w-6 md:h-6 text-portfolio-accent" />
                   </div>
                   <div>
-                    <h3 className="text-sm md:text-lg font-medium text-white">{card.label}</h3>
-                    <p className="text-xs md:text-sm text-portfolio-gray-light mt-1 hidden md:block">{card.description}</p>
+                    <h3 className="text-sm md:text-lg font-medium text-portfolio-light-text dark:text-white">{card.label}</h3>
+                    <p className="text-xs md:text-sm text-portfolio-light-text-muted dark:text-portfolio-gray-light mt-1 hidden md:block">{card.description}</p>
                   </div>
                 </div>
                 
@@ -69,7 +69,7 @@ const Hero: React.FC = () => {
             
             {/* Special Blog Card */}
             <div className="relative">
-              <BlogCTA variant="hero" className="w-full h-full group relative overflow-hidden bg-portfolio-card-bg/70 hover:bg-portfolio-card-bg border border-portfolio-border hover:border-portfolio-accent/50 rounded-2xl p-4 md:p-5 transition-all duration-300 hover:scale-105 hover:shadow-xl backdrop-blur-sm" />
+              <BlogCTA variant="hero" className="w-full h-full group relative overflow-hidden bg-white/70 dark:bg-portfolio-card-bg/70 hover:bg-white/90 dark:hover:bg-portfolio-card-bg border border-portfolio-light-border dark:border-portfolio-border hover:border-portfolio-accent/50 rounded-2xl p-4 md:p-5 transition-all duration-300 hover:scale-105 hover:shadow-xl backdrop-blur-sm" />
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none" />
             </div>
           </div>

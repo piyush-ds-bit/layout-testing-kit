@@ -67,6 +67,7 @@ export default {
           ring: "hsl(var(--sidebar-ring))"
         },
         portfolio: {
+          // Dark mode colors (unchanged)
           dark: "#111827",
           darker: "#0f1624",
           darkest: "#030712",
@@ -77,6 +78,16 @@ export default {
           "card-bg": "#1e293b",
           "card-bg-alt": "#263040",
           "border": "#2d3748",
+          
+          // Light mode colors
+          "light": "#f8fafc",
+          "light-darker": "#f1f5f9",
+          "light-darkest": "#e2e8f0",
+          "light-card-bg": "rgba(255, 255, 255, 0.8)",
+          "light-card-bg-alt": "rgba(248, 250, 252, 0.9)",
+          "light-border": "#cbd5e1",
+          "light-text": "#1e293b",
+          "light-text-muted": "#475569",
         }
       },
       borderRadius: {
