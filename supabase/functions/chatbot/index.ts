@@ -105,6 +105,8 @@ serve(async (req) => {
 
     // Check for training data matches FIRST
     const matchedTags = matchTrainingTags(message);
+    console.log('User message:', message);
+    console.log('Matched tags:', matchedTags.map(t => t.tag).join(', ') || 'none');
     
     // Build context based on user message
     const context = buildContext(
@@ -115,74 +117,30 @@ serve(async (req) => {
       blogRes.data || []
     );
 
-    // System prompt with training data integration
-    const systemPrompt = `You are Piyush Kumar Singh's personal AI assistant on his portfolio website. You are knowledgeable, professional, and helpful.
+    // System prompt - SIMPLIFIED to avoid token limits
+    const systemPrompt = matchedTags.length > 0
+      ? `You are Piyush Kumar Singh's personal AI assistant. A user asked about Piyush and your knowledge base has exact answers.
 
-🎯 CRITICAL INSTRUCTIONS FOR PERSONAL QUESTIONS:
+CRITICAL: Use these EXACT answers (you may rephrase slightly for natural flow):
 
-${matchedTags.length > 0 ? `
-⚠️ EXACT ANSWER MODE ACTIVATED ⚠️
+${matchedTags.map(tag => `[${tag.tag}]: ${tag.answer}`).join('\n\n')}
 
-The user's question matches these training tags. You MUST use the exact answers provided below:
+Context from portfolio: ${context}
 
-${matchedTags.map(tag => `
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📌 TAG: ${tag.tag.toUpperCase()}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Keep it friendly and conversational. Use the exact facts above.`
+      : `You are Piyush Kumar Singh's personal AI assistant on his portfolio website.
 
-EXACT ANSWER TO USE:
-${tag.answer}
+About Piyush:
+- B.Tech student in Applied Electronics and Instrumentation Engineering at Haldia Institute of Technology (2023-2027)
+- Passionate about Data Science, ML, and Full-Stack Development
+- Skills: Python, Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, TensorFlow, Docker, FastAPI, Flutter, Streamlit
+- Built projects: WhatsApp Buddy (chat analyzer), MovieMate (recommender), Insurance Premium Predictor, Portfolio Website
+- Inspired by Bhagavad Gita and Vedic teachings
+- Goal: Become an ML Engineer or Data Scientist
 
-`).join('\n')}
+Current context: ${context}
 
-🔒 RULES FOR USING TRAINING DATA:
-1. Use the EXACT answer provided above (you may rephrase slightly for natural conversation flow)
-2. DO NOT add information not in the training answer
-3. DO NOT make up or assume additional details beyond what's stated
-4. Keep the facts EXACTLY as stated in the training data
-5. You may combine multiple tag answers if the question covers multiple topics
-6. Maintain a friendly, conversational tone while using exact facts
-` : ''}
-
-📚 FOR ALL PERSONAL QUESTIONS ABOUT PIYUSH:
-- Use ONLY the training data answers when tags match (priority #1)
-- Use the portfolio context data below for additional technical details (priority #2)
-- NEVER hallucinate or invent information not in training data or context
-- If you don't have exact information, say so politely and suggest where they might find it
-
-💬 FOR GENERAL/TECHNICAL QUESTIONS (not about Piyush personally):
-- Respond normally as a helpful AI assistant
-- Use your general knowledge appropriately
-- Still be helpful and friendly
-
-📋 AVAILABLE TRAINING DATA TOPICS:
-${trainingData.map(t => `- ${t.tag}: "${t.keywords.slice(0, 3).join('", "')}..."`).join('\n')}
-
-📊 CURRENT PORTFOLIO CONTEXT:
-${context}
-
-🎭 PERSONALITY & TONE:
-- Be friendly, professional, and conversational
-- Show enthusiasm when discussing Piyush's work and achievements
-- Keep responses concise but informative (2-4 sentences for simple questions, more for complex)
-- Use natural language and avoid being overly formal or robotic
-
-✨ CAPABILITIES:
-1. Answer questions about Piyush using EXACT training data answers
-2. Provide technical details from portfolio context
-3. Help visitors navigate the website
-4. Suggest relevant projects or information
-5. Direct users to appropriate sections (Connect, Projects, etc.)
-
-⚠️ IMPORTANT GUIDELINES:
-- Training data answers take ABSOLUTE PRIORITY for personal questions
-- Never make up information not in training data or context
-- If you don't have information, say so politely
-- For contact requests, direct them to the Connect section
-- Be honest about limitations - you're an AI assistant, not Piyush himself
-- Maintain consistency - same question should get same factual answer
-
-Remember: Accuracy is paramount. Use training data EXACTLY as provided. You represent Piyush's professional brand!`;
+Be friendly, concise, and helpful. Guide visitors through the website when appropriate.`;
 
     // Prepare messages for AI
     const messages: Message[] = [
@@ -191,6 +149,8 @@ Remember: Accuracy is paramount. Use training data EXACTLY as provided. You repr
       { role: 'user', content: message },
     ];
 
+    console.log('System prompt length:', systemPrompt.length);
+    
     // Call Lovable AI Gateway
     const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
@@ -203,12 +163,15 @@ Remember: Accuracy is paramount. Use training data EXACTLY as provided. You repr
         messages,
         stream: true,
         max_tokens: 500,
-        temperature: 0.7,
       }),
     });
 
+    console.log('AI Gateway response status:', aiResponse.status);
+    
     if (!aiResponse.ok) {
-      throw new Error(`AI Gateway error: ${aiResponse.status}`);
+      const errorText = await aiResponse.text();
+      console.error('AI Gateway error:', aiResponse.status, errorText);
+      throw new Error(`AI Gateway error: ${aiResponse.status} - ${errorText}`);
     }
 
     // Generate session ID for conversation tracking
@@ -275,7 +238,8 @@ Remember: Accuracy is paramount. Use training data EXACTLY as provided. You repr
                 const data = trimmedLine.slice(6).trim();
                 
                 if (data === '[DONE]') {
-                  console.log('Received [DONE], saving conversation...');
+                  console.log('Received [DONE]. Full response length:', fullResponse.length);
+                  console.log('Full response preview:', fullResponse.substring(0, 200));
                   
                   // Save conversation to database
                   try {
@@ -283,7 +247,7 @@ Remember: Accuracy is paramount. Use training data EXACTLY as provided. You repr
                       session_id: sessionId,
                       user_message: message,
                       assistant_response: fullResponse,
-                      context_used: { contextLength: context.length },
+                      context_used: { contextLength: context.length, matchedTags: matchedTags.map(t => t.tag) },
                     });
                     console.log('Conversation saved successfully');
                   } catch (dbError) {
@@ -300,12 +264,15 @@ Remember: Accuracy is paramount. Use training data EXACTLY as provided. You repr
                   const content = parsed.choices?.[0]?.delta?.content || '';
                   
                   if (content) {
+                    console.log('Received content chunk, length:', content.length);
                     fullResponse += content;
                     safeEnqueue(`data: ${JSON.stringify({ type: 'delta', content })}\n\n`);
+                  } else {
+                    console.log('Parsed SSE event but no content:', JSON.stringify(parsed).substring(0, 100));
                   }
                 } catch (e) {
                   // Incomplete JSON chunk - will be completed in next iteration
-                  console.log('Skipping incomplete JSON chunk');
+                  console.log('Skipping incomplete JSON chunk:', String(e).substring(0, 100));
                 }
               }
             }
