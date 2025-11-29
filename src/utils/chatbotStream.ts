@@ -46,8 +46,8 @@ export const streamChatResponse = async (
     }
 
     let buffer = '';
-
     let streamDone = false;
+    let doneCalled = false; // Prevent calling onDone() multiple times
 
     while (!streamDone) {
       const { done, value } = await reader.read();
@@ -82,30 +82,46 @@ export const streamChatResponse = async (
           } else if (parsed.type === 'error') {
             onError(parsed.content || 'An error occurred. Please try again.');
             streamDone = true;
-            break;
+            doneCalled = true; // Mark as handled
+            return; // Exit immediately on error
           } else if (parsed.type === 'done') {
-            onDone();
+            if (!doneCalled) {
+              doneCalled = true;
+              onDone();
+            }
             streamDone = true;
-            break;
+            return; // Exit cleanly after done
           }
-        } catch {
+        } catch (parseError) {
           // JSON may be split across chunks: re-buffer and wait for more data
-          buffer = 'data: ' + jsonStr + '\n' + buffer;
-          break;
+          // Only re-buffer if it looks like incomplete JSON (starts with { or [)
+          if (jsonStr.startsWith('{') || jsonStr.startsWith('[')) {
+            buffer = 'data: ' + jsonStr + '\n' + buffer;
+            console.debug('[chatbot] Re-buffering incomplete JSON');
+          } else {
+            console.debug('[chatbot] Skipping unparseable line:', jsonStr.substring(0, 50));
+          }
+          break; // Exit inner while loop to read more data
         }
       }
     }
 
     // Final flush in case remaining buffered lines arrived without trailing newline
-    if (!streamDone && buffer.trim()) {
+    if (!doneCalled && buffer.trim()) {
+      console.debug('[chatbot] Processing final buffer');
       for (let raw of buffer.split('\n')) {
-        if (!raw.trim() || raw.startsWith(':') || !raw.startsWith('data: ')) continue;
-        const jsonStr = raw.slice(6).trim();
+        const trimmed = raw.trim();
+        if (!trimmed || trimmed.startsWith(':') || !trimmed.startsWith('data: ')) continue;
+        const jsonStr = trimmed.slice(6).trim();
         if (jsonStr === '[DONE]') continue;
         try {
           const parsed: StreamMessage = JSON.parse(jsonStr);
           if (parsed.type === 'delta' && parsed.content) {
             onDelta(parsed.content);
+          } else if (parsed.type === 'done' && !doneCalled) {
+            doneCalled = true;
+            onDone();
+            return;
           }
         } catch {
           // ignore partial leftovers
@@ -113,7 +129,11 @@ export const streamChatResponse = async (
       }
     }
 
-    onDone();
+    // Only call onDone if it hasn't been called yet
+    if (!doneCalled) {
+      doneCalled = true;
+      onDone();
+    }
   } catch (error) {
     console.error('Stream error:', error);
     const errorMessage = error instanceof Error 

@@ -85,35 +85,59 @@ export const useChatbot = () => {
       content: m.content,
     }));
 
-    // Stream response
-    await streamChatResponse(
-      text,
-      conversationHistory,
-      (delta) => {
-        setMessages(prev => prev.map(m => 
-          m.id === assistantMessageId 
-            ? { ...m, content: m.content + delta }
-            : m
-        ));
-      },
-      () => {
-        setIsTyping(false);
-        setMessages(prev => prev.map(m =>
-          m.id === assistantMessageId && !m.content.trim()
-            ? { ...m, content: "Hmm, I couldn't generate a reply that time. Please try asking again or rephrasing your question." }
-            : m
-        ));
-      },
-      (errorMsg) => {
-        setError(errorMsg);
-        setIsTyping(false);
-        setMessages(prev => prev.map(m => 
-          m.id === assistantMessageId 
-            ? { ...m, content: '❌ Sorry, I encountered an error. Please try again.' }
-            : m
-        ));
-      }
-    );
+    // Set up timeout protection (30 seconds)
+    const timeoutId = setTimeout(() => {
+      setIsTyping(false);
+      setError('Response timeout. The chatbot took too long to respond.');
+      setMessages(prev => prev.map(m => 
+        m.id === assistantMessageId && !m.content.trim()
+          ? { ...m, content: '⏱️ Request timed out. Please try again with a shorter question.' }
+          : m
+      ));
+    }, 30000);
+
+    try {
+      // Stream response
+      await streamChatResponse(
+        text,
+        conversationHistory,
+        (delta) => {
+          setMessages(prev => prev.map(m => 
+            m.id === assistantMessageId 
+              ? { ...m, content: m.content + delta }
+              : m
+          ));
+        },
+        () => {
+          clearTimeout(timeoutId); // Clear timeout on success
+          setIsTyping(false);
+          setMessages(prev => prev.map(m =>
+            m.id === assistantMessageId && !m.content.trim()
+              ? { ...m, content: "Hmm, I couldn't generate a reply that time. Please try asking again or rephrasing your question." }
+              : m
+          ));
+        },
+        (errorMsg) => {
+          clearTimeout(timeoutId); // Clear timeout on error
+          setError(errorMsg);
+          setIsTyping(false);
+          setMessages(prev => prev.map(m => 
+            m.id === assistantMessageId 
+              ? { ...m, content: '❌ Sorry, I encountered an error. Please try again.' }
+              : m
+          ));
+        }
+      );
+    } catch (error) {
+      clearTimeout(timeoutId); // Clear timeout on exception
+      setIsTyping(false);
+      setError('An unexpected error occurred');
+      setMessages(prev => prev.map(m => 
+        m.id === assistantMessageId 
+          ? { ...m, content: '❌ Sorry, something went wrong. Please try again.' }
+          : m
+      ));
+    }
   }, [messages, sessionId]);
 
   const openChat = useCallback(() => setIsOpen(true), []);

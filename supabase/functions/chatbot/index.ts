@@ -177,136 +177,151 @@ Be friendly, concise, and helpful. Guide visitors through the website when appro
     // Generate session ID for conversation tracking
     const sessionId = crypto.randomUUID();
 
-    // Stream the response
-    const stream = new ReadableStream({
-      async start(controller) {
-        const reader = aiResponse.body?.getReader();
-        const decoder = new TextDecoder();
-        let fullResponse = '';
-        let controllerClosed = false;
-        let buffer = '';
+        // Stream the response
+        const stream = new ReadableStream({
+          async start(controller) {
+            const reader = aiResponse.body?.getReader();
+            const decoder = new TextDecoder();
+            let fullResponse = '';
+            let controllerClosed = false;
+            let buffer = '';
+            let aiStreamComplete = false; // Flag to track when AI is done
 
-        if (!reader) {
-          controller.close();
-          return;
-        }
+            if (!reader) {
+              controller.close();
+              return;
+            }
 
-        // Safe enqueue wrapper to prevent enqueuing on closed stream
-        const safeEnqueue = (data: string) => {
-          if (!controllerClosed) {
+            // Safe enqueue wrapper to prevent enqueuing on closed stream
+            const safeEnqueue = (data: string) => {
+              if (!controllerClosed) {
+                try {
+                  controller.enqueue(data);
+                } catch (e) {
+                  console.error('Enqueue failed:', e);
+                  controllerClosed = true;
+                }
+              }
+            };
+
+            // Safe close wrapper
+            const closeStream = () => {
+              if (!controllerClosed) {
+                controllerClosed = true;
+                controller.close();
+              }
+            };
+
+            console.log('Starting chatbot stream...');
+
             try {
-              controller.enqueue(data);
-            } catch (e) {
-              console.error('Enqueue failed:', e);
-              controllerClosed = true;
-            }
-          }
-        };
+              while (true) {
+                const { done, value } = await reader.read();
+                if (done) {
+                  console.log('Stream finished normally');
+                  break;
+                }
 
-        // Safe close wrapper
-        const closeStream = () => {
-          if (!controllerClosed) {
-            controllerClosed = true;
-            controller.close();
-          }
-        };
-
-        console.log('Starting chatbot stream...');
-
-        try {
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) {
-              console.log('Stream finished normally');
-              break;
-            }
-
-            // Decode and add to buffer
-            buffer += decoder.decode(value, { stream: true });
-            const lines = buffer.split('\n');
-            
-            // Keep last incomplete line in buffer
-            buffer = lines.pop() || '';
-
-            for (const line of lines) {
-              const trimmedLine = line.trim();
-              
-              // Skip empty lines and comments
-              if (!trimmedLine || trimmedLine.startsWith(':')) continue;
-              
-              if (trimmedLine.startsWith('data: ')) {
-                const data = trimmedLine.slice(6).trim();
+                // Decode and add to buffer
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
                 
-                if (data === '[DONE]') {
-                  console.log('Received [DONE]. Full response length:', fullResponse.length);
-                  console.log('Full response preview:', fullResponse.substring(0, 200));
+                // Keep last incomplete line in buffer
+                buffer = lines.pop() || '';
+
+                // Process all lines in this batch
+                for (const line of lines) {
+                  const trimmedLine = line.trim();
                   
-                  // Save conversation to database
-                  try {
-                    await supabase.from('chatbot_conversations').insert({
-                      session_id: sessionId,
-                      user_message: message,
-                      assistant_response: fullResponse,
-                      context_used: { contextLength: context.length, matchedTags: matchedTags.map(t => t.tag) },
-                    });
-                    console.log('Conversation saved successfully');
-                  } catch (dbError) {
-                    console.error('Failed to save conversation:', dbError);
+                  // Skip empty lines and comments
+                  if (!trimmedLine || trimmedLine.startsWith(':')) continue;
+                  
+                  if (trimmedLine.startsWith('data: ')) {
+                    const data = trimmedLine.slice(6).trim();
+                    
+                    if (data === '[DONE]') {
+                      console.log('Received [DONE]. Full response length:', fullResponse.length);
+                      console.log('Full response preview:', fullResponse.substring(0, 200));
+                      
+                      // Set flag but DON'T close stream yet - continue processing this batch
+                      aiStreamComplete = true;
+                      continue; // Process remaining lines in this batch
+                    }
+
+                    try {
+                      const parsed = JSON.parse(data);
+                      const content = parsed.choices?.[0]?.delta?.content || '';
+                      
+                      if (content) {
+                        console.log('Received content chunk, length:', content.length);
+                        fullResponse += content;
+                        safeEnqueue(`data: ${JSON.stringify({ type: 'delta', content })}\n\n`);
+                      } else {
+                        console.log('Parsed SSE event but no content:', JSON.stringify(parsed).substring(0, 100));
+                      }
+                    } catch (e) {
+                      // Incomplete JSON chunk - will be completed in next iteration
+                      console.log('Skipping incomplete JSON chunk:', String(e).substring(0, 100));
+                    }
                   }
-                  
-                  safeEnqueue(`data: ${JSON.stringify({ type: 'done', content: '' })}\n\n`);
-                  closeStream();
-                  return;
                 }
 
-                try {
-                  const parsed = JSON.parse(data);
-                  const content = parsed.choices?.[0]?.delta?.content || '';
-                  
-                  if (content) {
-                    console.log('Received content chunk, length:', content.length);
-                    fullResponse += content;
-                    safeEnqueue(`data: ${JSON.stringify({ type: 'delta', content })}\n\n`);
-                  } else {
-                    console.log('Parsed SSE event but no content:', JSON.stringify(parsed).substring(0, 100));
-                  }
-                } catch (e) {
-                  // Incomplete JSON chunk - will be completed in next iteration
-                  console.log('Skipping incomplete JSON chunk:', String(e).substring(0, 100));
-                }
-              }
-            }
-          }
-
-          // Process any remaining buffer
-          if (buffer.trim()) {
-            console.log('Processing remaining buffer...');
-            const trimmedLine = buffer.trim();
-            if (trimmedLine.startsWith('data: ')) {
-              const data = trimmedLine.slice(6).trim();
-              if (data !== '[DONE]') {
-                try {
-                  const parsed = JSON.parse(data);
-                  const content = parsed.choices?.[0]?.delta?.content || '';
-                  if (content) {
-                    fullResponse += content;
-                    safeEnqueue(`data: ${JSON.stringify({ type: 'delta', content })}\n\n`);
-                  }
-                } catch (e) {
-                  console.log('Could not parse final buffer chunk');
+                // If AI stream is complete after processing this batch, close gracefully
+                if (aiStreamComplete) {
+                  console.log('AI stream complete, closing after processing all content');
+                  break;
                 }
               }
-            }
-          }
 
-        } catch (error) {
-          console.error('Stream error:', error);
-          safeEnqueue(`data: ${JSON.stringify({ type: 'error', content: 'Stream interrupted' })}\n\n`);
-        } finally {
-          closeStream();
-        }
-      },
-    });
+              // Process any remaining buffer before closing
+              if (buffer.trim()) {
+                console.log('Processing remaining buffer...');
+                const lines = buffer.split('\n');
+                for (const raw of lines) {
+                  const trimmedLine = raw.trim();
+                  if (!trimmedLine || trimmedLine.startsWith(':') || trimmedLine === 'data: [DONE]') continue;
+                  
+                  if (trimmedLine.startsWith('data: ')) {
+                    const data = trimmedLine.slice(6).trim();
+                    try {
+                      const parsed = JSON.parse(data);
+                      const content = parsed.choices?.[0]?.delta?.content || '';
+                      if (content) {
+                        console.log('Final buffer content, length:', content.length);
+                        fullResponse += content;
+                        safeEnqueue(`data: ${JSON.stringify({ type: 'delta', content })}\n\n`);
+                      }
+                    } catch (e) {
+                      console.log('Could not parse final buffer chunk');
+                    }
+                  }
+                }
+              }
+
+              // Save conversation to database
+              try {
+                await supabase.from('chatbot_conversations').insert({
+                  session_id: sessionId,
+                  user_message: message,
+                  assistant_response: fullResponse,
+                  context_used: { contextLength: context.length, matchedTags: matchedTags.map(t => t.tag) },
+                });
+                console.log('Conversation saved successfully. Final response length:', fullResponse.length);
+              } catch (dbError) {
+                console.error('Failed to save conversation:', dbError);
+              }
+
+              // NOW send done event and close
+              safeEnqueue(`data: ${JSON.stringify({ type: 'done', content: '' })}\n\n`);
+
+            } catch (error) {
+              console.error('Stream error:', error);
+              safeEnqueue(`data: ${JSON.stringify({ type: 'error', content: 'Stream interrupted' })}\n\n`);
+            } finally {
+              closeStream();
+            }
+          },
+        });
 
     return new Response(stream, {
       headers: {
