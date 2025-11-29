@@ -25,15 +25,32 @@ export const useChatbot = () => {
       if (savedHistory && savedSessionId === sessionId) {
         try {
           const parsed = JSON.parse(savedHistory);
-          setMessages(parsed.map((m: any) => ({
-            ...m,
-            timestamp: new Date(m.timestamp),
-          })));
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setMessages(parsed.map((m: any) => ({
+              ...m,
+              timestamp: new Date(m.timestamp),
+            })));
+          } else {
+            // Empty history should behave like a fresh conversation
+            setMessages([{
+              id: crypto.randomUUID(),
+              role: 'assistant',
+              content: greetingMessage,
+              timestamp: new Date(),
+            }]);
+          }
         } catch (e) {
           console.error('Failed to load chat history:', e);
+          // On any parsing error, fall back to greeting
+          setMessages([{
+            id: crypto.randomUUID(),
+            role: 'assistant',
+            content: greetingMessage,
+            timestamp: new Date(),
+          }]);
         }
       } else {
-        // Show greeting message
+        // Show greeting message for new sessions or missing history
         setMessages([{
           id: crypto.randomUUID(),
           role: 'assistant',
