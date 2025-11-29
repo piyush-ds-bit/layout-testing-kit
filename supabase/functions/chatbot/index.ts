@@ -182,6 +182,7 @@ Be friendly, concise, and helpful. Guide visitors through the website when appro
           async start(controller) {
             const reader = aiResponse.body?.getReader();
             const decoder = new TextDecoder();
+            const encoder = new TextEncoder(); // Encode strings to bytes for HTTP streaming
             let fullResponse = '';
             let controllerClosed = false;
             let buffer = '';
@@ -196,7 +197,7 @@ Be friendly, concise, and helpful. Guide visitors through the website when appro
             const safeEnqueue = (data: string) => {
               if (controllerClosed) return;
               try {
-                controller.enqueue(data);
+                controller.enqueue(encoder.encode(data)); // Encode to Uint8Array for HTTP streaming
               } catch (e) {
                 // Stream may already be closed - mark as closed and skip logging to avoid noisy errors
                 controllerClosed = true;
