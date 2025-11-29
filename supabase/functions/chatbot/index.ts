@@ -298,7 +298,10 @@ Be friendly, concise, and helpful. Guide visitors through the website when appro
                 }
               }
 
-              // Save conversation to database
+              // FIRST send done event so the client can finish rendering
+              safeEnqueue(`data: ${JSON.stringify({ type: 'done', content: '' })}\n\n`);
+
+              // Then save conversation to database (does not affect streaming)
               try {
                 await supabase.from('chatbot_conversations').insert({
                   session_id: sessionId,
@@ -310,9 +313,6 @@ Be friendly, concise, and helpful. Guide visitors through the website when appro
               } catch (dbError) {
                 console.error('Failed to save conversation:', dbError);
               }
-
-              // NOW send done event and close
-              safeEnqueue(`data: ${JSON.stringify({ type: 'done', content: '' })}\n\n`);
 
             } catch (error) {
               console.error('Stream error:', error);
