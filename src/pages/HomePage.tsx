@@ -45,7 +45,7 @@ const HomePage: React.FC = () => {
           <SkillsPreview />
           <ExperiencePreview />
           <ProjectsPreview />
-          <GitHubPreview className="bg-primary-foreground" />
+          <GitHubPreview className="bg-card" />
           <BlogPreview />
           <ConnectPreview />
           <BlogNotification />
