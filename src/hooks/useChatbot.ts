@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { streamChatResponse } from '@/utils/chatbotStream';
 import { greetingMessage } from '@/data/chatbotKnowledge';
 
@@ -15,7 +15,7 @@ export const useChatbot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [sessionId] = useState(() => crypto.randomUUID());
   const [error, setError] = useState<string | null>(null);
-
+  const receivedContentRef = useRef<string>('');
   // Load conversation history from session storage
   useEffect(() => {
     if (isOpen) {
@@ -78,6 +78,7 @@ export const useChatbot = () => {
     };
     
     setMessages(prev => [...prev, assistantMessage]);
+    receivedContentRef.current = '';
 
     // Get conversation history (last 10 messages for context)
     const conversationHistory = messages.slice(-10).map(m => ({
@@ -102,6 +103,7 @@ export const useChatbot = () => {
         text,
         conversationHistory,
         (delta) => {
+          receivedContentRef.current += delta;
           setMessages(prev => prev.map(m => 
             m.id === assistantMessageId 
               ? { ...m, content: m.content + delta }
@@ -111,11 +113,17 @@ export const useChatbot = () => {
         () => {
           clearTimeout(timeoutId); // Clear timeout on success
           setIsTyping(false);
-          setMessages(prev => prev.map(m =>
-            m.id === assistantMessageId && !m.content.trim()
-              ? { ...m, content: "Hmm, I couldn't generate a reply that time. Please try asking again or rephrasing your question." }
-              : m
-          ));
+          queueMicrotask(() => {
+            const hasContent = receivedContentRef.current.trim().length > 0;
+            if (!hasContent) {
+              setMessages(prev => prev.map(m =>
+                m.id === assistantMessageId && !m.content.trim()
+                  ? { ...m, content: "Hmm, I couldn't generate a reply that time. Please try asking again or rephrasing your question." }
+                  : m
+              ));
+            }
+            receivedContentRef.current = '';
+          });
         },
         (errorMsg) => {
           clearTimeout(timeoutId); // Clear timeout on error
@@ -126,6 +134,7 @@ export const useChatbot = () => {
               ? { ...m, content: '❌ Sorry, I encountered an error. Please try again.' }
               : m
           ));
+          receivedContentRef.current = '';
         }
       );
     } catch (error) {
@@ -137,6 +146,7 @@ export const useChatbot = () => {
           ? { ...m, content: '❌ Sorry, something went wrong. Please try again.' }
           : m
       ));
+      receivedContentRef.current = '';
     }
   }, [messages, sessionId]);
 
@@ -151,6 +161,7 @@ export const useChatbot = () => {
       timestamp: new Date(),
     }]);
     sessionStorage.removeItem('chatHistory');
+    receivedContentRef.current = '';
   }, []);
 
   return {
