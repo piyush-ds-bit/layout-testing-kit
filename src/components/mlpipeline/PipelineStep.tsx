@@ -31,58 +31,106 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
     }
   };
 
-  // For mobile, use the existing tap-to-expand behavior
+  // For mobile, use 3D flip card animation
   if (isMobile) {
     return (
-      <button
-        className={`
-          portfolio-card-hover flex flex-col items-center justify-center
-          py-6 px-3 mb-2
-          bg-[#182437]/80 border-2 ${getStatusBorderColor()}
-          transition-all duration-300 relative
-          ${expanded ? "z-20" : ""}
-          w-full min-w-[240px] max-w-[320px] mx-auto
-        `}
+      <div 
+        className="relative w-full"
         style={{
-          minWidth: 240,
-          maxWidth: 320,
-          boxShadow: expanded
-            ? "0 0 16px 4px #a855f7cc, 0 6px 32px #a855f720"
-            : undefined,
-          transform: expanded ? "scale(1.055)" : undefined
+          perspective: 1000,
+          minHeight: expanded ? 280 : 140,
+          transition: "min-height 0.6s ease",
         }}
-        aria-expanded={expanded}
         onClick={onClick}
       >
-        <div className={`text-2xl mb-2 select-none pulse`} style={{
-          filter: "drop-shadow(0 0 6px #a855f7aa)",
-        }}>
-          {iconMap[step.icon] ?? step.icon}
-        </div>
-        <div className="flex items-center gap-2 mb-1">
-          <div className="text-sm font-semibold text-white text-center drop-shadow">
-            {step.label}
-          </div>
-          <PipelineTooltip stepLabel={step.label} description={step.description} />
-        </div>
-        <div className="w-1 h-1 bg-portfolio-accent rounded-full mb-1" />
-        {expanded && (
-          <div className="animate-fade-in mt-2 mb-0 px-1">
-            <div className="text-portfolio-accent font-medium mb-1 text-xs text-center">
-              Tools:
+        <motion.div
+          className="w-full relative"
+          style={{
+            transformStyle: "preserve-3d",
+          }}
+          animate={{ 
+            rotateY: expanded ? 180 : 0,
+          }}
+          transition={{ 
+            duration: 0.6,
+            ease: "easeInOut"
+          }}
+        >
+          {/* Front side */}
+          <motion.div
+            className="absolute inset-0 w-full backface-hidden"
+            style={{
+              backfaceVisibility: "hidden",
+            }}
+          >
+            <div
+              className={`
+                w-full py-6 px-5
+                bg-[#182437]/80 border-2 ${getStatusBorderColor()}
+                rounded-2xl shadow-lg backdrop-blur-sm
+                transition-all duration-300 relative
+                flex flex-col items-center justify-center
+              `}
+              style={{
+                minHeight: 140,
+              }}
+            >
+              <div className={`text-3xl mb-3 select-none pulse`} style={{
+                filter: "drop-shadow(0 0 6px #a855f7aa)",
+              }}>
+                {iconMap[step.icon] ?? step.icon}
+              </div>
+              <div className="flex items-center gap-2 mb-2">
+                <div className="text-base font-bold text-white text-center drop-shadow-lg">
+                  {step.label}
+                </div>
+                <PipelineTooltip stepLabel={step.label} description={step.description} />
+              </div>
+              <div className="w-1.5 h-1.5 bg-portfolio-accent rounded-full" />
+              <ProcessingOverlay status={status} stepLabel={step.label} />
             </div>
-            <ul className="space-y-1 text-gray-300 text-xs text-left list-disc list-inside">
-              {step.tools.map((tool: string, i: number) =>
-                <li key={i} className="pl-2">{tool}</li>
-              )}
-            </ul>
-            <div className="mt-2 text-gray-400 text-[11px] text-center">
-              {step.description}
+          </motion.div>
+
+          {/* Back side */}
+          <motion.div
+            className="absolute inset-0 w-full backface-hidden"
+            style={{
+              backfaceVisibility: "hidden",
+              transform: "rotateY(180deg)",
+            }}
+          >
+            <div 
+              className={`
+                w-full py-5 px-5
+                bg-[#182437]/95 border-2 border-portfolio-accent
+                rounded-2xl shadow-xl backdrop-blur-md
+                flex flex-col
+              `}
+              style={{
+                minHeight: 280,
+                maxHeight: 400,
+              }}
+            >
+              <div className="text-portfolio-accent font-bold mb-3 text-base text-center">
+                Tools & Details
+              </div>
+              <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-portfolio-accent scrollbar-track-transparent">
+                <div className="text-portfolio-accent font-semibold mb-2 text-sm">
+                  Tools:
+                </div>
+                <ul className="space-y-1.5 text-gray-300 text-sm list-disc list-inside mb-4">
+                  {step.tools.map((tool: string, i: number) =>
+                    <li key={i} className="pl-2 leading-relaxed">{tool}</li>
+                  )}
+                </ul>
+                <div className="text-gray-400 text-xs leading-relaxed border-t border-portfolio-accent/20 pt-3">
+                  {step.description}
+                </div>
+              </div>
             </div>
-          </div>
-        )}
-        <ProcessingOverlay status={status} stepLabel={step.label} />
-      </button>
+          </motion.div>
+        </motion.div>
+      </div>
     );
   }
 
