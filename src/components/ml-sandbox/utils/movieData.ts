@@ -47,5 +47,53 @@ export const movies: Movie[] = [
     title: "Forrest Gump", 
     tags: ["drama", "history", "romance", "inspirational", "heartwarming"], 
     poster: "🏃" 
+  },
+  { 
+    id: 8,
+    title: "Stree",
+    tags: ["horror", "comedy", "folklore", "small-town"],
+    poster: "🧟‍♀️"
+  },
+  { 
+    id: 9,
+    title: "Bhool Bhulaiyaa",
+    tags: ["horror", "comedy", "psychological", "classic"],
+    poster: "👻"
+  },
+  { 
+    id: 10,
+    title: "Go Goa Gone",
+    tags: ["horror", "comedy", "zombie", "adventure"],
+    poster: "🧟"
+  },
+  { 
+    id: 11,
+    title: "Shaun of the Dead",
+    tags: ["horror", "comedy", "zombie", "parody"],
+    poster: "🪓"
+  },
+  { 
+    id: 12,
+    title: "Ghostbusters",
+    tags: ["horror", "comedy", "supernatural", "team"],
+    poster: "👻"
+  },
+  { 
+    id: 13,
+    title: "Scary Movie",
+    tags: ["horror", "comedy", "parody", "fun"],
+    poster: "😱"
+  },
+  { 
+    id: 14, 
+    title: "The Godfather", 
+    tags: ["crime", "mafia", "classic", "drama", "family"], 
+    poster: "🎩" 
+  },
+  { 
+    id: 15, 
+    title: "The Departed", 
+    tags: ["crime", "thriller", "undercover", "action", "suspense"], 
+    poster: "🔫" 
   }
 ];
