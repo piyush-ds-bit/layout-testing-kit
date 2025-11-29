@@ -130,17 +130,8 @@ export const useChatbot = () => {
         () => {
           clearTimeout(timeoutId); // Clear timeout on success
           setIsTyping(false);
-          queueMicrotask(() => {
-            const hasContent = receivedContentRef.current.trim().length > 0;
-            if (!hasContent) {
-              setMessages(prev => prev.map(m =>
-                m.id === assistantMessageId && !m.content.trim()
-                  ? { ...m, content: "Hmm, I couldn't generate a reply that time. Please try asking again or rephrasing your question." }
-                  : m
-              ));
-            }
-            receivedContentRef.current = '';
-          });
+          // Just reset the tracker; don't overwrite the assistant message
+          receivedContentRef.current = '';
         },
         (errorMsg) => {
           clearTimeout(timeoutId); // Clear timeout on error
