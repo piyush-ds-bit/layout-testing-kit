@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Home, Menu, X, User, Code, Briefcase, Github, MessageSquare, BookOpen, Mail } from "lucide-react";
 import LogoutConfirmationDialog from "@/components/auth/LogoutConfirmationDialog";
 import EditModeToggle from "@/components/admin/EditModeToggle";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 const navItems = [{
   label: "Home",
   path: "/",
@@ -82,11 +83,11 @@ const Navbar: React.FC = () => {
     return location.pathname === item.path;
   };
   return <>
-      <header className="sticky top-0 z-50 w-full bg-portfolio-darkest/80 backdrop-blur-md border-b border-portfolio-dark">
+      <header className="sticky top-0 z-50 w-full bg-portfolio-light/80 dark:bg-portfolio-darkest/80 backdrop-blur-md border-b border-portfolio-light-border dark:border-portfolio-dark">
         <div className="portfolio-container py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <Link to="/" className="flex items-center space-x-2 text-white hover:text-portfolio-accent transition-colors">
+              <Link to="/" className="flex items-center space-x-2 text-portfolio-light-text dark:text-white hover:text-portfolio-accent transition-colors">
                 <Home className="w-5 h-5" />
                 <span className="text-xl font-semibold">Portfolio</span>
               </Link>
@@ -100,6 +101,8 @@ const Navbar: React.FC = () => {
                   </Link> : <button key={item.path} onClick={() => handleNavClick(item)} className={`portfolio-navbar-item ${isActiveItem(item) ? "active" : ""}`}>
                     {item.label}
                   </button>)}
+              
+              <ThemeToggle />
               
               {user ? <div className="flex items-center ml-4 space-x-3">
                   <span className="text-portfolio-gray-light">
@@ -124,14 +127,14 @@ const Navbar: React.FC = () => {
             </nav>
 
             {/* Mobile Menu Button */}
-            <button onClick={toggleMenu} className="md:hidden p-2 text-white hover:text-portfolio-accent transition-colors" aria-label="Toggle Menu">
+            <button onClick={toggleMenu} className="md:hidden p-2 text-portfolio-light-text dark:text-white hover:text-portfolio-accent transition-colors" aria-label="Toggle Menu">
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation Dropdown */}
-        <div className={`md:hidden fixed top-[62px] left-0 right-0 bg-portfolio-darkest border-b border-portfolio-dark transform ${isOpen ? "translate-y-0" : "-translate-y-full"} transition-transform duration-300 ease-in-out`}>
+        <div className={`md:hidden fixed top-[62px] left-0 right-0 bg-portfolio-light dark:bg-portfolio-darkest border-b border-portfolio-light-border dark:border-portfolio-dark transform ${isOpen ? "translate-y-0" : "-translate-y-full"} transition-transform duration-300 ease-in-out`}>
           
         </div>
       </header>

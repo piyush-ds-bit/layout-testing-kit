@@ -50,7 +50,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
             animate={isMobile ? { y: 0 } : { opacity: 1, scale: 1, y: 0 }}
             exit={isMobile ? { y: '100%' } : { opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className={`fixed z-[70] flex flex-col bg-card/95 backdrop-blur-xl border border-border/50 shadow-2xl ${
+            className={`fixed z-[70] flex flex-col bg-white/95 dark:bg-card/95 backdrop-blur-xl border border-portfolio-light-border dark:border-border/50 shadow-2xl ${
               isMobile 
                 ? 'inset-x-0 bottom-0 top-[10%] rounded-t-2xl' 
                 : 'bottom-24 right-6 w-[400px] h-[600px] rounded-lg'

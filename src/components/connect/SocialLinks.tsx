@@ -40,9 +40,13 @@ const SocialLinks: React.FC = () => {
           className="flex flex-col items-center"
         >
           <div className="social-icon-container mb-2">
-            <img src={link.icon} alt={link.name} className="w-8 h-8" />
+            <img 
+              src={link.icon} 
+              alt={link.name} 
+              className={`w-8 h-8 ${link.name === 'Twitter' ? 'dark:invert-0 invert' : ''}`}
+            />
           </div>
-          <span className="text-gray-400 text-sm">{link.label}</span>
+          <span className="text-gray-400 dark:text-gray-400 text-sm">{link.label}</span>
         </a>
       ))}
     </div>
