@@ -79,30 +79,41 @@ export const projectHighlights = [
 
 export const quickActions = [
   {
-    id: "about",
-    label: "📚 Learn about Piyush",
+    id: "introduction",
+    label: "👋 Who is Piyush?",
     message: "Tell me about Piyush Kumar Singh",
   },
   {
-    id: "projects",
-    label: "💼 View his projects",
-    message: "Show me Piyush's projects",
-  },
-  {
     id: "skills",
-    label: "🛠️ See his skills",
-    message: "What are Piyush's technical skills?",
+    label: "💻 What skills does he have?",
+    message: "What is his tech stack?",
   },
   {
-    id: "experience",
-    label: "🎓 View his experience",
-    message: "Tell me about Piyush's experience and achievements",
+    id: "projects",
+    label: "🚀 Show me his projects",
+    message: "What projects has Piyush worked on?",
   },
   {
-    id: "contact",
-    label: "📧 Get in touch",
-    message: "How can I contact Piyush?",
+    id: "achievements",
+    label: "🏆 View achievements",
+    message: "What achievements does he have?",
+  },
+  {
+    id: "goals",
+    label: "🎯 Career goals",
+    message: "What is his career goal?",
   },
 ];
 
-export const greetingMessage = `👋 Hi! I'm Piyush's AI assistant. I can help you learn about Piyush, his projects, skills, experience, and more. What would you like to know?`;
+export const greetingMessage = `👋 **Welcome! I'm Piyush's AI Assistant**
+
+I can answer questions about Piyush Kumar Singh - his background, skills, projects, achievements, and career goals.
+
+**Try asking me:**
+• Who is Piyush?
+• What projects has he built?
+• What are his technical skills?
+• What are his achievements?
+• What is his career goal?
+
+Or click on any quick action below to get started! 💬`;
