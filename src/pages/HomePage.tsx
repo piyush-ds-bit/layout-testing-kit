@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import Hero from '@/components/home/Hero';
@@ -12,16 +11,15 @@ import BlogNotification from '@/components/blog/BlogNotification';
 import MLPipelineVisualization from '@/components/mlpipeline/MLPipelineVisualization';
 import IdentityCardOverlay from '@/components/identity/IdentityCardOverlay';
 import { useSwipeDetection } from '@/hooks/useSwipeDetection';
-
 const HomePage: React.FC = () => {
   const [showIdentityCard, setShowIdentityCard] = useState(false);
-
-  const { handlers } = useSwipeDetection({
+  const {
+    handlers
+  } = useSwipeDetection({
     onSwipeFromLeftComplete: () => setShowIdentityCard(true),
     onSwipeRightToLeftComplete: () => setShowIdentityCard(false),
     threshold: 100
   });
-
   useEffect(() => {
     // Add event listeners for swipe detection
     document.addEventListener('touchstart', handlers.onTouchStart);
@@ -30,7 +28,6 @@ const HomePage: React.FC = () => {
     document.addEventListener('mousedown', handlers.onMouseDown);
     document.addEventListener('mousemove', handlers.onMouseMove);
     document.addEventListener('mouseup', handlers.onMouseUp);
-
     return () => {
       document.removeEventListener('touchstart', handlers.onTouchStart);
       document.removeEventListener('touchmove', handlers.onTouchMove);
@@ -40,9 +37,7 @@ const HomePage: React.FC = () => {
       document.removeEventListener('mouseup', handlers.onMouseUp);
     };
   }, [handlers]);
-
-  return (
-    <>
+  return <>
       <Layout>
         <div className="animate-fade-in">
           <Hero />
@@ -50,19 +45,14 @@ const HomePage: React.FC = () => {
           <SkillsPreview />
           <ExperiencePreview />
           <ProjectsPreview />
-          <GitHubPreview />
+          <GitHubPreview className="bg-primary-foreground" />
           <BlogPreview />
           <ConnectPreview />
           <BlogNotification />
         </div>
       </Layout>
       
-      <IdentityCardOverlay 
-        isVisible={showIdentityCard}
-        onClose={() => setShowIdentityCard(false)}
-      />
-    </>
-  );
+      <IdentityCardOverlay isVisible={showIdentityCard} onClose={() => setShowIdentityCard(false)} />
+    </>;
 };
-
 export default HomePage;
