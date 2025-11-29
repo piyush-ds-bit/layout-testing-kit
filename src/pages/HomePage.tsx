@@ -9,7 +9,7 @@ import GitHubPreview from '@/components/home/GitHubPreview';
 import BlogPreview from '@/components/home/BlogPreview';
 import ConnectPreview from '@/components/home/ConnectPreview';
 import BlogNotification from '@/components/blog/BlogNotification';
-import MLPipelineVisualization from '@/components/mlpipeline/MLPipelineVisualization';
+import MLSectionWrapper from '@/components/home/MLSectionWrapper';
 import IdentityCardOverlay from '@/components/identity/IdentityCardOverlay';
 import { useSwipeDetection } from '@/hooks/useSwipeDetection';
 
@@ -46,7 +46,7 @@ const HomePage: React.FC = () => {
       <Layout>
         <div className="animate-fade-in">
           <Hero />
-          <MLPipelineVisualization />
+          <MLSectionWrapper />
           <SkillsPreview />
           <ExperiencePreview />
           <ProjectsPreview />
