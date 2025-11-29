@@ -76,28 +76,12 @@
   }
   
   body {
-    @apply text-foreground transition-all duration-300;
+    @apply bg-portfolio-darker text-foreground dark transition-all duration-300;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
   
-  body.dark {
-    @apply bg-portfolio-darker;
-  }
-  
-  body:not(.dark) {
-    @apply bg-portfolio-light;
-  }
-  
   h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold;
-  }
-  
-  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
-    @apply text-white;
-  }
-  
-  :not(.dark) h1, :not(.dark) h2, :not(.dark) h3, :not(.dark) h4, :not(.dark) h5, :not(.dark) h6 {
-    @apply text-portfolio-light-text;
+    @apply font-semibold text-white;
   }
 }
 
@@ -114,7 +98,7 @@
     @apply text-3xl md:text-4xl font-bold text-white mb-8 text-center;
   }
   
-  .dark .portfolio-card {
+  .portfolio-card {
     @apply relative transition-all duration-300 p-6 rounded-xl border border-portfolio-border;
     background: rgba(24, 36, 55, 0.65);
     backdrop-filter: blur(16px) saturate(150%);
@@ -123,29 +107,12 @@
     z-index: 1;
   }
   
-  .dark .portfolio-card:hover {
+  .portfolio-card:hover {
     @apply shadow-lg;
     transform: translateY(-7px) scale(1.035);
     border-color: #a855f7;
     box-shadow: 0 12px 48px 0 rgba(168, 85, 247, 0.30), 0 8px 32px 0 rgba(10,20,30,0.22);
     background: rgba(24, 36, 55, 0.80);
-  }
-  
-  :not(.dark) .portfolio-card {
-    @apply relative transition-all duration-300 p-6 rounded-xl;
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(16px) saturate(150%);
-    box-shadow: 0 6px 32px 0 rgba(168, 85, 247, 0.08), 0 2px 8px rgba(0,0,0,0.05);
-    border: 1.5px solid rgba(168, 85, 247, 0.15);
-    z-index: 1;
-  }
-  
-  :not(.dark) .portfolio-card:hover {
-    @apply shadow-lg;
-    transform: translateY(-7px) scale(1.035);
-    border-color: #a855f7;
-    box-shadow: 0 12px 48px 0 rgba(168, 85, 247, 0.15), 0 4px 16px rgba(0,0,0,0.08);
-    background: rgba(255, 255, 255, 0.85);
   }
   
   .portfolio-card::before {
@@ -207,28 +174,14 @@
     justify-content: center;
   }
   
-  .dark .skill-tag {
+  .skill-tag {
     @apply bg-portfolio-card-bg border border-portfolio-border px-4 py-2 rounded-lg flex items-center gap-2 text-gray-300
     hover:border-portfolio-accent transition-all duration-200;
   }
   
-  :not(.dark) .skill-tag {
-    @apply bg-white border px-4 py-2 rounded-lg flex items-center gap-2
-    hover:border-portfolio-accent transition-all duration-200;
-    border-color: rgba(168, 85, 247, 0.2);
-    color: hsl(222.2, 47.4%, 11.2%);
-  }
-  
-  .dark .social-icon-container {
+  .social-icon-container {
     @apply w-16 h-16 rounded-full bg-portfolio-card-bg border border-portfolio-border flex items-center justify-center
     hover:border-portfolio-accent transition-all duration-300;
-  }
-  
-  :not(.dark) .social-icon-container {
-    @apply w-16 h-16 rounded-full border flex items-center justify-center
-    hover:border-portfolio-accent transition-all duration-300;
-    background: rgba(255, 255, 255, 0.8);
-    border-color: rgba(168, 85, 247, 0.2);
   }
 
   /* Hide scrollbar */
