@@ -39,7 +39,7 @@ const ProjectsPreview: React.FC = () => {
 
         {/* Desktop: Grid */}
         <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredProjects.map(project => <ProjectCard key={project.id} project={project} />)}
+          {featuredProjects.map(project => <ProjectCard key={project.id} project={project} className="border-8 border-cyan-900" />)}
         </div>
       </div>
     </section>;
