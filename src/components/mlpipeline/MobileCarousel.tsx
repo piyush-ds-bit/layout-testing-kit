@@ -64,7 +64,7 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({ steps, stepStatuses = [
       </div>
 
       {/* Main Card Container */}
-      <div className="relative px-14 min-h-[320px] flex items-center justify-center">
+      <div className="relative px-14 min-h-[320px] flex items-center justify-start">
         {/* Left Arrow */}
         <button
           onClick={goToPrevious}
