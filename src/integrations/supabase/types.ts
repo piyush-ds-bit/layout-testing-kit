@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          category: string
+          created_at: string | null
+          date: string | null
+          description: string | null
+          event_name: string | null
+          file_type: string | null
+          file_url: string | null
+          id: string
+          image_url: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category?: string
+          created_at?: string | null
+          date?: string | null
+          description?: string | null
+          event_name?: string | null
+          file_type?: string | null
+          file_url?: string | null
+          id?: string
+          image_url?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          date?: string | null
+          description?: string | null
+          event_name?: string | null
+          file_type?: string | null
+          file_url?: string | null
+          id?: string
+          image_url?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           author_name: string

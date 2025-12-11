@@ -20,6 +20,7 @@ import SignupPage from "./pages/SignupPage";
 import ResumePage from "./pages/ResumePage";
 import ProjectDetailsPage from "./pages/ProjectDetailsPage";
 import ContactMessagesPage from "./pages/ContactMessagesPage";
+import AchievementsPage from "./pages/AchievementsPage";
 
 // Not Found Page
 import NotFound from "./pages/NotFound";
@@ -44,6 +45,7 @@ const App = () => (
               <Route path="/projects" element={<ProjectsPage />} />
               <Route path="/projects/:id" element={<ProjectDetailsPage />} />
               <Route path="/connect" element={<ConnectPage />} />
+              <Route path="/achievements" element={<AchievementsPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/resume" element={<ResumePage />} />

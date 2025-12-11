@@ -10,6 +10,7 @@ import BlogPreview from '@/components/home/BlogPreview';
 import ConnectPreview from '@/components/home/ConnectPreview';
 import BlogNotification from '@/components/blog/BlogNotification';
 import MLSectionWrapper from '@/components/home/MLSectionWrapper';
+import AchievementsPreview from '@/components/home/AchievementsPreview';
 import IdentityCardOverlay from '@/components/identity/IdentityCardOverlay';
 import { useSwipeDetection } from '@/hooks/useSwipeDetection';
 
@@ -50,6 +51,7 @@ const HomePage: React.FC = () => {
           <SkillsPreview />
           <ExperiencePreview />
           <ProjectsPreview />
+          <AchievementsPreview />
           <GitHubPreview />
           <BlogPreview />
           <ConnectPreview />
