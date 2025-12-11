@@ -75,3 +75,17 @@ export interface BlogPost {
   created_at?: string;
   updated_at?: string;
 }
+
+export interface Achievement {
+  id: string;
+  title: string;
+  description?: string;
+  category: string;
+  event_name?: string;
+  date?: string;
+  image_url?: string;
+  file_url?: string;
+  file_type: 'image' | 'pdf';
+  created_at?: string;
+  updated_at?: string;
+}
