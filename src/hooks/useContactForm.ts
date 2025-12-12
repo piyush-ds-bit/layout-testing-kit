@@ -1,14 +1,17 @@
 
 import { useState } from "react";
+import { z } from "zod";
 import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 
-function isValidPhone(number: string) {
-  if (!number.trim()) return true;
-  const phoneRegex = /^[+]?[\d\s-()]{7,20}$/;
-  return phoneRegex.test(number.trim());
-}
+// Zod schema for contact form validation
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
+  email: z.string().trim().email("Please enter a valid email address").max(255, "Email must be less than 255 characters"),
+  phone_number: z.string().max(20, "Phone number too long").regex(/^[+]?[\d\s-()]*$/, "Invalid phone number format").optional().or(z.literal("")),
+  message: z.string().trim().min(1, "Message is required").max(5000, "Message must be less than 5000 characters"),
+});
 
 export function useContactForm() {
   const { user } = useAuth();
@@ -53,40 +56,29 @@ export function useContactForm() {
     setLoading(true);
 
     try {
-      if (!formData.name.trim()) throw new Error("Please enter your name");
-      if (!formData.email.trim()) throw new Error("Please enter your email");
-      if (!formData.message.trim()) throw new Error("Please enter a message");
-      if (!isValidPhone(formData.phone_number))
-        throw new Error(
-          "Please provide a valid phone number or leave it blank."
-        );
+      // Validate form data with Zod schema
+      const validationResult = contactSchema.safeParse(formData);
+      if (!validationResult.success) {
+        const firstError = validationResult.error.issues[0];
+        throw new Error(firstError.message);
+      }
 
-      console.log('Attempting to submit contact form:', {
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        message: formData.message.trim(),
+      const validatedData = validationResult.data;
+
+      const { error } = await supabase.from("contact_messages").insert({
+        name: validatedData.name,
+        email: validatedData.email,
+        message: validatedData.message,
         user_id: user?.id,
         attachment_url: uploadedFile,
-        phone_number: formData.phone_number.trim() || null,
-      });
-
-      const { error, data } = await supabase.from("contact_messages").insert({
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        message: formData.message.trim(),
-        user_id: user?.id,
-        attachment_url: uploadedFile,
-        phone_number: formData.phone_number.trim() || null,
+        phone_number: validatedData.phone_number || null,
         read: false,
         submitted_at: new Date().toISOString(),
       });
 
       if (error) {
-        console.error('Supabase error:', error);
-        throw new Error(`Failed to send message: ${error.message}`);
+        throw new Error("Failed to send message. Please try again later.");
       }
-
-      console.log('Message sent successfully:', data);
 
       toast({
         title: "Message sent successfully",
@@ -101,12 +93,9 @@ export function useContactForm() {
       });
       setUploadedFile(null);
     } catch (error: any) {
-      console.error('Contact form submission error:', error);
       toast({
         title: "Failed to send message",
-        description:
-          error.message ||
-          "There was an error sending your message. Please try again later.",
+        description: error.message || "There was an error sending your message. Please try again later.",
         variant: "destructive",
       });
     } finally {
