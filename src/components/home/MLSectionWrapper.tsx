@@ -12,13 +12,13 @@ const MLSectionWrapper: React.FC = () => {
         {/* ML Pipeline - Left Side */}
           <div className="w-full lg:w-1/2">
             <div className="h-full">
-              <MLPipelineVisualization className="border-8" />
+              <MLPipelineVisualization />
             </div>
           </div>
           
           {/* ML Sandbox - Right Side */}
           <div className="w-full lg:w-1/2">
-            <MLSandboxSection className="border-8" />
+            <MLSandboxSection />
           </div>
         </div>
       </div>
