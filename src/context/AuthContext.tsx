@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -17,18 +16,27 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// List of authorized admin emails
-const AUTHORIZED_EMAILS = ['piyushjuly04@gmail.com'];
-
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(false);
 
-  const checkAuthorization = (userEmail: string | undefined) => {
-    if (!userEmail) return false;
-    return AUTHORIZED_EMAILS.includes(userEmail.toLowerCase());
+  // Check authorization from database using is_admin() function
+  const checkAuthorization = async (userId: string | undefined): Promise<boolean> => {
+    if (!userId) return false;
+    
+    try {
+      const { data, error } = await supabase.rpc('is_admin');
+      if (error) {
+        console.error('Error checking admin status:', error);
+        return false;
+      }
+      return data === true;
+    } catch (error) {
+      console.error('Error checking authorization:', error);
+      return false;
+    }
   };
 
   useEffect(() => {
@@ -36,24 +44,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
       setSession(newSession);
       setUser(newSession?.user || null);
-      setIsAuthorized(checkAuthorization(newSession?.user?.email));
       setLoading(false);
       
-      if (event === 'SIGNED_IN' && newSession) {
-        const userEmail = newSession.user.email;
-        const authorized = checkAuthorization(userEmail);
-        
-        if (authorized) {
-          toast({
-            title: "Admin access granted",
-            description: `Welcome back, ${userEmail}!`,
-          });
-        } else {
-          toast({
-            title: "Welcome!",
-            description: `Signed in as ${userEmail}`,
-          });
-        }
+      // Defer authorization check to avoid Supabase deadlock
+      if (newSession?.user) {
+        setTimeout(async () => {
+          const authorized = await checkAuthorization(newSession.user.id);
+          setIsAuthorized(authorized);
+          
+          if (event === 'SIGNED_IN') {
+            if (authorized) {
+              toast({
+                title: "Admin access granted",
+                description: `Welcome back, ${newSession.user.email}!`,
+              });
+            } else {
+              toast({
+                title: "Welcome!",
+                description: `Signed in as ${newSession.user.email}`,
+              });
+            }
+          }
+        }, 0);
+      } else {
+        setIsAuthorized(false);
       }
       
       if (event === 'SIGNED_OUT') {
@@ -76,7 +90,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const { data } = await supabase.auth.getSession();
         setSession(data.session);
         setUser(data.session?.user || null);
-        setIsAuthorized(checkAuthorization(data.session?.user?.email));
+        
+        if (data.session?.user) {
+          const authorized = await checkAuthorization(data.session.user.id);
+          setIsAuthorized(authorized);
+        }
       } catch (error) {
         console.error('Error setting initial user:', error);
       } finally {
