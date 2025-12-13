@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useScrollToSection } from '@/hooks/useScrollToSection';
 import { useActiveSection } from '@/hooks/useActiveSection';
@@ -28,6 +28,7 @@ const Navbar: React.FC = () => {
   const [showMobileNav, setShowMobileNav] = useState(false);
   const [mobileExploreOpen, setMobileExploreOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, isAuthorized, signOut } = useAuth();
   const scrollToSection = useScrollToSection();
   const activeSection = useActiveSection();
@@ -48,8 +49,21 @@ const Navbar: React.FC = () => {
     if (isOpen) setMobileExploreOpen(false);
   };
 
+  const handleHomeNavigation = () => {
+    if (location.pathname === '/') {
+      // Already on home - scroll to top smoothly
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // On another page - navigate to home via React Router
+      navigate('/');
+    }
+    setIsOpen(false);
+    setMobileExploreOpen(false);
+  };
+
   const handleNavClick = (item: typeof exploreItems[0]) => {
     if (item.path === '/') {
+      handleHomeNavigation();
       return;
     }
     scrollToSection(item.sectionId, item.path);
@@ -98,13 +112,7 @@ const Navbar: React.FC = () => {
                       className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-all duration-200 text-white hover:bg-portfolio-accent/20 hover:text-portfolio-accent focus:bg-portfolio-accent/20 focus:text-portfolio-accent ${
                         isActiveItem(item) ? 'bg-portfolio-accent/10 text-portfolio-accent' : ''
                       } ${item.label === 'Blogs' ? 'blog-glow-item' : ''}`}
-                      onClick={() => {
-                        if (item.path === '/') {
-                          window.location.href = '/';
-                        } else {
-                          handleNavClick(item);
-                        }
-                      }}
+                      onClick={() => handleNavClick(item)}
                     >
                       <item.icon className="w-4 h-4" />
                       <span>{item.label}</span>
@@ -169,14 +177,7 @@ const Navbar: React.FC = () => {
                 {exploreItems.map((item) => (
                   <button
                     key={item.path}
-                    onClick={() => {
-                      if (item.path === '/') {
-                        window.location.href = '/';
-                        setIsOpen(false);
-                      } else {
-                        handleNavClick(item);
-                      }
-                    }}
+                    onClick={() => handleNavClick(item)}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-white/80 hover:text-portfolio-accent hover:bg-portfolio-accent/10 transition-all duration-200 ${
                       isActiveItem(item) ? 'bg-portfolio-accent/10 text-portfolio-accent' : ''
                     } ${item.label === 'Blogs' ? 'blog-glow-item' : ''}`}
@@ -225,13 +226,7 @@ const Navbar: React.FC = () => {
           {exploreItems.slice(0, 5).map((item) => (
             <button
               key={item.path}
-              onClick={() => {
-                if (item.path === '/') {
-                  window.location.href = '/';
-                } else {
-                  handleNavClick(item);
-                }
-              }}
+              onClick={() => handleNavClick(item)}
               className={`mobile-bottom-nav-item ${isActiveItem(item) ? 'active' : ''}`}
             >
               <span className="mobile-bottom-nav-item-icon">
