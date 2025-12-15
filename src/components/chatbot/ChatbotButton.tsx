@@ -15,7 +15,7 @@ const ChatbotButton: React.FC<ChatbotButtonProps> = ({ onClick, hasUnread = fals
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       onClick={onClick}
-      className="fixed bottom-32 md:bottom-6 right-4 z-50 group"
+      className="fixed bottom-32 md:bottom-6 lg:right-[316px] right-4 z-50 group"
       aria-label="Open chat"
     >
       <div className="relative">
