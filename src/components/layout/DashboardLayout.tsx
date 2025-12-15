@@ -30,9 +30,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         {/* Left Sidebar - hidden on mobile/tablet */}
         <LeftSidebar />
         
-        {/* Main Content */}
-        <main className="flex-grow pb-16 md:pb-0 lg:ml-[240px] lg:mr-[300px]">
-          {children}
+        {/* Main Content - properly constrained between fixed sidebars */}
+        <main className="flex-grow pb-16 md:pb-0 lg:ml-[240px] lg:mr-[300px] w-full lg:w-[calc(100%-540px)]">
+          <div className="w-full">
+            {children}
+          </div>
         </main>
         
         {/* Right Info Panel - hidden on mobile/tablet */}
