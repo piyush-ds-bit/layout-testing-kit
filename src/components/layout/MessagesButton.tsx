@@ -27,7 +27,7 @@ const MessagesButton: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity" />
         
         {/* Button */}
-        <div className="relative bg-gradient-to-r from-blue-500 to-cyan-400 p-4 rounded-full shadow-lg py-[18px] px-[18px] mx-[12px] my-[10px]">
+        <div className="relative bg-gradient-to-r from-blue-500 to-cyan-400 p-4 rounded-full shadow-lg py-[18px] px-[18px] my-px mx-px">
           <Mail className="w-6 h-6 text-white" />
         </div>
         

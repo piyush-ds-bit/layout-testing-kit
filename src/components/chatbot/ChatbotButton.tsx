@@ -47,7 +47,7 @@ const ChatbotButton: React.FC<ChatbotButtonProps> = ({
       duration: 2,
       repeat: Infinity,
       ease: "easeOut"
-    }} className="absolute inset-0 bg-portfolio-accent rounded-full px-0" />
+    }} className="absolute inset-0 bg-portfolio-accent rounded-full px-0 my-0 mx-0" />
     </motion.button>;
 };
 export default ChatbotButton;
