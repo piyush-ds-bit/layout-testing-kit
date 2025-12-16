@@ -84,7 +84,7 @@ export const useDashboardData = (): DashboardData => {
   }, []);
 
   return {
-    currentlyWorkingOn: "Building AI-powered portfolio features with RAG chatbot and ML visualizations",
+    currentlyWorkingOn: "Building a modern tuition management platform and experimenting with Food Vision AI",
     latestProject,
     latestAchievement,
     latestBlog,
