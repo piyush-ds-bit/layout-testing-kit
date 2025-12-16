@@ -1,7 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
 
-const AnimatedGreeting: React.FC = () => {
+interface AnimatedGreetingProps {
+  className?: string;
+}
+
+const AnimatedGreeting: React.FC<AnimatedGreetingProps> = ({ className }) => {
   const greetings = [
     "Hello",
     "Namaste", 
@@ -37,12 +41,13 @@ const AnimatedGreeting: React.FC = () => {
     <span 
       className={`inline-block transition-opacity duration-300 ${
         isVisible ? 'opacity-100' : 'opacity-0'
-      }`}
+      } ${className || ''}`}
       style={{ minWidth: '120px' }} // Prevent layout shift on mobile
     >
       {greetings[currentIndex]}
     </span>
   );
 };
+
 
 export default AnimatedGreeting;
