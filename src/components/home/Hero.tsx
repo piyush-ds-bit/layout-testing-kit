@@ -1,26 +1,41 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { FileText, Code, Briefcase, Github, MessageSquare, PenTool, Youtube } from 'lucide-react';
 import AnimatedGreeting from './AnimatedGreeting';
 import BlogCTA from '@/components/blog/BlogCTA';
-
 const Hero: React.FC = () => {
-  const navigationCards = [
-    { to: "/skills", label: "Skills", icon: Code, description: "Technical expertise" },
-    { to: "/experience", label: "Experience", icon: Briefcase, description: "Professional journey" },
-    { to: "/github", label: "GitHub", icon: Github, description: "Open source contributions" },
-    { to: "/projects", label: "Projects", icon: Youtube, description: "Portfolio showcase" },
-    { to: "/connect", label: "Connect", icon: MessageSquare, description: "Get in touch" }
-  ];
-
-  return (
-    <section id="hero" className="portfolio-section pt-20 md:pt-24">
+  const navigationCards = [{
+    to: "/skills",
+    label: "Skills",
+    icon: Code,
+    description: "Technical expertise"
+  }, {
+    to: "/experience",
+    label: "Experience",
+    icon: Briefcase,
+    description: "Professional journey"
+  }, {
+    to: "/github",
+    label: "GitHub",
+    icon: Github,
+    description: "Open source contributions"
+  }, {
+    to: "/projects",
+    label: "Projects",
+    icon: Youtube,
+    description: "Portfolio showcase"
+  }, {
+    to: "/connect",
+    label: "Connect",
+    icon: MessageSquare,
+    description: "Get in touch"
+  }];
+  return <section id="hero" className="portfolio-section pt-20 md:pt-24">
       <div className="portfolio-container">
         <div className="flex flex-col items-center text-center">
-          <h1 className="text-3xl md:text-6xl font-bold tracking-tight mb-4">
-            <AnimatedGreeting />, I'm <span className="text-portfolio-accent">Piyush Kr. Singh</span>
+          <h1 className="text-3xl font-bold tracking-tight mb-4 md:text-5xl">
+            <AnimatedGreeting className="text-5xl" />, I'm <span className="text-portfolio-accent">Piyush Kr. Singh</span>
           </h1>
           
           {/* Fallback for JavaScript disabled */}
@@ -45,13 +60,9 @@ const Hero: React.FC = () => {
           
           {/* Modern Mobile Navigation Cards */}
           <div className="mt-12 md:mt-16 grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-2.5 w-full max-w-2xl">
-            {navigationCards.map((card, index) => (
-              <Link 
-                key={card.to} 
-                to={card.to} 
-                className="group relative overflow-hidden bg-portfolio-card-bg/70 hover:bg-portfolio-card-bg border border-portfolio-border hover:border-portfolio-accent/50 rounded-2xl p-2 md:p-3 transition-all duration-300 hover:scale-105 hover:shadow-xl backdrop-blur-sm"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
+            {navigationCards.map((card, index) => <Link key={card.to} to={card.to} className="group relative overflow-hidden bg-portfolio-card-bg/70 hover:bg-portfolio-card-bg border border-portfolio-border hover:border-portfolio-accent/50 rounded-2xl p-2 md:p-3 transition-all duration-300 hover:scale-105 hover:shadow-xl backdrop-blur-sm" style={{
+            animationDelay: `${index * 0.1}s`
+          }}>
                 <div className="flex flex-col items-center text-center space-y-2">
                   <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-portfolio-accent/10 flex items-center justify-center group-hover:bg-portfolio-accent/20 transition-colors duration-300">
                     <card.icon className="w-5 h-5 md:w-6 md:h-6 text-portfolio-accent" />
@@ -64,8 +75,7 @@ const Hero: React.FC = () => {
                 
                 {/* Subtle gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-br from-portfolio-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
-              </Link>
-            ))}
+              </Link>)}
             
             {/* Special Blog Card */}
             <div className="relative">
@@ -75,8 +85,6 @@ const Hero: React.FC = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Hero;
