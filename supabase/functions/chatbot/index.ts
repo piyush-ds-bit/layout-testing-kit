@@ -11,6 +11,43 @@ interface Message {
   content: string;
 }
 
+// Rate limiting configuration
+const RATE_LIMIT_WINDOW_MS = 60000; // 1 minute
+const MAX_REQUESTS_PER_WINDOW = 10; // 10 requests per minute per IP
+const MAX_MESSAGE_LENGTH = 2000; // Maximum characters per message
+const MAX_CONVERSATION_HISTORY = 10; // Maximum conversation history items
+
+// Simple in-memory rate limiter (resets on function cold start)
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+
+function isRateLimited(clientIp: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(clientIp);
+  
+  if (!record || now > record.resetTime) {
+    // Reset or create new record
+    rateLimitMap.set(clientIp, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+  
+  if (record.count >= MAX_REQUESTS_PER_WINDOW) {
+    return true;
+  }
+  
+  record.count++;
+  return false;
+}
+
+// Clean up old entries periodically (prevent memory leak)
+function cleanupRateLimitMap() {
+  const now = Date.now();
+  for (const [ip, record] of rateLimitMap.entries()) {
+    if (now > record.resetTime) {
+      rateLimitMap.delete(ip);
+    }
+  }
+}
+
 // Custom training data - exact answers for tagged questions about Piyush
 const trainingData = [
   {
@@ -83,12 +120,43 @@ serve(async (req) => {
     return new Response('ok', { headers: corsHeaders });
   }
 
+  // Get client IP for rate limiting
+  const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
+                   req.headers.get('x-real-ip') || 
+                   'unknown';
+
+  // Clean up old rate limit entries periodically
+  cleanupRateLimitMap();
+
+  // Check rate limit
+  if (isRateLimited(clientIp)) {
+    console.log(`Rate limit exceeded for IP: ${clientIp}`);
+    return new Response(
+      JSON.stringify({ error: 'Too many requests. Please wait a moment before trying again.' }),
+      { 
+        status: 429,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      }
+    );
+  }
+
   try {
     const { message, conversationHistory = [] } = await req.json();
 
+    // Validate message
     if (!message) {
       throw new Error('Message is required');
     }
+
+    // Validate message length
+    if (typeof message !== 'string' || message.length > MAX_MESSAGE_LENGTH) {
+      throw new Error(`Message must be a string with maximum ${MAX_MESSAGE_LENGTH} characters`);
+    }
+
+    // Validate and limit conversation history
+    const validatedHistory = Array.isArray(conversationHistory) 
+      ? conversationHistory.slice(-MAX_CONVERSATION_HISTORY)
+      : [];
 
     // Initialize Supabase client
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -145,7 +213,7 @@ Be friendly, concise, and helpful. Guide visitors through the website when appro
     // Prepare messages for AI
     const messages: Message[] = [
       { role: 'system', content: systemPrompt },
-      ...conversationHistory.slice(-6), // Last 6 messages for context
+      ...validatedHistory.slice(-6), // Last 6 messages for context
       { role: 'user', content: message },
     ];
 
@@ -332,10 +400,11 @@ Be friendly, concise, and helpful. Guide visitors through the website when appro
       },
     });
 
-  } catch (error) {
-    console.error('Chatbot error:', error);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+    console.error('Chatbot error:', errorMessage);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: errorMessage }),
       { 
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
