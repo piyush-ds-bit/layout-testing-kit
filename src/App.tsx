@@ -20,6 +20,7 @@ import SignupPage from "./pages/SignupPage";
 import ResumePage from "./pages/ResumePage";
 import ProjectDetailsPage from "./pages/ProjectDetailsPage";
 import ContactMessagesPage from "./pages/ContactMessagesPage";
+import AchievementsPage from "./pages/AchievementsPage";
 
 // Not Found Page
 import NotFound from "./pages/NotFound";
@@ -64,6 +65,7 @@ const AnimatedRoutes = () => {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/resume" element={<ResumePage />} />
           <Route path="/contact-messages" element={<ContactMessagesPage />} />
+          <Route path="/achievements" element={<AchievementsPage />} />
           
           {/* Catch-all Route */}
           <Route path="*" element={<NotFound />} />
