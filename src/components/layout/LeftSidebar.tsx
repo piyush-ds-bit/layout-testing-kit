@@ -30,20 +30,20 @@ const navItems = [{
   icon: BookOpen,
   sectionId: 'blog'
 }, {
-  label: 'Achievements',
-  path: '/achievements',
-  icon: Award,
-  sectionId: 'achievements'
+  label: 'Connect',
+  path: '/connect',
+  icon: MessageCircle,
+  sectionId: 'connect'
 }, {
   label: 'ML Pipeline',
   path: '/#ml-pipeline',
   icon: Cpu,
   sectionId: 'ml-pipeline'
 }, {
-  label: 'Connect',
-  path: '/connect',
-  icon: MessageCircle,
-  sectionId: 'connect'
+  label: 'Achievements',
+  path: '/achievements',
+  icon: Award,
+  sectionId: 'achievements'
 }];
 const socialLinks = [{
   name: 'GitHub',
