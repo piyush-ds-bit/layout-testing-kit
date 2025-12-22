@@ -139,9 +139,9 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
     <div 
       className="relative"
       style={{
-        minWidth: 136,
-        maxWidth: 175,
-        height: 160, // Fixed height to prevent layout shift
+        minWidth: 120,
+        maxWidth: 150,
+        height: 135, // Fixed height to prevent layout shift
         perspective: 1000,
       }}
       onMouseEnter={() => setIsFlipped(true)}
