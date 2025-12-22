@@ -20,7 +20,7 @@ const RightInfoPanel: React.FC = () => {
   };
 
   return (
-    <aside className="fixed right-0 top-0 h-screen w-[260px] bg-portfolio-darker/95 border-l border-portfolio-border/50 backdrop-blur-xl z-40 hidden lg:block overflow-y-auto scrollbar-thin pt-20 pb-6 px-4">
+    <aside className="fixed right-0 top-0 h-screen w-[300px] bg-portfolio-darker/95 border-l border-portfolio-border/50 backdrop-blur-xl z-40 hidden lg:block overflow-y-auto scrollbar-thin pt-20 pb-6 px-4">
       <div className="space-y-4">
         {/* Currently Working On */}
         <motion.div

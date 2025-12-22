@@ -139,9 +139,9 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
     <div 
       className="relative"
       style={{
-        minWidth: 110,
-        maxWidth: 138,
-        height: 122, // Fixed height to prevent layout shift
+        minWidth: 120,
+        maxWidth: 150,
+        height: 135, // Fixed height to prevent layout shift
         perspective: 1000,
       }}
       onMouseEnter={() => setIsFlipped(true)}
@@ -170,18 +170,18 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
           <div
             className={`
               portfolio-card-hover flex flex-col items-center justify-center
-              w-full h-full py-3 px-2
+              w-full h-full py-4 px-3
               bg-[#182437]/80 border-2 ${getStatusBorderColor()}
               transition-all duration-300 relative
             `}
           >
-            <div className={`text-2xl mb-1.5 select-none pulse`} style={{
+            <div className={`text-3xl mb-2 select-none pulse`} style={{
               filter: "drop-shadow(0 0 6px #a855f7aa)",
             }}>
               {iconMap[step.icon] ?? step.icon}
             </div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="text-xs font-semibold text-white text-center drop-shadow">
+              <div className="text-sm font-semibold text-white text-center drop-shadow">
                 {step.label}
               </div>
               <PipelineTooltip stepLabel={step.label} description={step.description} />
@@ -201,7 +201,7 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
         >
           <div className={`
             flex flex-col items-center justify-start
-            w-full h-full py-2 px-2
+            w-full h-full py-3 px-2
             bg-[#182437]/90 border-2 border-portfolio-accent
             overflow-hidden
           `}>

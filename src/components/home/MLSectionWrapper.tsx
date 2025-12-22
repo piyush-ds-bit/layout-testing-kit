@@ -12,14 +12,14 @@ const MLSectionWrapper: React.FC = () => {
         {/* Side-by-side on desktop, stacked on mobile */}
         <div className="flex flex-col lg:flex-row gap-6">
           {/* ML Pipeline - Left Side */}
-          <div className="w-full lg:flex-1.3 lg:min-w-0">
+          <div className="w-full lg:flex-1 lg:min-w-0">
             <div className="h-full">
               <MLPipelineVisualization />
             </div>
           </div>
           
           {/* ML Sandbox - Right Side */}
-          <div className="w-full lg:flex-0.7 lg:min-w-0">
+          <div className="w-full lg:flex-1 lg:min-w-0">
             <MLSandboxSection />
           </div>
         </div>
