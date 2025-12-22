@@ -170,18 +170,18 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
           <div
             className={`
               portfolio-card-hover flex flex-col items-center justify-center
-              w-full h-full py-7 px-4
+              w-full h-full py-4 px-3
               bg-[#182437]/80 border-2 ${getStatusBorderColor()}
               transition-all duration-300 relative
             `}
           >
-            <div className={`text-4xl mb-3 select-none pulse`} style={{
+            <div className={`text-3xl mb-2 select-none pulse`} style={{
               filter: "drop-shadow(0 0 6px #a855f7aa)",
             }}>
               {iconMap[step.icon] ?? step.icon}
             </div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="text-lg font-semibold text-white text-center drop-shadow">
+              <div className="text-sm font-semibold text-white text-center drop-shadow">
                 {step.label}
               </div>
               <PipelineTooltip stepLabel={step.label} description={step.description} />
@@ -201,7 +201,7 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
         >
           <div className={`
             flex flex-col items-center justify-start
-            w-full h-full py-4 px-3
+            w-full h-full py-3 px-2
             bg-[#182437]/90 border-2 border-portfolio-accent
             overflow-hidden
           `}>
@@ -209,7 +209,7 @@ const PipelineStep: React.FC<PipelineStepProps> = ({ step, expanded, onClick, is
               Tools:
             </div>
             <div className="flex-1 w-full overflow-y-auto scrollbar-hide">
-              <ul className="space-y-1 text-gray-300 text-xs text-left list-disc list-inside">
+              <ul className="space-y-0.5 text-gray-300 text-[11px] text-left list-disc list-inside">
                 {step.tools.map((tool: string, i: number) =>
                   <li key={i} className="pl-2">{tool}</li>
                 )}
