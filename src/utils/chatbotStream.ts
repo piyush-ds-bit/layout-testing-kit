@@ -1,7 +1,13 @@
+import { supabase } from '@/integrations/supabase/client';
+
 export interface StreamMessage {
   type: 'delta' | 'done' | 'error';
   content: string;
 }
+
+// Get the Supabase URL and anon key from the client
+const SUPABASE_URL = 'https://pfwqlxgrwcphsnpkevot.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBmd3FseGdyd2NwaHNucGtldm90Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDczMzYyNDUsImV4cCI6MjA2MjkxMjI0NX0.8TTzZFxJK2xzCAxCrj93IFpufubgF8N2p5jHH7ohWWw';
 
 export const streamChatResponse = async (
   message: string,
@@ -12,12 +18,12 @@ export const streamChatResponse = async (
 ): Promise<void> => {
   try {
     const response = await fetch(
-      `https://pfwqlxgrwcphsnpkevot.supabase.co/functions/v1/chatbot`,
+      `${SUPABASE_URL}/functions/v1/chatbot`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBmd3FseGdyd2NwaHNucGtldm90Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDczMzYyNDUsImV4cCI6MjA2MjkxMjI0NX0.8TTzZFxJK2xzCAxCrj93IFpufubgF8N2p5jHH7ohWWw',
+          'apikey': SUPABASE_ANON_KEY,
         },
         body: JSON.stringify({
           message,
