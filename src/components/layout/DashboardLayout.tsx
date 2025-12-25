@@ -31,7 +31,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         <LeftSidebar />
         
         {/* Main Content - properly constrained between fixed sidebars */}
-        <main className="flex-grow pb-16 md:pb-0 lg:ml-[240px] lg:mr-[260px] w-full lg:w-[calc(100%-500px)]">
+        <main className="flex-grow pb-16 md:pb-0 lg:ml-[220px] lg:mr-[260px] w-full lg:w-[calc(100%-480px)]">
           <div className="w-full">
             {children}
           </div>
