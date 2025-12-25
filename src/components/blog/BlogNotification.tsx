@@ -8,10 +8,10 @@ const BlogNotification: React.FC = () => {
   const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
-    const hasSeen = sessionStorage.getItem('blog-notification-seen');
-    const hasVisited = sessionStorage.getItem('blog-visited');
+    const hasSeenNotification = sessionStorage.getItem('blog-notification-seen');
+    const hasVisitedBlog = sessionStorage.getItem('blog-visited');
     
-    if (hasSeen || hasVisited) return;
+    if (hasSeenNotification || hasVisitedBlog) return;
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 12000); // Show after 45 seconds
