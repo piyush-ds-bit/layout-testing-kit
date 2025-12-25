@@ -6,7 +6,7 @@ export const useActiveSection = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['hero', 'skills', 'experience', 'projects', 'github', 'blog', 'connect'];
+      const sections = ['hero', 'skills', 'experience', 'projects', 'github', 'blog', 'connect', 'ml-pipeline'];
       const scrollPosition = window.scrollY + 100; // Offset for navbar
 
       for (const section of sections) {
