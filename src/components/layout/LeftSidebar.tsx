@@ -96,7 +96,7 @@ const LeftSidebar: React.FC = () => {
     }
     return location.pathname === item.path;
   };
-  return <aside className="fixed left-0 top-0 h-screen w-[240px] bg-portfolio-darker/95 border-r border-portfolio-border/50 backdrop-blur-xl z-40 hidden lg:flex flex-col">
+  return <aside className="fixed left-0 top-0 h-screen w-[220px] bg-portfolio-darker/95 border-r border-portfolio-border/50 backdrop-blur-xl z-40 hidden lg:flex flex-col">
       {/* Profile Photo */}
       <motion.div initial={{
       opacity: 0,
@@ -129,9 +129,9 @@ const LeftSidebar: React.FC = () => {
             duration: 0.3,
             delay: index * 0.05
           }}>
-                <button onClick={() => handleNavClick(item)} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-300 group ${isActive ? 'bg-portfolio-accent/20 text-portfolio-accent border border-portfolio-accent/30' : 'text-gray-400 hover:bg-portfolio-card-bg hover:text-white'}`}>
+                <button onClick={() => handleNavClick(item)} className={`w-full flex items-center gap-2.5 px-3 py-3 rounded-xl text-left transition-all duration-300 group ${isActive ? 'bg-portfolio-accent/20 text-portfolio-accent border border-portfolio-accent/30' : 'text-gray-400 hover:bg-portfolio-card-bg hover:text-white'}`}>
                   <Icon className={`w-5 h-5 transition-transform duration-300 group-hover:scale-110 ${isActive ? 'text-portfolio-accent' : ''}`} />
-                  <span className="font-medium text-sm">{item.label}</span>
+                  <span className="font-medium text-[13.5px]">{item.label}</span>
                   
                   {/* Active indicator glow */}
                   {isActive && <motion.div className="absolute left-0 w-1 h-8 bg-portfolio-accent rounded-r-full" layoutId="activeIndicator" initial={{
