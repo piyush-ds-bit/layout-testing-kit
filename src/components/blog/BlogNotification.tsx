@@ -8,8 +8,8 @@ const BlogNotification: React.FC = () => {
   const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
-    const hasSeenNotification = sessionStorage.getItem('blog-notification-seen');
-    const hasVisitedBlog = sessionStorage.getItem('blog-visited');
+    const hasSeen = sessionStorage.getItem('blog-notification-seen');
+    const hasVisited = sessionStorage.getItem('blog-visited');
     
     if (hasSeen || hasVisited) return;
     const timer = setTimeout(() => {
