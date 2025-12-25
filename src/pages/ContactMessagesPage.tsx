@@ -6,7 +6,7 @@ import { toast } from '@/components/ui/use-toast';
 import { ContactMessage } from '@/types/database';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Mail, Phone, Clock, Trash2 } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, Clock, Trash2, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const ContactMessagesPage: React.FC = () => {
@@ -79,6 +79,36 @@ const ContactMessagesPage: React.FC = () => {
       toast({
         title: 'Error',
         description: 'Failed to update message status.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const downloadAttachment = async (attachmentUrl: string, messageId: string) => {
+    try {
+      // Extract the file path from the URL
+      const url = new URL(attachmentUrl);
+      const pathParts = url.pathname.split('/');
+      const bucketIndex = pathParts.indexOf('contact-uploads');
+      if (bucketIndex === -1) {
+        throw new Error('Invalid attachment URL');
+      }
+      const filePath = pathParts.slice(bucketIndex + 1).join('/');
+      
+      // Create a signed URL for secure download (1 hour expiration)
+      const { data, error } = await supabase.storage
+        .from('contact-uploads')
+        .createSignedUrl(filePath, 3600);
+
+      if (error) throw error;
+      
+      if (data?.signedUrl) {
+        window.open(data.signedUrl, '_blank');
+      }
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: 'Failed to download attachment.',
         variant: 'destructive',
       });
     }
@@ -182,6 +212,19 @@ const ContactMessagesPage: React.FC = () => {
                       {message.message}
                     </p>
                   </div>
+                  {message.attachment_url && (
+                    <div className="mt-4">
+                      <Button
+                        onClick={() => downloadAttachment(message.attachment_url!, message.id)}
+                        variant="outline"
+                        size="sm"
+                        className="flex items-center gap-2"
+                      >
+                        <Download className="w-4 h-4" />
+                        Download Attachment
+                      </Button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
