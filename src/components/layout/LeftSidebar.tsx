@@ -43,7 +43,8 @@ const navItems = [{
   label: 'Achievements',
   path: '/achievements',
   icon: Award,
-  sectionId: 'achievements'
+  sectionId: null,
+  forceNavigate: true
 }];
 const socialLinks = [{
   name: 'GitHub',
@@ -68,17 +69,24 @@ const LeftSidebar: React.FC = () => {
   const scrollToSection = useScrollToSection();
   const activeSection = useActiveSection();
   const handleNavClick = (item: typeof navItems[0]) => {
+    // Force navigation for page-only items
+    if (item.forceNavigate) {
+      navigate(item.path);
+      return;
+    }
+  
     if (location.pathname === '/') {
-      // On homepage - scroll to section
       const element = document.getElementById(item.sectionId);
       if (element) {
         element.scrollIntoView({
           behavior: 'smooth',
-          block: 'start'
+          block: 'start',
         });
+      } else {
+        // fallback safety
+        navigate(item.path);
       }
     } else {
-      // On other pages - navigate to route
       navigate(item.path);
     }
   };
