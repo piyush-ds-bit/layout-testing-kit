@@ -8,34 +8,33 @@ const BlogNotification: React.FC = () => {
   const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
-    const hasSeenNotification = localStorage.getItem('blog-notification-seen');
-    const hasVisitedBlog = localStorage.getItem('blog-visited');
+    const hasSeenNotification = sessionStorage.getItem('blog-notification-seen');
+    const hasVisitedBlog = sessionStorage.getItem('blog-visited');
     
-    if (!hasSeenNotification && !hasVisitedBlog && !isDismissed) {
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-      }, 45000); // Show after 45 seconds
+    if (hasSeen || hasVisited) return;
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 12000); // Show after 45 seconds
 
-      return () => clearTimeout(timer);
-    }
-  }, [isDismissed]);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleDismiss = () => {
     setIsVisible(false);
-    setIsDismissed(true);
-    localStorage.setItem('blog-notification-seen', 'true');
+    sessionStorage.setItem('blog-notification-seen', 'true');
   };
-
+  
   const handleBlogClick = () => {
     setIsVisible(false);
-    localStorage.setItem('blog-visited', 'true');
-    localStorage.setItem('blog-notification-seen', 'true');
+    sessionStorage.setItem('blog-visited', 'true');
+    sessionStorage.setItem('blog-notification-seen', 'true');
   };
+
 
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 animate-slide-in">
+    <div className="fixed bottom-6 right-[320px] z-[999] animate-slide-in">
       <div className="bg-gradient-to-r from-purple-900/95 to-blue-900/95 backdrop-blur-md border border-purple-500/30 rounded-xl p-4 shadow-2xl max-w-sm">
         <div className="flex items-start justify-between mb-2">
           <div className="flex items-center gap-2">
